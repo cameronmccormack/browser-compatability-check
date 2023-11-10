@@ -1,20 +1,17 @@
 import { cssBrowserSupport } from '../browser-support/css-browser-support';
-
-type Browser = {
-  identifier: string;
-  version: number;
-};
+import { getIdFromFeature } from '../helpers/feature-id-helper';
+import { Browser } from '../types/browser';
+import { CssFeature } from '../types/css-feature';
 
 export const isFeatureCompatible = (
-  featureIdentifier: string,
+  feature: CssFeature,
   browsers: Browser[],
 ): boolean => {
-  const browserSupport = cssBrowserSupport([featureIdentifier])?.[
-    featureIdentifier
-  ];
+  const featureId = getIdFromFeature(feature);
+  const browserSupport = cssBrowserSupport([feature])?.[featureId];
 
   if (!browserSupport) {
-    throw new Error('Could not identify any listed CSS features.');
+    throw new Error(`Could not identify CSS features: ${featureId}.`);
   }
 
   for (const browser of browsers) {
@@ -22,7 +19,7 @@ export const isFeatureCompatible = (
 
     if (!featureDetailsForBrowser) {
       throw new Error(
-        `Browser ${browser.identifier} not found in support list for ${featureIdentifier}`,
+        `Browser ${browser.identifier} not found in support list for ${featureId}`,
       );
     }
 
@@ -36,7 +33,9 @@ export const isFeatureCompatible = (
 
     if (browser.version < minimumBrowserVersion) {
       console.log(
-        `Feature ${featureIdentifier} is not supported on ${browser.identifier} version ${browser.version}`,
+        `Feature ${feature.identifier} ${
+          feature.context ? `in context ${feature.context} ` : ''
+        }is not supported on ${browser.identifier} version ${browser.version}`,
       );
       return false;
     }
