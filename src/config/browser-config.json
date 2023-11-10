@@ -1,0 +1,4 @@
+[
+  { "identifier": "chrome", "version": 1000 },
+  { "identifier": "safari", "version": 12 }
+]

@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "target": "es2021",
+    "outDir": "dist",
+    "strict": true,
+    "allowJs": true,
+    "resolveJsonModule": true
+  },
+  "lib": ["es2021"],
+  "include": [
+    "./src/**/*.ts", "src/browser-support/css-browser-support.ts",
+  ]
+}

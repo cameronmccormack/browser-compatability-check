@@ -1,0 +1,29 @@
+{
+  "name": "browser-compatability-check",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "start": "tsc && node dist/index.js",
+    "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint --ext .tsx --ext .ts . --fix",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Cameron McCormack",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/caniuse-lite": "^1.0.4",
+    "@types/node": "^20.9.0",
+    "@typescript-eslint/eslint-plugin": "^6.10.0",
+    "@typescript-eslint/parser": "^6.10.0",
+    "eslint": "^8.53.0",
+    "eslint-plugin-prettier": "^5.0.1",
+    "prettier": "^3.0.3",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "@mdn/browser-compat-data": "^5.3.30",
+    "caniuse-lite": "^1.0.30001561",
+    "css-browser-support": "^0.8.0"
+  }
+}
