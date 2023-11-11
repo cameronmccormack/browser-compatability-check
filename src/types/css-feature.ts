@@ -1,5 +1,6 @@
 export type CssFeature = {
   identifier: string;
+  value: string;
   context?: CssContext;
 };
 

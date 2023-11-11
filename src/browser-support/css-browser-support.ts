@@ -9,9 +9,11 @@ const getItemType = (item: CssFeature): ItemType | null => {
   const featureId = getIdFromFeature(item);
   // TODO check the types returned here are all ok
   if (item.identifier in bcd.css.properties) {
-    return item.context && bcd.css.properties[item.identifier][item.context]
-      ? { [featureId]: bcd.css.properties[item.identifier][item.context] }
-      : { [featureId]: bcd.css.properties[item.identifier] };
+    const itemWithContext =
+      item.context && item.context in bcd.css.properties[item.identifier]
+        ? bcd.css.properties[item.identifier][item.context]
+        : bcd.css.properties[item.identifier];
+    return { [featureId]: itemWithContext[item.value] ?? itemWithContext };
   } else if (item.identifier in bcd.css.properties['grid-template-columns']) {
     return bcd.css.properties['grid-template-columns'];
   } else if (item.identifier in bcd.css.selectors) {

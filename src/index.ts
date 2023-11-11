@@ -7,26 +7,44 @@ const main = (): void => {
   const flattenedAttributes = getFlattenedAttributes(parsedCss);
   flattenedAttributes.forEach((attribute) =>
     console.log(
-      isFeatureCompatible({ identifier: attribute.key }, browserConfig),
+      isFeatureCompatible(
+        { identifier: attribute.key, value: attribute.value },
+        browserConfig,
+      ),
     ),
   );
 
-  console.log(isFeatureCompatible({ identifier: 'gap' }, browserConfig));
+  console.log(
+    isFeatureCompatible({ identifier: 'gap', value: '4px' }, browserConfig),
+  );
   console.log(
     isFeatureCompatible(
-      { identifier: 'gap', context: 'flex_context' },
+      { identifier: 'gap', value: '4px', context: 'flex_context' },
       browserConfig,
     ),
   );
   console.log(
     isFeatureCompatible(
-      { identifier: 'gap', context: 'grid_context' },
+      { identifier: 'gap', value: '4px', context: 'grid_context' },
       browserConfig,
     ),
   );
   console.log(
     isFeatureCompatible(
-      { identifier: 'aspect-ratio', context: 'grid_context' },
+      { identifier: 'aspect-ratio', value: '4', context: 'grid_context' },
+      browserConfig,
+    ),
+  );
+
+  console.log(
+    isFeatureCompatible(
+      { identifier: 'display', value: 'grid' },
+      browserConfig,
+    ),
+  );
+  console.log(
+    isFeatureCompatible(
+      { identifier: 'display', value: 'flex' },
       browserConfig,
     ),
   );
