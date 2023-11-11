@@ -23,7 +23,6 @@
   },
   "dependencies": {
     "@mdn/browser-compat-data": "^5.3.30",
-    "caniuse-lite": "^1.0.30001561",
-    "css-browser-support": "^0.8.0"
+    "cssjson": "^2.1.3"
   }
 }

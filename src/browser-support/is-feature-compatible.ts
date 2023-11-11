@@ -1,4 +1,4 @@
-import { cssBrowserSupport } from '../browser-support/css-browser-support';
+import { cssBrowserSupport } from './css-browser-support';
 import { getIdFromFeature } from '../helpers/feature-id-helper';
 import { Browser } from '../types/browser';
 import { CssFeature } from '../types/css-feature';

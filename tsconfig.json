@@ -10,6 +10,6 @@
   },
   "lib": ["es2021"],
   "include": [
-    "./src/**/*.ts", "src/browser-support/css-browser-support.ts",
+    "./src/**/*.ts",
   ]
 }
