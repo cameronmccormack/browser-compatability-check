@@ -1,7 +1,7 @@
 import * as bcd from '@mdn/browser-compat-data';
 import { ItemType } from '../types/mdn-types';
 import { BROWSER_SLUGS } from './browser-slugs';
-import { BrowserSupport, FeatureSupport } from '../types/browser-support-types';
+import { FeatureSupport } from '../types/browser-support-types';
 import { CssFeature } from '../types/css-feature';
 import { getIdFromFeature } from '../helpers/feature-id-helper';
 
@@ -29,40 +29,35 @@ const getItemType = (item: CssFeature): ItemType | null => {
 };
 
 export const cssBrowserSupport = (
-  features: CssFeature[],
-): BrowserSupport | null => {
-  const report = {} as BrowserSupport;
+  feature: CssFeature,
+): FeatureSupport | null => {
+  const itemType = getItemType(feature);
+  const featureId = getIdFromFeature(feature);
 
-  for (const feature of features) {
-    const itemType = getItemType(feature);
-    const featureId = getIdFromFeature(feature);
+  const report = {} as FeatureSupport;
 
-    if (itemType) {
-      report[featureId] = {} as FeatureSupport;
-      for (const browser of BROWSER_SLUGS) {
-        const supportBrowser = itemType[featureId].__compat.support[browser];
-        const supportBrowserIsArray = Array.isArray(supportBrowser);
+  if (itemType) {
+    for (const browser of BROWSER_SLUGS) {
+      const supportBrowser = itemType[featureId].__compat.support[browser];
+      const supportBrowserIsArray = Array.isArray(supportBrowser);
 
-        const versionAdded = supportBrowserIsArray
-          ? supportBrowser[0].version_added
-          : supportBrowser.version_added;
-        const isFlagged = Boolean(
-          supportBrowserIsArray
-            ? supportBrowser[1].flags
-            : supportBrowser.flags,
+      const versionAdded = supportBrowserIsArray
+        ? supportBrowser[0].version_added
+        : supportBrowser.version_added;
+      const isFlagged = Boolean(
+        supportBrowserIsArray ? supportBrowser[1].flags : supportBrowser.flags,
+      );
+
+      const sinceVersion = Number(versionAdded);
+      if (isNaN(sinceVersion)) {
+        console.log(
+          `Browser version ${sinceVersion} is not a number for ${browser}`,
         );
-
-        const sinceVersion = Number(versionAdded);
-        if (isNaN(sinceVersion)) {
-          console.log(
-            `Browser version ${sinceVersion} is not a number for ${browser}`,
-          );
-        } else {
-          report[featureId][browser] = {
-            sinceVersion: Number(versionAdded),
-            flagged: isFlagged,
-          };
-        }
+      } else {
+        report[browser] = {
+          sinceVersion: Number(versionAdded),
+          flagged: isFlagged,
+        };
       }
     }
   }

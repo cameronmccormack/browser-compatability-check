@@ -8,7 +8,7 @@ export const isFeatureCompatible = (
   browsers: Browser[],
 ): boolean => {
   const featureId = getIdFromFeature(feature);
-  const browserSupport = cssBrowserSupport([feature])?.[featureId];
+  const browserSupport = cssBrowserSupport(feature);
 
   if (!browserSupport) {
     throw new Error(`Could not identify CSS features: ${featureId}.`);

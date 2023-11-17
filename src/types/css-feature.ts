@@ -4,4 +4,4 @@ export type CssFeature = {
   context?: CssContext;
 };
 
-export type CssContext = 'flex_context' | 'grid_context' | 'multicol_context';
+type CssContext = 'flex_context' | 'grid_context' | 'multicol_context';
