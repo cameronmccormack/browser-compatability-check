@@ -33,19 +33,29 @@ const getCompatabilityStatement = (
 export const getCssBrowserSupport = (
   feature: CssFeature,
 ): FeatureSupport | null => {
-  const compatabilityStatement = getCompatabilityStatement(feature);
+  const compatibilityStatement = getCompatabilityStatement(feature);
 
   const report = {} as FeatureSupport;
 
-  if (compatabilityStatement) {
+  if (compatibilityStatement) {
     for (const browser of BROWSER_SLUGS) {
       const supportBrowser =
-        compatabilityStatement.support[browser as keyof SupportBlock];
+        compatibilityStatement.support[browser as keyof SupportBlock];
       const supportBrowserIsArray = Array.isArray(supportBrowser);
+
+      if (
+        supportBrowser === undefined ||
+        (supportBrowserIsArray && supportBrowser.length === 0)
+      ) {
+        console.log(
+          `No details found for browser ${browser} in compatibility data.`,
+        );
+        continue;
+      }
 
       const versionAdded = supportBrowserIsArray
         ? supportBrowser[0].version_added
-        : supportBrowser?.version_added;
+        : supportBrowser.version_added;
       const isFlagged = Boolean(
         supportBrowserIsArray ? supportBrowser[1].flags : supportBrowser?.flags,
       );

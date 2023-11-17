@@ -14,4 +14,15 @@ describe('getUniqueObjectArray works as expected', () => {
 
     expect(getUniqueObjectArray(startArray)).toEqual(expectedResponse);
   });
+
+  test('distinguishes between different types with the same stringified value', () => {
+    const stringValueObject = { a: '1' };
+    const numberValueObject = { a: 1 };
+    const startArray = [stringValueObject, numberValueObject];
+    expect(getUniqueObjectArray(startArray)).toEqual(startArray);
+  });
+
+  test('works for empty array', () => {
+    expect(getUniqueObjectArray([])).toEqual([]);
+  });
 });
