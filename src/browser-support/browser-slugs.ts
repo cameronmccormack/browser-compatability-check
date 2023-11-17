@@ -1,4 +1,6 @@
-export const BROWSER_SLUGS = [
+import { BrowserName } from '@mdn/browser-compat-data';
+
+export const BROWSER_SLUGS: BrowserName[] = [
   'chrome',
   'chrome_android',
   'edge',

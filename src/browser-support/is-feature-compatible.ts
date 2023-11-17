@@ -1,4 +1,4 @@
-import { cssBrowserSupport } from './css-browser-support';
+import { getCssBrowserSupport } from './css-browser-support';
 import { getIdFromFeature } from '../helpers/feature-id-helper';
 import { Browser } from '../types/browser';
 import { CssFeature } from '../types/css-feature';
@@ -8,7 +8,7 @@ export const isFeatureCompatible = (
   browsers: Browser[],
 ): boolean => {
   const featureId = getIdFromFeature(feature);
-  const browserSupport = cssBrowserSupport(feature);
+  const browserSupport = getCssBrowserSupport(feature);
 
   if (!browserSupport) {
     throw new Error(`Could not identify CSS features: ${featureId}.`);
