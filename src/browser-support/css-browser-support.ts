@@ -71,7 +71,9 @@ export const getCssBrowserSupport = (
         ? supportBrowser[0].version_added
         : supportBrowser.version_added;
       const isFlagged = Boolean(
-        supportBrowserIsArray ? supportBrowser[1].flags : supportBrowser?.flags,
+        supportBrowserIsArray
+          ? supportBrowser[1].flags?.length // todo why is this [1]?
+          : supportBrowser?.flags?.length,
       );
 
       const sinceVersion = versionAdded
