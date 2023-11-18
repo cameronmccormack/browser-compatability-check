@@ -1,50 +1,65 @@
 import { isFeatureCompatible } from './browser-support/is-feature-compatible';
 import browserConfig from './config/browser-config.json';
-import { getFlattenedAttributes, getParsedCss } from './css-parser/css-parser';
+import { getFlattenedCssFeatures, getParsedCss } from './css-parser/css-parser';
 
 export const main = (): void => {
   const parsedCss = getParsedCss();
-  const flattenedAttributes = getFlattenedAttributes(parsedCss);
+  console.log(parsedCss);
+  const flattenedAttributes = getFlattenedCssFeatures(parsedCss);
+  console.log(flattenedAttributes);
   flattenedAttributes.forEach((attribute) =>
-    console.log(
-      isFeatureCompatible(
-        { identifier: attribute.key, value: attribute.value },
-        browserConfig,
-      ),
-    ),
-  );
-
-  console.log(
-    isFeatureCompatible({ identifier: 'gap', value: '4px' }, browserConfig),
-  );
-  console.log(
-    isFeatureCompatible(
-      { identifier: 'gap', value: '4px', context: 'flex_context' },
-      browserConfig,
-    ),
-  );
-  console.log(
-    isFeatureCompatible(
-      { identifier: 'gap', value: '4px', context: 'grid_context' },
-      browserConfig,
-    ),
-  );
-  console.log(
-    isFeatureCompatible(
-      { identifier: 'aspect-ratio', value: '4', context: 'grid_context' },
-      browserConfig,
-    ),
+    console.log(isFeatureCompatible(attribute, browserConfig)),
   );
 
   console.log(
     isFeatureCompatible(
-      { identifier: 'display', value: 'grid' },
+      { identifier: 'gap', value: '4px', type: 'property' },
       browserConfig,
     ),
   );
   console.log(
     isFeatureCompatible(
-      { identifier: 'display', value: 'flex' },
+      {
+        identifier: 'gap',
+        value: '4px',
+        context: 'flex_context',
+        type: 'property',
+      },
+      browserConfig,
+    ),
+  );
+  console.log(
+    isFeatureCompatible(
+      {
+        identifier: 'gap',
+        value: '4px',
+        context: 'grid_context',
+        type: 'property',
+      },
+      browserConfig,
+    ),
+  );
+  console.log(
+    isFeatureCompatible(
+      {
+        identifier: 'aspect-ratio',
+        value: '4',
+        context: 'grid_context',
+        type: 'property',
+      },
+      browserConfig,
+    ),
+  );
+
+  console.log(
+    isFeatureCompatible(
+      { identifier: 'display', value: 'grid', type: 'property' },
+      browserConfig,
+    ),
+  );
+  console.log(
+    isFeatureCompatible(
+      { identifier: 'display', value: 'flex', type: 'property' },
       browserConfig,
     ),
   );

@@ -113,13 +113,22 @@ const testCases: [string, TestData][] = [
 test.each<[string, TestData]>(testCases)(
   'returns expected result for case: %s',
   (_, { identifier, value, context, browserConfig, expected }) => {
-    const feature = { identifier, value, context } as CssFeature;
+    const feature = {
+      identifier,
+      value,
+      context,
+      type: 'property',
+    } as CssFeature;
     expect(isFeatureCompatible(feature, browserConfig)).toEqual(expected);
   },
 );
 
 test('throws an error for unknown CSS feature', () => {
-  const feature = { identifier: 'not-a-real-feature', value: 'xyz' };
+  const feature = {
+    identifier: 'not-a-real-feature',
+    value: 'xyz',
+    type: 'property',
+  } as CssFeature;
   const expectedMessage =
     'Could not identify CSS feature: not-a-real-feature:xyz.';
   expect(() => isFeatureCompatible(feature, MODERN_CHROME_CONFIG)).toThrow(
@@ -128,13 +137,21 @@ test('throws an error for unknown CSS feature', () => {
 });
 
 test('throws an error for missing browser config', () => {
-  const feature = { identifier: 'gap', value: '20px' };
+  const feature = {
+    identifier: 'gap',
+    value: '20px',
+    type: 'property',
+  } as CssFeature;
   const expectedMessage = 'Missing browser config.';
   expect(() => isFeatureCompatible(feature, [])).toThrow(expectedMessage);
 });
 
 test('throws an error if browser not found in support list for a CSS feature', () => {
-  const feature = { identifier: 'gap', value: '20px' };
+  const feature = {
+    identifier: 'gap',
+    value: '20px',
+    type: 'property',
+  } as CssFeature;
   const browser = 'fake-browser';
   const browserConfig = [
     {
@@ -150,7 +167,11 @@ test('throws an error if browser not found in support list for a CSS feature', (
 });
 
 test('throws an error if the minimum supported browser version is not a number', () => {
-  const feature = { identifier: 'gap', value: '20px' };
+  const feature = {
+    identifier: 'gap',
+    value: '20px',
+    type: 'property',
+  } as CssFeature;
   const expectedMessage =
     'Minimum version for chrome for gap:20px cannot be converted to a number.';
   jest

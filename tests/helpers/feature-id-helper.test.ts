@@ -7,6 +7,7 @@ describe('getIdFromFeature works as expected', () => {
       identifier: 'gap',
       value: '20px',
       context: 'flex_context',
+      type: 'property',
     };
     expect(getIdFromFeature(cssFeature)).toEqual('gap:20px:flex_context');
   });
@@ -15,6 +16,7 @@ describe('getIdFromFeature works as expected', () => {
     const cssFeature: CssFeature = {
       identifier: 'display',
       value: 'block',
+      type: 'property',
     };
     expect(getIdFromFeature(cssFeature)).toEqual('display:block');
   });

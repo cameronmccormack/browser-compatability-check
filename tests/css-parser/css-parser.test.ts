@@ -1,8 +1,8 @@
 import {
-  getFlattenedAttributes,
+  getFlattenedCssFeatures,
   getParsedCss,
 } from '../../src/css-parser/css-parser';
-import { FlattenedAttributes } from '../../src/types/flattened-attributes';
+import { CssFeature } from '../../src/types/css-feature';
 import { ParsedCss } from '../../src/types/parsed-css';
 
 describe('getFlattenedAttributes works as expected', () => {
@@ -11,9 +11,9 @@ describe('getFlattenedAttributes works as expected', () => {
       children: {},
       attributes: {},
     };
-    const expectedResponse: FlattenedAttributes = [];
+    const expectedResponse: CssFeature[] = [];
 
-    expect(getFlattenedAttributes(parsedCss)).toEqual(expectedResponse);
+    expect(getFlattenedCssFeatures(parsedCss)).toEqual(expectedResponse);
   });
 
   test('removes duplicate attributes', () => {
@@ -34,12 +34,13 @@ describe('getFlattenedAttributes works as expected', () => {
     };
     const expectedResponse = [
       {
-        key: 'gap',
+        identifier: 'gap',
         value: '20px',
+        type: 'property',
       },
     ];
 
-    expect(getFlattenedAttributes(parsedCss)).toEqual(expectedResponse);
+    expect(getFlattenedCssFeatures(parsedCss)).toEqual(expectedResponse);
   });
 
   test('handles nested children with multiple attributes', () => {
@@ -68,32 +69,38 @@ describe('getFlattenedAttributes works as expected', () => {
     };
     const expectedResponse = [
       {
-        key: 'gap',
+        identifier: 'gap',
         value: '3px',
+        type: 'property',
       },
       {
-        key: 'margin-top',
+        identifier: 'margin-top',
         value: '3px',
+        type: 'property',
       },
       {
-        key: 'gap',
+        identifier: 'gap',
         value: '2px',
+        type: 'property',
       },
       {
-        key: 'margin-top',
+        identifier: 'margin-top',
         value: '2px',
+        type: 'property',
       },
       {
-        key: 'gap',
+        identifier: 'gap',
         value: '1px',
+        type: 'property',
       },
       {
-        key: 'margin-top',
+        identifier: 'margin-top',
         value: '1px',
+        type: 'property',
       },
     ];
 
-    expect(getFlattenedAttributes(parsedCss)).toEqual(expectedResponse);
+    expect(getFlattenedCssFeatures(parsedCss)).toEqual(expectedResponse);
   });
 });
 
@@ -138,6 +145,18 @@ describe('getParsedCss works as expected', () => {
             'font-size': '35px',
             'font-weight': 'normal',
             'margin-top': '5px',
+          },
+          children: {},
+        },
+        'li:last-child': {
+          attributes: {
+            border: '2px solid orange',
+          },
+          children: {},
+        },
+        'li ul': {
+          attributes: {
+            color: 'green',
           },
           children: {},
         },

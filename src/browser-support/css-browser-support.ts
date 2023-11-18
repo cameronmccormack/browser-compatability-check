@@ -16,16 +16,30 @@ const getCompatibilityStatement = (
     return (
       itemWithContext[item.value]?.__compat ?? itemWithContext?.__compat ?? null
     );
-  } else if (item.identifier in css.properties['grid-template-columns']) {
-    return css.properties['grid-template-columns']?.__compat ?? null;
   } else if (item.identifier in css.selectors) {
-    return css.selectors?.__compat ?? null;
+    return (
+      css.selectors[item.identifier][item.value].__compat ??
+      css.selectors[item.identifier].__compat ??
+      null
+    );
   } else if (item.identifier in css.types) {
-    return css.types?.__compat ?? null;
+    return (
+      css.types[item.identifier][item.value].__compat ??
+      css.types[item.identifier].__compat ??
+      null
+    );
   } else if (item.identifier in css.types.color) {
-    return css.types.color?.__compat ?? null;
+    return (
+      css.types.color[item.identifier][item.value].__compat ??
+      css.types.color[item.identifier].__compat ??
+      null
+    );
   } else if (item.identifier in css['at-rules']) {
-    return css['at-rules']?.__compat ?? null;
+    return (
+      css['at-rules'][item.identifier][item.value].__compat ??
+      css['at-rules'][item.identifier].__compat ??
+      null
+    );
   }
   return null;
 };
