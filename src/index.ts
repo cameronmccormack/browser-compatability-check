@@ -2,7 +2,7 @@ import { isFeatureCompatible } from './browser-support/is-feature-compatible';
 import browserConfig from './config/browser-config.json';
 import { getFlattenedAttributes, getParsedCss } from './css-parser/css-parser';
 
-const main = (): void => {
+export const main = (): void => {
   const parsedCss = getParsedCss();
   const flattenedAttributes = getFlattenedAttributes(parsedCss);
   flattenedAttributes.forEach((attribute) =>

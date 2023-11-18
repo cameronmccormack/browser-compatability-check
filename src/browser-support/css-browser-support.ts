@@ -4,7 +4,7 @@ import { CssFeature } from '../types/css-feature';
 import { getCompatibilityData } from './bcd-data';
 import { CompatStatement, SupportBlock } from '@mdn/browser-compat-data/types';
 
-const getCompatabilityStatement = (
+const getCompatibilityStatement = (
   item: CssFeature,
 ): CompatStatement | null => {
   const { css } = getCompatibilityData();
@@ -33,7 +33,7 @@ const getCompatabilityStatement = (
 export const getCssBrowserSupport = (
   feature: CssFeature,
 ): FeatureSupport | null => {
-  const compatibilityStatement = getCompatabilityStatement(feature);
+  const compatibilityStatement = getCompatibilityStatement(feature);
 
   const report = {} as FeatureSupport;
 

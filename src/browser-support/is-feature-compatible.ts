@@ -7,11 +7,15 @@ export const isFeatureCompatible = (
   feature: CssFeature,
   browsers: Browser[],
 ): boolean => {
+  if (browsers.length === 0) {
+    throw new Error('Missing browser config.');
+  }
+
   const featureId = getIdFromFeature(feature);
   const browserSupport = getCssBrowserSupport(feature);
 
   if (!browserSupport) {
-    throw new Error(`Could not identify CSS features: ${featureId}.`);
+    throw new Error(`Could not identify CSS feature: ${featureId}.`);
   }
 
   for (const browser of browsers) {
@@ -19,7 +23,7 @@ export const isFeatureCompatible = (
 
     if (!featureDetailsForBrowser) {
       throw new Error(
-        `Browser ${browser.identifier} not found in support list for ${featureId}`,
+        `Browser ${browser.identifier} not found in support list for ${featureId}.`,
       );
     }
 
@@ -27,7 +31,7 @@ export const isFeatureCompatible = (
 
     if (isNaN(minimumBrowserVersion)) {
       throw new Error(
-        `Minimum version for ${browser.identifier} for ${featureDetailsForBrowser} cannot be converted to a number.`,
+        `Minimum version for ${browser.identifier} for ${featureId} cannot be converted to a number.`,
       );
     }
 
