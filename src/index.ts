@@ -1,9 +1,12 @@
 import { isFeatureCompatible } from './browser-support/is-feature-compatible';
 import browserConfig from './config/browser-config.json';
-import { getFlattenedCssFeatures, getParsedCss } from './css-parser/css-parser';
+import { getFlattenedCssFeatures } from './css-parser/css-parser';
+import * as csstree from 'css-tree';
+import * as fs from 'fs';
 
 export const main = (): void => {
-  const parsedCss = getParsedCss();
+  const file = fs.readFileSync('./src/css-parser/example.css', 'utf8');
+  const parsedCss = csstree.parse(file);
   console.log(parsedCss);
   const flattenedAttributes = getFlattenedCssFeatures(parsedCss);
   console.log(flattenedAttributes);

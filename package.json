@@ -12,9 +12,9 @@
     "transpile": "tsc"
   },
   "author": "Cameron McCormack",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
-    "@types/caniuse-lite": "^1.0.4",
+    "@types/css-tree": "^2.3.4",
     "@types/jest": "^29.5.8",
     "@types/node": "^20.9.0",
     "@typescript-eslint/eslint-plugin": "^6.10.0",
@@ -30,6 +30,6 @@
   },
   "dependencies": {
     "@mdn/browser-compat-data": "^5.3.30",
-    "cssjson": "^2.1.3"
+    "css-tree": "^2.3.1"
   }
 }
