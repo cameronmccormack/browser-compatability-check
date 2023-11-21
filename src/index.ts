@@ -2,6 +2,7 @@ import { isFeatureCompatible } from './browser-support/is-feature-compatible';
 import browserConfig from './config/browser-config.json';
 import {
   getFlattenedCssAtRules,
+  getFlattenedCssFunctions,
   getFlattenedCssProperties,
   getFlattenedCssPseudoSelectors,
 } from './css-parser/css-parser';
@@ -14,6 +15,8 @@ export const main = (): void => {
   const flattenedProperties = getFlattenedCssProperties(parsedCss);
   const flattenedSelectors = getFlattenedCssPseudoSelectors(parsedCss);
   const flattenedAtRules = getFlattenedCssAtRules(parsedCss);
+  const flattenedFunctions = getFlattenedCssFunctions(parsedCss);
+  console.log(flattenedFunctions);
   flattenedProperties.forEach((property) =>
     console.log(isFeatureCompatible(property, browserConfig)),
   );
@@ -23,7 +26,9 @@ export const main = (): void => {
   flattenedAtRules.forEach((atRule) =>
     console.log(isFeatureCompatible(atRule, browserConfig)),
   );
-  console.log(flattenedAtRules);
+  flattenedFunctions.forEach((fn) =>
+    console.log(isFeatureCompatible(fn, browserConfig)),
+  );
 
   console.log(
     isFeatureCompatible(

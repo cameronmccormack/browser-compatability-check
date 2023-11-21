@@ -1,5 +1,10 @@
 import * as csstree from 'css-tree';
-import { CssAtRule, CssProperty, CssSelector } from '../types/css-feature';
+import {
+  CssAtRule,
+  CssFunction,
+  CssProperty,
+  CssSelector,
+} from '../types/css-feature';
 import { getUniqueObjectArray } from '../helpers/array-helper';
 
 export const getFlattenedCssProperties = (
@@ -50,6 +55,23 @@ export const getFlattenedCssAtRules = (
         features.push({
           identifier: node.name,
           type: 'at-rule',
+        });
+      }
+    },
+  });
+  return getUniqueObjectArray(features);
+};
+
+export const getFlattenedCssFunctions = (
+  parsedCss: csstree.CssNode,
+): CssFunction[] => {
+  const features: CssFunction[] = [];
+  csstree.walk(parsedCss, {
+    enter(node: csstree.CssNode) {
+      if (node.type === 'Function') {
+        features.push({
+          identifier: node.name,
+          type: 'function',
         });
       }
     },

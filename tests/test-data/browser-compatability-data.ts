@@ -75,3 +75,42 @@ export const MEDIA_AT_RULE_COMPATIBILITY = {
   safari_ios: { sinceVersion: 1, flagged: false },
   samsunginternet_android: { sinceVersion: 1, flagged: false },
 };
+
+export const CALC_FUNCTION_COMPATABILITY = {
+  chrome: { sinceVersion: 26, flagged: false },
+  chrome_android: { sinceVersion: 28, flagged: false },
+  edge: { sinceVersion: 12, flagged: false },
+  firefox: { sinceVersion: 16, flagged: false },
+  firefox_android: { sinceVersion: 16, flagged: false },
+  ie: { sinceVersion: 9, flagged: false },
+  opera: { sinceVersion: 15, flagged: false },
+  safari: { sinceVersion: 7, flagged: false },
+  safari_ios: { sinceVersion: 7, flagged: false },
+  samsunginternet_android: { sinceVersion: 1.5, flagged: false },
+};
+
+export const VAR_FUNCTION_COMPATABILITY = {
+  chrome: { sinceVersion: 49, flagged: false },
+  chrome_android: { sinceVersion: 49, flagged: false },
+  edge: { sinceVersion: 15, flagged: false },
+  firefox: { sinceVersion: 31, flagged: false },
+  firefox_android: { sinceVersion: 31, flagged: false },
+  ie: { sinceVersion: Number.POSITIVE_INFINITY, flagged: false },
+  opera: { sinceVersion: 36, flagged: false },
+  safari: { sinceVersion: 9.1, flagged: false },
+  safari_ios: { sinceVersion: 9.3, flagged: false },
+  samsunginternet_android: { sinceVersion: 5, flagged: false },
+};
+
+export const RGB_FUNCTION_COMPATABILITY = {
+  chrome: { sinceVersion: 1, flagged: false },
+  chrome_android: { sinceVersion: 18, flagged: false },
+  edge: { sinceVersion: 12, flagged: false },
+  firefox: { sinceVersion: 1, flagged: false },
+  firefox_android: { sinceVersion: 4, flagged: false },
+  ie: { sinceVersion: 4, flagged: false },
+  opera: { sinceVersion: 3.5, flagged: false },
+  safari: { sinceVersion: 1, flagged: false },
+  safari_ios: { sinceVersion: 1, flagged: false },
+  samsunginternet_android: { sinceVersion: 1, flagged: false },
+};

@@ -1,4 +1,9 @@
-export type CssFeature = CssProperty | CssSelector | CssAtRule;
+export type CssFeature = CssProperty | CssSelector | CssAtRule | CssFunction;
+
+export type CssFunction = {
+  identifier: string;
+  type: 'function';
+};
 
 export type CssAtRule = {
   identifier: string;

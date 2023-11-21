@@ -3,6 +3,7 @@ import { FeatureSupport } from '../types/browser-support-types';
 import {
   CssAtRule,
   CssFeature,
+  CssFunction,
   CssProperty,
   CssSelector,
 } from '../types/css-feature';
@@ -24,6 +25,8 @@ const getCompatibilityStatement = (
       return getCssSelectorCompatibilityStatement(item, css);
     case 'at-rule':
       return getCssAtRuleCompatibilityStatement(item, css);
+    case 'function':
+      return getCssFunctionCompatibilityStatement(item, css);
     default:
       return null;
   }
@@ -43,11 +46,6 @@ const getCompatibilityStatement = (
   //     null
   //   );
   // } else if (item.identifier in css['at-rules']) {
-  //   return (
-  //     css['at-rules'][item.identifier][item.value].__compat ??
-  //     css['at-rules'][item.identifier].__compat ??
-  //     null
-  //   );
   // }
   // return null;
 };
@@ -74,6 +72,15 @@ const getCssAtRuleCompatibilityStatement = (
   item: CssAtRule,
   css: Identifier,
 ): CompatStatement | null => css['at-rules'][item.identifier]?.__compat ?? null;
+
+const getCssFunctionCompatibilityStatement = (
+  item: CssFunction,
+  css: Identifier,
+): CompatStatement | null =>
+  css.types[item.identifier]?.__compat ??
+  css.types.color[item.identifier]?.__compat ??
+  css.properties['custom-property'][item.identifier]?.__compat ??
+  null;
 
 export const getCssBrowserSupport = (
   feature: CssFeature,

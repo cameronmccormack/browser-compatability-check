@@ -49,3 +49,8 @@ li ul {
 }
 
 @scope "test";
+
+h3 {
+    width: calc(10px + 100px);
+    height: calc(var(--variable-width) + 20px);
+}

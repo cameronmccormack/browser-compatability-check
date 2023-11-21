@@ -2,12 +2,15 @@ import { getCssBrowserSupport } from '../../src/browser-support/css-browser-supp
 import { FeatureSupport } from '../../src/types/browser-support-types';
 import { CssFeature } from '../../src/types/css-feature';
 import {
+  CALC_FUNCTION_COMPATABILITY,
   DISPLAY_GENERIC_COMPATIBILITY,
   DISPLAY_GRID_COMPATIBILITY,
   FLEX_GAP_COMPATIBILITY,
   FLEX_NO_CONTEXT_COMPATIBILITY as GAP_NO_CONTEXT_COMPATIBILITY,
   LAST_CHILD_COMPATIBILITY,
   MEDIA_AT_RULE_COMPATIBILITY,
+  RGB_FUNCTION_COMPATABILITY,
+  VAR_FUNCTION_COMPATABILITY,
 } from '../test-data/browser-compatability-data';
 import { produce } from 'immer';
 import bcd, { CompatData } from '@mdn/browser-compat-data';
@@ -139,7 +142,7 @@ const testCases: [string, TestData][] = [
     },
   ],
   [
-    'known selector with known identifier',
+    'selector with known identifier',
     {
       identifier: 'last-child',
       type: 'selector',
@@ -147,7 +150,7 @@ const testCases: [string, TestData][] = [
     },
   ],
   [
-    'known selector with unknown identifier',
+    'selector with unknown identifier',
     {
       identifier: 'unknown id',
       type: 'selector',
@@ -155,7 +158,7 @@ const testCases: [string, TestData][] = [
     },
   ],
   [
-    'known at rule with known identifier',
+    'at rule with known identifier',
     {
       identifier: 'media',
       type: 'at-rule',
@@ -163,10 +166,42 @@ const testCases: [string, TestData][] = [
     },
   ],
   [
-    'known at rule with unknown identifier',
+    'at rule with unknown identifier',
     {
       identifier: 'unknown id',
       type: 'at-rule',
+      expected: null,
+    },
+  ],
+  [
+    'function with known identifier',
+    {
+      identifier: 'calc',
+      type: 'function',
+      expected: CALC_FUNCTION_COMPATABILITY,
+    },
+  ],
+  [
+    'color function with known identifier',
+    {
+      identifier: 'rgb',
+      type: 'function',
+      expected: RGB_FUNCTION_COMPATABILITY,
+    },
+  ],
+  [
+    'custom property function with known identifier',
+    {
+      identifier: 'var',
+      type: 'function',
+      expected: VAR_FUNCTION_COMPATABILITY,
+    },
+  ],
+  [
+    'function with unknown identifier',
+    {
+      identifier: 'not known',
+      type: 'function',
       expected: null,
     },
   ],
