@@ -7,6 +7,7 @@ import {
   FLEX_GAP_COMPATIBILITY,
   FLEX_NO_CONTEXT_COMPATIBILITY as GAP_NO_CONTEXT_COMPATIBILITY,
   LAST_CHILD_COMPATIBILITY,
+  MEDIA_AT_RULE_COMPATIBILITY,
 } from '../test-data/browser-compatability-data';
 import { produce } from 'immer';
 import bcd, { CompatData } from '@mdn/browser-compat-data';
@@ -150,6 +151,22 @@ const testCases: [string, TestData][] = [
     {
       identifier: 'unknown id',
       type: 'selector',
+      expected: null,
+    },
+  ],
+  [
+    'known at rule with known identifier',
+    {
+      identifier: 'media',
+      type: 'at-rule',
+      expected: MEDIA_AT_RULE_COMPATIBILITY,
+    },
+  ],
+  [
+    'known at rule with unknown identifier',
+    {
+      identifier: 'unknown id',
+      type: 'at-rule',
       expected: null,
     },
   ],

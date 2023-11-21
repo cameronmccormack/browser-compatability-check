@@ -1,6 +1,11 @@
 import { BROWSER_SLUGS } from './browser-slugs';
 import { FeatureSupport } from '../types/browser-support-types';
-import { CssFeature, CssProperty, CssSelector } from '../types/css-feature';
+import {
+  CssAtRule,
+  CssFeature,
+  CssProperty,
+  CssSelector,
+} from '../types/css-feature';
 import { getCompatibilityData } from './bcd-data';
 import {
   CompatStatement,
@@ -17,6 +22,8 @@ const getCompatibilityStatement = (
       return getCssPropertyCompatibilityStatement(item, css);
     case 'selector':
       return getCssSelectorCompatibilityStatement(item, css);
+    case 'at-rule':
+      return getCssAtRuleCompatibilityStatement(item, css);
     default:
       return null;
   }
@@ -62,6 +69,11 @@ const getCssSelectorCompatibilityStatement = (
   item: CssSelector,
   css: Identifier,
 ): CompatStatement | null => css.selectors[item.identifier]?.__compat ?? null;
+
+const getCssAtRuleCompatibilityStatement = (
+  item: CssAtRule,
+  css: Identifier,
+): CompatStatement | null => css['at-rules'][item.identifier]?.__compat ?? null;
 
 export const getCssBrowserSupport = (
   feature: CssFeature,

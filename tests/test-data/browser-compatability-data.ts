@@ -62,3 +62,16 @@ export const LAST_CHILD_COMPATIBILITY = {
   safari_ios: { sinceVersion: 2, flagged: false },
   samsunginternet_android: { sinceVersion: 1, flagged: false },
 };
+
+export const MEDIA_AT_RULE_COMPATIBILITY = {
+  chrome: { sinceVersion: 1, flagged: false },
+  chrome_android: { sinceVersion: 18, flagged: false },
+  edge: { sinceVersion: 12, flagged: false },
+  firefox: { sinceVersion: 1, flagged: false },
+  firefox_android: { sinceVersion: 4, flagged: false },
+  ie: { sinceVersion: 6, flagged: false },
+  opera: { sinceVersion: 9.2, flagged: false },
+  safari: { sinceVersion: 3, flagged: false },
+  safari_ios: { sinceVersion: 1, flagged: false },
+  samsunginternet_android: { sinceVersion: 1, flagged: false },
+};

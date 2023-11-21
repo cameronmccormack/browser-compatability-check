@@ -1,6 +1,7 @@
 import { isFeatureCompatible } from './browser-support/is-feature-compatible';
 import browserConfig from './config/browser-config.json';
 import {
+  getFlattenedCssAtRules,
   getFlattenedCssProperties,
   getFlattenedCssPseudoSelectors,
 } from './css-parser/css-parser';
@@ -10,15 +11,19 @@ import * as fs from 'fs';
 export const main = (): void => {
   const file = fs.readFileSync('./src/css-parser/example.css', 'utf8');
   const parsedCss = csstree.parse(file);
-  console.log(parsedCss);
   const flattenedProperties = getFlattenedCssProperties(parsedCss);
   const flattenedSelectors = getFlattenedCssPseudoSelectors(parsedCss);
+  const flattenedAtRules = getFlattenedCssAtRules(parsedCss);
   flattenedProperties.forEach((property) =>
     console.log(isFeatureCompatible(property, browserConfig)),
   );
   flattenedSelectors.forEach((selector) =>
     console.log(isFeatureCompatible(selector, browserConfig)),
   );
+  flattenedAtRules.forEach((atRule) =>
+    console.log(isFeatureCompatible(atRule, browserConfig)),
+  );
+  console.log(flattenedAtRules);
 
   console.log(
     isFeatureCompatible(
@@ -63,6 +68,12 @@ export const main = (): void => {
   console.log(
     isFeatureCompatible(
       { identifier: 'display', value: 'grid', type: 'property' },
+      browserConfig,
+    ),
+  );
+  console.log(
+    isFeatureCompatible(
+      { identifier: 'display', value: 'flex', type: 'property' },
       browserConfig,
     ),
   );

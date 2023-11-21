@@ -7,6 +7,7 @@ export const getIdFromFeature = (feature: CssFeature): string => {
         feature.context ? `:${feature.context}` : ''
       }`;
     case 'selector':
+    case 'at-rule':
       return `${feature.type}:${feature.identifier}`;
   }
 };
