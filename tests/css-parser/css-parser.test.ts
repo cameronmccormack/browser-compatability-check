@@ -1,5 +1,5 @@
 import * as csstree from 'css-tree';
-import { getFlattenedCssFeatures } from '../../src/css-parser/css-parser';
+import { getFlattenedCssProperties } from '../../src/css-parser/css-parser';
 import { CssFeature } from '../../src/types/css-feature';
 
 describe('getFlattenedAttributes works as expected', () => {
@@ -7,7 +7,7 @@ describe('getFlattenedAttributes works as expected', () => {
     const parsedCss = csstree.parse('');
     const expectedResponse: CssFeature[] = [];
 
-    expect(getFlattenedCssFeatures(parsedCss)).toEqual(expectedResponse);
+    expect(getFlattenedCssProperties(parsedCss)).toEqual(expectedResponse);
   });
 
   test('removes duplicate attributes', () => {
@@ -29,7 +29,7 @@ describe('getFlattenedAttributes works as expected', () => {
       },
     ];
 
-    expect(getFlattenedCssFeatures(parsedCss)).toEqual(expectedResponse);
+    expect(getFlattenedCssProperties(parsedCss)).toEqual(expectedResponse);
   });
 
   test('handles nested children with multiple attributes', () => {
@@ -83,6 +83,6 @@ describe('getFlattenedAttributes works as expected', () => {
       },
     ];
 
-    expect(getFlattenedCssFeatures(parsedCss)).toEqual(expectedResponse);
+    expect(getFlattenedCssProperties(parsedCss)).toEqual(expectedResponse);
   });
 });

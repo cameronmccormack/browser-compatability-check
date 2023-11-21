@@ -37,9 +37,9 @@ export const isFeatureCompatible = (
 
     if (browser.version < minimumBrowserVersion) {
       console.log(
-        `Feature ${feature.identifier} with value ${feature.value} ${
-          feature.context ? `in context ${feature.context} ` : ''
-        }is not supported on ${browser.identifier} version ${browser.version}`,
+        `Feature ${getIdFromFeature(feature)} is not supported on ${
+          browser.identifier
+        } version ${browser.version}`,
       );
       return false;
     }

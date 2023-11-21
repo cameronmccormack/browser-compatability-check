@@ -44,7 +44,11 @@ body {
 li:last-child {
     border: 2px solid orange;
 }
-  
+
+h1::after {
+    padding-top: 1rem;
+}
+
 li ul {
     color: green;
     margin: 20px 5px 30px;

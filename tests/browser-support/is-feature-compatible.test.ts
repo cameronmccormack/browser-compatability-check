@@ -130,7 +130,7 @@ test('throws an error for unknown CSS feature', () => {
     type: 'property',
   } as CssFeature;
   const expectedMessage =
-    'Could not identify CSS feature: not-a-real-feature:xyz.';
+    'Could not identify CSS feature: property:not-a-real-feature:xyz.';
   expect(() => isFeatureCompatible(feature, MODERN_CHROME_CONFIG)).toThrow(
     expectedMessage,
   );
@@ -160,7 +160,7 @@ test('throws an error if browser not found in support list for a CSS feature', (
     },
   ];
   const expectedMessage =
-    'Browser fake-browser not found in support list for gap:20px.';
+    'Browser fake-browser not found in support list for property:gap:20px.';
   expect(() => isFeatureCompatible(feature, browserConfig)).toThrow(
     expectedMessage,
   );
@@ -173,7 +173,7 @@ test('throws an error if the minimum supported browser version is not a number',
     type: 'property',
   } as CssFeature;
   const expectedMessage =
-    'Minimum version for chrome for gap:20px cannot be converted to a number.';
+    'Minimum version for chrome for property:gap:20px cannot be converted to a number.';
   jest
     .spyOn(cssBrowserSupportModule, 'getCssBrowserSupport')
     .mockReturnValueOnce({

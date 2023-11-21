@@ -49,3 +49,16 @@ export const DISPLAY_GENERIC_COMPATIBILITY = {
   safari_ios: { flagged: false, sinceVersion: 1 },
   samsunginternet_android: { flagged: false, sinceVersion: 1 },
 };
+
+export const LAST_CHILD_COMPATIBILITY = {
+  chrome: { sinceVersion: 1, flagged: false },
+  chrome_android: { sinceVersion: 18, flagged: false },
+  edge: { sinceVersion: 12, flagged: false },
+  firefox: { sinceVersion: 1, flagged: false },
+  firefox_android: { sinceVersion: 4, flagged: false },
+  ie: { sinceVersion: 9, flagged: false },
+  opera: { sinceVersion: 9.5, flagged: false },
+  safari: { sinceVersion: 3.1, flagged: false },
+  safari_ios: { sinceVersion: 2, flagged: false },
+  samsunginternet_android: { sinceVersion: 1, flagged: false },
+};

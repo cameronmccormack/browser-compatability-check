@@ -1,6 +1,9 @@
 import { isFeatureCompatible } from './browser-support/is-feature-compatible';
 import browserConfig from './config/browser-config.json';
-import { getFlattenedCssFeatures } from './css-parser/css-parser';
+import {
+  getFlattenedCssProperties,
+  getFlattenedCssPseudoSelectors,
+} from './css-parser/css-parser';
 import * as csstree from 'css-tree';
 import * as fs from 'fs';
 
@@ -8,10 +11,13 @@ export const main = (): void => {
   const file = fs.readFileSync('./src/css-parser/example.css', 'utf8');
   const parsedCss = csstree.parse(file);
   console.log(parsedCss);
-  const flattenedAttributes = getFlattenedCssFeatures(parsedCss);
-  console.log(flattenedAttributes);
-  flattenedAttributes.forEach((attribute) =>
-    console.log(isFeatureCompatible(attribute, browserConfig)),
+  const flattenedProperties = getFlattenedCssProperties(parsedCss);
+  const flattenedSelectors = getFlattenedCssPseudoSelectors(parsedCss);
+  flattenedProperties.forEach((property) =>
+    console.log(isFeatureCompatible(property, browserConfig)),
+  );
+  flattenedSelectors.forEach((selector) =>
+    console.log(isFeatureCompatible(selector, browserConfig)),
   );
 
   console.log(

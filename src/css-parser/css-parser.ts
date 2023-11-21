@@ -1,11 +1,11 @@
 import * as csstree from 'css-tree';
-import { CssFeature } from '../types/css-feature';
+import { CssProperty, CssSelector } from '../types/css-feature';
 import { getUniqueObjectArray } from '../helpers/array-helper';
 
-export const getFlattenedCssFeatures = (
+export const getFlattenedCssProperties = (
   parsedCss: csstree.CssNode,
-): CssFeature[] => {
-  const features: CssFeature[] = [];
+): CssProperty[] => {
+  const features: CssProperty[] = [];
   csstree.walk(parsedCss, {
     enter(node: csstree.CssNode) {
       if (node.type === 'Declaration') {
@@ -13,6 +13,27 @@ export const getFlattenedCssFeatures = (
           identifier: node.property,
           value: csstree.generate(node.value),
           type: 'property',
+        });
+      }
+    },
+  });
+  return getUniqueObjectArray(features);
+};
+
+export const getFlattenedCssPseudoSelectors = (
+  parsedCss: csstree.CssNode,
+): CssSelector[] => {
+  const features: CssSelector[] = [];
+  console.log(parsedCss);
+  csstree.walk(parsedCss, {
+    enter(node: csstree.CssNode) {
+      if (
+        node.type === 'PseudoClassSelector' ||
+        node.type === 'PseudoElementSelector'
+      ) {
+        features.push({
+          identifier: node.name,
+          type: 'selector',
         });
       }
     },
