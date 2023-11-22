@@ -4,77 +4,56 @@ import {
   CssFunction,
   CssProperty,
   CssSelector,
+  FormattedCss,
 } from '../types/css-feature';
 import { getUniqueObjectArray } from '../helpers/array-helper';
 
-export const getFlattenedCssProperties = (
-  parsedCss: csstree.CssNode,
-): CssProperty[] => {
-  const features: CssProperty[] = [];
-  csstree.walk(parsedCss, {
-    enter(node: csstree.CssNode) {
-      if (node.type === 'Declaration') {
-        features.push({
-          identifier: node.property,
-          value: csstree.generate(node.value),
-          type: 'property',
-        });
-      }
-    },
-  });
-  return getUniqueObjectArray(features);
-};
+export const getFormattedCss = (parsedCss: csstree.CssNode): FormattedCss => {
+  const properties: CssProperty[] = [];
+  const selectors: CssSelector[] = [];
+  const atRules: CssAtRule[] = [];
+  const functions: CssFunction[] = [];
 
-export const getFlattenedCssPseudoSelectors = (
-  parsedCss: csstree.CssNode,
-): CssSelector[] => {
-  const features: CssSelector[] = [];
   csstree.walk(parsedCss, {
     enter(node: csstree.CssNode) {
-      if (
-        node.type === 'PseudoClassSelector' ||
-        node.type === 'PseudoElementSelector'
-      ) {
-        features.push({
-          identifier: node.name,
-          type: 'selector',
-        });
+      switch (node.type) {
+        case 'Declaration':
+          properties.push({
+            identifier: node.property,
+            value: csstree.generate(node.value),
+            type: 'property',
+          });
+          break;
+        case 'PseudoClassSelector':
+        case 'PseudoElementSelector':
+          selectors.push({
+            identifier: node.name,
+            type: 'selector',
+          });
+          break;
+        case 'Atrule':
+          atRules.push({
+            identifier: node.name,
+            type: 'at-rule',
+          });
+          break;
+        case 'Function':
+          functions.push({
+            identifier: node.name,
+            type: 'function',
+          });
+          break;
+        default:
+          // do nothing
+          break;
       }
     },
   });
-  return getUniqueObjectArray(features);
-};
 
-export const getFlattenedCssAtRules = (
-  parsedCss: csstree.CssNode,
-): CssAtRule[] => {
-  const features: CssAtRule[] = [];
-  csstree.walk(parsedCss, {
-    enter(node: csstree.CssNode) {
-      if (node.type === 'Atrule') {
-        features.push({
-          identifier: node.name,
-          type: 'at-rule',
-        });
-      }
-    },
-  });
-  return getUniqueObjectArray(features);
-};
-
-export const getFlattenedCssFunctions = (
-  parsedCss: csstree.CssNode,
-): CssFunction[] => {
-  const features: CssFunction[] = [];
-  csstree.walk(parsedCss, {
-    enter(node: csstree.CssNode) {
-      if (node.type === 'Function') {
-        features.push({
-          identifier: node.name,
-          type: 'function',
-        });
-      }
-    },
-  });
-  return getUniqueObjectArray(features);
+  return {
+    properties: getUniqueObjectArray(properties),
+    selectors: getUniqueObjectArray(selectors),
+    atRules: getUniqueObjectArray(atRules),
+    functions: getUniqueObjectArray(functions),
+  };
 };

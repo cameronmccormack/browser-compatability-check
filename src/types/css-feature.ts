@@ -1,5 +1,12 @@
 export type CssFeature = CssProperty | CssSelector | CssAtRule | CssFunction;
 
+export type FormattedCss = {
+  properties: CssProperty[];
+  selectors: CssSelector[];
+  atRules: CssAtRule[];
+  functions: CssFunction[];
+};
+
 export type CssFunction = {
   identifier: string;
   type: 'function';

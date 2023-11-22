@@ -30,24 +30,6 @@ const getCompatibilityStatement = (
     default:
       return null;
   }
-
-  // if (item.identifier in css.properties) {
-  // } else if (item.identifier in css.selectors) {
-  // } else if (item.identifier in css.types) {
-  //   return (
-  //     css.types[item.identifier][item.value].__compat ??
-  //     css.types[item.identifier].__compat ??
-  //     null
-  //   );
-  // } else if (item.identifier in css.types.color) {
-  //   return (
-  //     css.types.color[item.identifier][item.value].__compat ??
-  //     css.types.color[item.identifier].__compat ??
-  //     null
-  //   );
-  // } else if (item.identifier in css['at-rules']) {
-  // }
-  // return null;
 };
 
 const getCssPropertyCompatibilityStatement = (
