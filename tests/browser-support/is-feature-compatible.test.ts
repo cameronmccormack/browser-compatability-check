@@ -2,6 +2,7 @@ import { Browser } from '../../src/types/browser';
 import { CssFeature } from '../../src/types/css-feature';
 import { isFeatureCompatible } from '../../src/browser-support/is-feature-compatible';
 import * as cssBrowserSupportModule from '../../src/browser-support/css-browser-support';
+import { Compatibility } from '../../src/types/compatibility';
 
 const MODERN_CHROME_CONFIG = [
   {
@@ -28,8 +29,8 @@ type TestData = {
   identifier: string;
   value: string;
   context?: string;
-  browserConfig: Browser[];
-  expected: boolean;
+  browserConfig?: Browser[];
+  expected: Compatibility;
 };
 
 const testCases: [string, TestData][] = [
@@ -38,8 +39,7 @@ const testCases: [string, TestData][] = [
     {
       identifier: 'margin',
       value: '20px',
-      browserConfig: MODERN_CHROME_CONFIG,
-      expected: true,
+      expected: 'compatible',
     },
   ],
   [
@@ -49,7 +49,7 @@ const testCases: [string, TestData][] = [
       value: '20px',
       context: 'flex_context',
       browserConfig: PRE_FLEX_GAP_CHROME_CONFIG,
-      expected: false,
+      expected: 'incompatible',
     },
   ],
   [
@@ -59,7 +59,7 @@ const testCases: [string, TestData][] = [
       value: '20px',
       context: 'grid_context',
       browserConfig: PRE_FLEX_GAP_CHROME_CONFIG,
-      expected: true,
+      expected: 'compatible',
     },
   ],
   [
@@ -68,7 +68,7 @@ const testCases: [string, TestData][] = [
       identifier: 'gap',
       value: '20px',
       browserConfig: PRE_FLEX_GAP_CHROME_CONFIG,
-      expected: true,
+      expected: 'compatible',
     },
   ],
   [
@@ -78,7 +78,7 @@ const testCases: [string, TestData][] = [
       value: '20px',
       context: 'not a real context',
       browserConfig: PRE_FLEX_GAP_CHROME_CONFIG,
-      expected: true,
+      expected: 'compatible',
     },
   ],
   [
@@ -87,7 +87,7 @@ const testCases: [string, TestData][] = [
       identifier: 'display',
       value: 'grid',
       browserConfig: PRE_DISPLAY_GRID_CHROME_CONFIG,
-      expected: false,
+      expected: 'incompatible',
     },
   ],
   [
@@ -96,7 +96,7 @@ const testCases: [string, TestData][] = [
       identifier: 'display',
       value: 'inline-block',
       browserConfig: PRE_DISPLAY_GRID_CHROME_CONFIG,
-      expected: true,
+      expected: 'compatible',
     },
   ],
   [
@@ -105,14 +105,31 @@ const testCases: [string, TestData][] = [
       identifier: 'display',
       value: 'unknown value',
       browserConfig: PRE_DISPLAY_GRID_CHROME_CONFIG,
-      expected: true,
+      expected: 'compatible',
+    },
+  ],
+  [
+    'unknown CSS feature',
+    {
+      identifier: 'not-a-real-feature',
+      value: 'xyz',
+      expected: 'unknown',
     },
   ],
 ];
 
 test.each<[string, TestData]>(testCases)(
   'returns expected result for case: %s',
-  (_, { identifier, value, context, browserConfig, expected }) => {
+  (
+    _,
+    {
+      identifier,
+      value,
+      context,
+      browserConfig = MODERN_CHROME_CONFIG,
+      expected,
+    },
+  ) => {
     const feature = {
       identifier,
       value,
@@ -122,19 +139,6 @@ test.each<[string, TestData]>(testCases)(
     expect(isFeatureCompatible(feature, browserConfig)).toEqual(expected);
   },
 );
-
-test('throws an error for unknown CSS feature', () => {
-  const feature = {
-    identifier: 'not-a-real-feature',
-    value: 'xyz',
-    type: 'property',
-  } as CssFeature;
-  const expectedMessage =
-    'Could not identify CSS feature: property:not-a-real-feature:xyz.';
-  expect(() => isFeatureCompatible(feature, MODERN_CHROME_CONFIG)).toThrow(
-    expectedMessage,
-  );
-});
 
 test('throws an error for missing browser config', () => {
   const feature = {

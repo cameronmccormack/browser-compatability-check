@@ -1,4 +1,4 @@
-import { BrowserName } from '@mdn/browser-compat-data';
+import { BrowserName } from '@mdn/browser-compat-data/types';
 
 export const BROWSER_SLUGS: BrowserName[] = [
   'chrome',

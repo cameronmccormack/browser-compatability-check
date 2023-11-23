@@ -33,6 +33,15 @@ const bcdDataWithOnlyChromeForGap = produce(bcd, (draft) => {
   };
 });
 
+const bcdDataWithLessThanValueForGap = produce(bcd, (draft) => {
+  draft.css.properties.gap.__compat!.support = {
+    chrome: {
+      version_added: '≤123.456',
+      flags: [],
+    },
+  };
+});
+
 type TestData = {
   identifier: string;
   value?: string;
@@ -203,6 +212,21 @@ const testCases: [string, TestData][] = [
       identifier: 'not known',
       type: 'function',
       expected: null,
+    },
+  ],
+  [
+    '"less than" browser compatibility in data',
+    {
+      identifier: 'gap',
+      value: '20px',
+      type: 'property',
+      expected: {
+        chrome: {
+          sinceVersion: 123.456,
+          flagged: false,
+        },
+      },
+      mockBrowserCompatibilityData: bcdDataWithLessThanValueForGap,
     },
   ],
 ];

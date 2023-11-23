@@ -53,4 +53,5 @@ li ul {
 h3 {
     width: calc(10px + 100px);
     height: calc(var(--variable-width) + 20px);
+    unknown-feature: 123;
 }

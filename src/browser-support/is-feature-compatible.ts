@@ -2,11 +2,12 @@ import { getCssBrowserSupport } from './css-browser-support';
 import { getIdFromFeature } from '../helpers/feature-id-helper';
 import { Browser } from '../types/browser';
 import { CssFeature } from '../types/css-feature';
+import { Compatibility } from '../types/compatibility';
 
 export const isFeatureCompatible = (
   feature: CssFeature,
   browsers: Browser[],
-): boolean => {
+): Compatibility => {
   if (browsers.length === 0) {
     throw new Error('Missing browser config.');
   }
@@ -15,7 +16,8 @@ export const isFeatureCompatible = (
   const browserSupport = getCssBrowserSupport(feature);
 
   if (!browserSupport) {
-    throw new Error(`Could not identify CSS feature: ${featureId}.`);
+    console.log(`Could not identify CSS feature: ${featureId}.`);
+    return 'unknown';
   }
 
   for (const browser of browsers) {
@@ -41,9 +43,9 @@ export const isFeatureCompatible = (
           browser.identifier
         } version ${browser.version}`,
       );
-      return false;
+      return 'incompatible';
     }
   }
 
-  return true;
+  return 'compatible';
 };

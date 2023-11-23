@@ -8,11 +8,8 @@ import {
   CssSelector,
 } from '../types/css-feature';
 import { getCompatibilityData } from './bcd-data';
-import {
-  CompatStatement,
-  Identifier,
-  SupportBlock,
-} from '@mdn/browser-compat-data/types';
+import { CompatStatement, Identifier } from '@mdn/browser-compat-data/types';
+import { findCompatNode } from './find-compat-node';
 
 const getCompatibilityStatement = (
   item: CssFeature,
@@ -58,11 +55,18 @@ const getCssAtRuleCompatibilityStatement = (
 const getCssFunctionCompatibilityStatement = (
   item: CssFunction,
   css: Identifier,
-): CompatStatement | null =>
-  css.types[item.identifier]?.__compat ??
-  css.types.color[item.identifier]?.__compat ??
-  css.properties['custom-property'][item.identifier]?.__compat ??
-  null;
+): CompatStatement | null => {
+  const compatibilityStatementFromTypesData = findCompatNode(
+    item.identifier,
+    css.types,
+  );
+
+  return (
+    compatibilityStatementFromTypesData ??
+    css.properties['custom-property'][item.identifier]?.__compat ??
+    null
+  );
+};
 
 export const getCssBrowserSupport = (
   feature: CssFeature,
@@ -73,8 +77,7 @@ export const getCssBrowserSupport = (
 
   if (compatibilityStatement) {
     for (const browser of BROWSER_SLUGS) {
-      const supportBrowser =
-        compatibilityStatement.support[browser as keyof SupportBlock];
+      const supportBrowser = compatibilityStatement.support[browser];
       const supportBrowserIsArray = Array.isArray(supportBrowser);
 
       if (
@@ -87,7 +90,8 @@ export const getCssBrowserSupport = (
         continue;
       }
 
-      const versionAdded = supportBrowserIsArray
+      // TODO: work out when this is boolean
+      const rawVersionAdded = supportBrowserIsArray
         ? supportBrowser[0].version_added
         : supportBrowser.version_added;
       const isFlagged = Boolean(
@@ -96,12 +100,17 @@ export const getCssBrowserSupport = (
           : supportBrowser?.flags?.length,
       );
 
-      const sinceVersion = versionAdded
-        ? Number(versionAdded)
+      const knownVersion =
+        typeof rawVersionAdded === 'string'
+          ? rawVersionAdded.replace('≤', '')
+          : rawVersionAdded;
+
+      const sinceVersion = knownVersion
+        ? Number(knownVersion)
         : Number.POSITIVE_INFINITY;
       if (isNaN(sinceVersion)) {
         console.log(
-          `Browser version ${sinceVersion} is not a number for ${browser}`,
+          `Browser version ${knownVersion} is not a number for ${browser}`,
         );
       } else {
         report[browser] = {

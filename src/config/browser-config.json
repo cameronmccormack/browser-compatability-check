@@ -1,5 +1,5 @@
 [
   { "identifier": "chrome", "version": 70 },
   { "identifier": "safari", "version": 12 },
-  { "identifier": "firefox", "version": 21 }
+  { "identifier": "firefox", "version": 60 }
 ]
