@@ -1,8 +1,11 @@
 export type FeatureSupport = {
-  [browser: string]: {
-    sinceVersion: number;
-    untilVersion?: number;
-    isPartialSupport: boolean;
-    isFlagged: boolean;
-  }[];
+  [browser: string]: FeatureDetailsForBrowser;
 };
+
+export type FeatureDetailsForBrowser = {
+  sinceVersion: number;
+  untilVersion?: number;
+  isPartialSupport: boolean;
+  isFlagged: boolean;
+  notes?: string;
+}[];

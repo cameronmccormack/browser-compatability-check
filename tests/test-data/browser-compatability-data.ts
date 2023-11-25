@@ -68,7 +68,13 @@ export const DISPLAY_GRID_COMPATIBILITY = {
     { isFlagged: false, sinceVersion: 10.3, isPartialSupport: false },
   ],
   samsunginternet_android: [
-    { isFlagged: false, sinceVersion: 6, isPartialSupport: false },
+    {
+      isFlagged: false,
+      sinceVersion: 6,
+      isPartialSupport: false,
+      notes:
+        'Samsung Internet added this earlier than the corresponding Chrome version would indicate.',
+    },
   ],
 };
 
@@ -135,9 +141,23 @@ export const CALC_FUNCTION_COMPATABILITY = {
     { sinceVersion: 28, isFlagged: false, isPartialSupport: false },
   ],
   edge: [{ sinceVersion: 12, isFlagged: false, isPartialSupport: false }],
-  firefox: [{ sinceVersion: 16, isFlagged: false, isPartialSupport: false }],
+  firefox: [
+    {
+      sinceVersion: 16,
+      isFlagged: false,
+      isPartialSupport: false,
+      notes:
+        "Before Firefox 59 <code>calc()</code> is not supported in <code>rgb()</code> and other color functions. Before Firefox 57 <code>calc(1*2*3)</code> is not parsed successfully. Firefox 57 increased the number of places <code>calc()</code> could substitute another value. See <a href='https://bugzil.la/1350857'>bug 1350857</a>.",
+    },
+  ],
   firefox_android: [
-    { sinceVersion: 16, isFlagged: false, isPartialSupport: false },
+    {
+      sinceVersion: 16,
+      isFlagged: false,
+      isPartialSupport: false,
+      notes:
+        "Before Firefox 59 <code>calc()</code> is not supported in <code>rgb()</code> and other color functions. Before Firefox 57 <code>calc(1*2*3)</code> is not parsed successfully. Firefox 57 increased the number of places <code>calc()</code> could substitute another value. See <a href='https://bugzil.la/1350857'>bug 1350857</a>.",
+    },
   ],
   ie: [{ sinceVersion: 9, isFlagged: false, isPartialSupport: false }],
   opera: [{ sinceVersion: 15, isFlagged: false, isPartialSupport: false }],

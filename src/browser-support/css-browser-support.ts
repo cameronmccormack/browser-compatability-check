@@ -89,6 +89,9 @@ const getNumericVersion = (
   return numericVersion;
 };
 
+const getNoteString = (notes: string | string[]): string =>
+  Array.isArray(notes) ? notes.join(' ') : notes;
+
 const removeUndefinedValues = <T>(value: T | undefined): value is T =>
   value !== undefined;
 
@@ -128,6 +131,9 @@ export const getCssBrowserSupport = (
             : undefined,
         isPartialSupport: !!compatibilityItem.partial_implementation,
         isFlagged: !!compatibilityItem.flags?.length,
+        notes: compatibilityItem.notes
+          ? getNoteString(compatibilityItem.notes)
+          : undefined,
       }));
     }
   }

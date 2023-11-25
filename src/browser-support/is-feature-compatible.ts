@@ -2,12 +2,51 @@ import { getCssBrowserSupport } from './css-browser-support';
 import { getIdFromFeature } from '../helpers/feature-id-helper';
 import { Browser } from '../types/browser';
 import { CssFeature } from '../types/css-feature';
-import { Compatibility } from '../types/compatibility';
+import { BrowserCompatibility, Compatibility } from '../types/compatibility';
+import { FeatureDetailsForBrowser } from '../types/browser-support-types';
+
+const getCompatibilityForBrowser = (
+  browser: Browser,
+  featureDetailsForBrowser: FeatureDetailsForBrowser,
+): BrowserCompatibility => {
+  const relevantFeature = featureDetailsForBrowser
+    .sort((a, b) => {
+      const aValue = a.untilVersion ?? a.sinceVersion;
+      const bValue = b.untilVersion ?? b.sinceVersion;
+      return aValue - bValue;
+    })
+    .find(
+      (item) =>
+        (item.untilVersion && item.untilVersion <= browser.version) ||
+        item.sinceVersion <= browser.version,
+    );
+
+  if (!relevantFeature) {
+    return { compatibility: 'incompatible' };
+  }
+
+  if (
+    relevantFeature.untilVersion &&
+    relevantFeature.untilVersion < browser.version
+  ) {
+    return { compatibility: 'incompatible' };
+  }
+
+  if (relevantFeature.isFlagged) {
+    return { compatibility: 'flagged', notes: relevantFeature.notes };
+  }
+
+  if (relevantFeature.isPartialSupport) {
+    return { compatibility: 'partial-support', notes: relevantFeature.notes };
+  }
+
+  return { compatibility: 'compatible' };
+};
 
 export const isFeatureCompatible = (
   feature: CssFeature,
   browsers: Browser[],
-): Compatibility => {
+): Compatibility | 'unknown-feature' => {
   if (browsers.length === 0) {
     throw new Error('Missing browser config.');
   }
@@ -17,38 +56,17 @@ export const isFeatureCompatible = (
 
   if (!browserSupport) {
     console.log(`Could not identify CSS feature: ${featureId}.`);
-    return 'unknown';
+    return 'unknown-feature';
   }
 
-  for (const browser of browsers) {
+  const compatibility: Compatibility = {};
+
+  browsers.forEach((browser) => {
     const featureDetailsForBrowser = browserSupport[browser.identifier];
+    compatibility[browser.identifier] = featureDetailsForBrowser
+      ? getCompatibilityForBrowser(browser, featureDetailsForBrowser)
+      : { compatibility: 'unknown' };
+  });
 
-    if (!featureDetailsForBrowser) {
-      throw new Error(
-        `Browser ${browser.identifier} not found in support list for ${featureId}.`,
-      );
-    }
-
-    // todo update this to search through the list
-    const minimumBrowserVersion = Number(
-      featureDetailsForBrowser[0].sinceVersion,
-    );
-
-    if (isNaN(minimumBrowserVersion)) {
-      throw new Error(
-        `Minimum version for ${browser.identifier} for ${featureId} cannot be converted to a number.`,
-      );
-    }
-
-    if (browser.version < minimumBrowserVersion) {
-      console.log(
-        `Feature ${getIdFromFeature(feature)} is not supported on ${
-          browser.identifier
-        } version ${browser.version}`,
-      );
-      return 'incompatible';
-    }
-  }
-
-  return 'compatible';
+  return compatibility;
 };

@@ -1,8 +1,6 @@
 import { Browser } from '../../src/types/browser';
 import { CssFeature } from '../../src/types/css-feature';
 import { isFeatureCompatible } from '../../src/browser-support/is-feature-compatible';
-import * as cssBrowserSupportModule from '../../src/browser-support/css-browser-support';
-import { Compatibility } from '../../src/types/compatibility';
 
 const MODERN_CHROME_CONFIG = [
   {
@@ -25,12 +23,34 @@ const PRE_DISPLAY_GRID_CHROME_CONFIG = [
   },
 ];
 
+const FLAGGED_VIEW_TIMELINE_CONFIG = [
+  {
+    identifier: 'firefox',
+    version: 114,
+  },
+];
+
+const PARTIALLY_SUPPORTED_VIEW_TIMELINE_CONFIG = [
+  {
+    identifier: 'chrome',
+    version: 115,
+  },
+];
+
+const TOO_MODERN_EDGE_DOUBLE_TAP_ZOOM_CONFIG = [
+  {
+    identifier: 'edge',
+    version: 100,
+  },
+];
+
 type TestData = {
   identifier: string;
   value: string;
   context?: string;
   browserConfig?: Browser[];
-  expected: Compatibility;
+  expected: string;
+  expectedNotes?: string;
 };
 
 const testCases: [string, TestData][] = [
@@ -109,11 +129,48 @@ const testCases: [string, TestData][] = [
     },
   ],
   [
-    'unknown CSS feature',
+    'browser not found in support list',
     {
-      identifier: 'not-a-real-feature',
-      value: 'xyz',
+      identifier: 'display',
+      value: 'flex',
+      browserConfig: [
+        {
+          identifier: 'not-real-browser',
+          version: 20,
+        },
+      ],
       expected: 'unknown',
+    },
+  ],
+  [
+    'flagged feature',
+    {
+      identifier: 'view-timeline',
+      value: 'any',
+      browserConfig: FLAGGED_VIEW_TIMELINE_CONFIG,
+      expected: 'flagged',
+      expectedNotes:
+        'Now supports the <code>x</code> and <code>y</code> values, and also the deprecated <code>horizontal</code> and <code>vertical</code> values.',
+    },
+  ],
+  [
+    'partially supported feature',
+    {
+      identifier: 'view-timeline',
+      value: 'any',
+      browserConfig: PARTIALLY_SUPPORTED_VIEW_TIMELINE_CONFIG,
+      expected: 'partial-support',
+      expectedNotes:
+        '<code>view-timeline-attachment</code> not included in shorthand.',
+    },
+  ],
+  [
+    'no longer supported feature',
+    {
+      identifier: 'touch-action',
+      value: 'double-tap-zoom',
+      browserConfig: TOO_MODERN_EDGE_DOUBLE_TAP_ZOOM_CONFIG,
+      expected: 'incompatible',
     },
   ],
 ];
@@ -128,6 +185,7 @@ test.each<[string, TestData]>(testCases)(
       context,
       browserConfig = MODERN_CHROME_CONFIG,
       expected,
+      expectedNotes,
     },
   ) => {
     const feature = {
@@ -136,9 +194,23 @@ test.each<[string, TestData]>(testCases)(
       context,
       type: 'property',
     } as CssFeature;
-    expect(isFeatureCompatible(feature, browserConfig)).toEqual(expected);
+    expect(isFeatureCompatible(feature, browserConfig)).toEqual({
+      [browserConfig[0].identifier]: {
+        compatibility: expected,
+        notes: expectedNotes,
+      },
+    });
   },
 );
+
+test('returns unknown-feature for unknown feature', () => {
+  expect(
+    isFeatureCompatible(
+      { identifier: 'not-a-known-feature', value: '20px', type: 'property' },
+      MODERN_CHROME_CONFIG,
+    ),
+  ).toEqual('unknown-feature');
+});
 
 test('throws an error for missing browser config', () => {
   const feature = {
@@ -148,48 +220,4 @@ test('throws an error for missing browser config', () => {
   } as CssFeature;
   const expectedMessage = 'Missing browser config.';
   expect(() => isFeatureCompatible(feature, [])).toThrow(expectedMessage);
-});
-
-test('throws an error if browser not found in support list for a CSS feature', () => {
-  const feature = {
-    identifier: 'gap',
-    value: '20px',
-    type: 'property',
-  } as CssFeature;
-  const browser = 'fake-browser';
-  const browserConfig = [
-    {
-      identifier: browser,
-      version: 100,
-    },
-  ];
-  const expectedMessage =
-    'Browser fake-browser not found in support list for property:gap:20px.';
-  expect(() => isFeatureCompatible(feature, browserConfig)).toThrow(
-    expectedMessage,
-  );
-});
-
-test('throws an error if the minimum supported browser version is not a number', () => {
-  const feature = {
-    identifier: 'gap',
-    value: '20px',
-    type: 'property',
-  } as CssFeature;
-  const expectedMessage =
-    'Minimum version for chrome for property:gap:20px cannot be converted to a number.';
-  jest
-    .spyOn(cssBrowserSupportModule, 'getCssBrowserSupport')
-    .mockReturnValueOnce({
-      chrome: [
-        {
-          sinceVersion: 'not a number' as unknown as number,
-          isFlagged: false,
-          isPartialSupport: false,
-        },
-      ],
-    });
-  expect(() => isFeatureCompatible(feature, MODERN_CHROME_CONFIG)).toThrow(
-    expectedMessage,
-  );
 });
