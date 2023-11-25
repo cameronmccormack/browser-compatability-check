@@ -25,8 +25,8 @@ export type CssSelector = {
 export type CssProperty = {
   identifier: string;
   value: string;
-  context?: CssContext;
+  context?: CssPropertyContext;
   type: 'property';
 };
 
-type CssContext = 'flex_context' | 'grid_context' | 'multicol_context';
+export type CssPropertyContext = 'flex_context' | 'grid_context';

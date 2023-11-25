@@ -32,6 +32,33 @@ describe('getFormattedCss works as expected', () => {
     expect(getFormattedCss(parsedCss)).toEqual(expectedResponse);
   });
 
+  test.each(['grid', 'flex'])('applies %s context', (display) => {
+    const css = `
+      a {
+        display: ${display};
+        gap: 20px;
+      }
+    `;
+    const parsedCss = csstree.parse(css);
+    const expectedResponse = {
+      ...EMPTY_FORMATTED_CSS,
+      properties: [
+        {
+          identifier: 'display',
+          value: display,
+          type: 'property',
+        },
+        {
+          identifier: 'gap',
+          value: '20px',
+          type: 'property',
+          context: `${display}_context`,
+        },
+      ],
+    };
+    expect(getFormattedCss(parsedCss)).toEqual(expectedResponse);
+  });
+
   test('formats a function', () => {
     const css = 'a { gap: calc(20px + 10px); }';
     const parsedCss = csstree.parse(css);

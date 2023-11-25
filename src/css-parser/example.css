@@ -55,3 +55,13 @@ h3 {
     height: calc(var(--variable-width) + 20px);
     unknown-feature: 123;
 }
+
+.flexbox {
+    display: flex;
+    gap: 4rem;
+}
+
+.gridbox {
+    display: grid;
+    gap: 5px;
+}

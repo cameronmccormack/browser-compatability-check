@@ -3,16 +3,23 @@ import {
   CssAtRule,
   CssFunction,
   CssProperty,
+  CssPropertyContext,
   CssSelector,
   FormattedCss,
 } from '../types/css-feature';
 import { getUniqueObjectArray } from '../helpers/array-helper';
+import {
+  popContextFromStackIfRequired,
+  pushContextToStackIfRequired,
+} from './context-stack';
 
 export const getFormattedCss = (parsedCss: csstree.CssNode): FormattedCss => {
   const properties: CssProperty[] = [];
   const selectors: CssSelector[] = [];
   const atRules: CssAtRule[] = [];
   const functions: CssFunction[] = [];
+
+  const contextStack: CssPropertyContext[] = [];
 
   csstree.walk(parsedCss, {
     enter(node: csstree.CssNode) {
@@ -22,6 +29,11 @@ export const getFormattedCss = (parsedCss: csstree.CssNode): FormattedCss => {
             identifier: node.property,
             value: csstree.generate(node.value),
             type: 'property',
+            context:
+              // TODO: apply context for flex/grid items (this only handles the flex/grid container at present)
+              node.property !== 'display' && contextStack.length > 0
+                ? contextStack[contextStack.length - 1]
+                : undefined,
           });
           break;
         case 'PseudoClassSelector':
@@ -47,6 +59,10 @@ export const getFormattedCss = (parsedCss: csstree.CssNode): FormattedCss => {
           // do nothing
           break;
       }
+      pushContextToStackIfRequired(node, contextStack);
+    },
+    leave(node: csstree.CssNode) {
+      popContextFromStackIfRequired(node, contextStack);
     },
   });
 
