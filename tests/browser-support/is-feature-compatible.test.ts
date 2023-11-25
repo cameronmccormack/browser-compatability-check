@@ -181,10 +181,13 @@ test('throws an error if the minimum supported browser version is not a number',
   jest
     .spyOn(cssBrowserSupportModule, 'getCssBrowserSupport')
     .mockReturnValueOnce({
-      chrome: {
-        sinceVersion: 'not a number' as unknown as number,
-        flagged: false,
-      },
+      chrome: [
+        {
+          sinceVersion: 'not a number' as unknown as number,
+          isFlagged: false,
+          isPartialSupport: false,
+        },
+      ],
     });
   expect(() => isFeatureCompatible(feature, MODERN_CHROME_CONFIG)).toThrow(
     expectedMessage,

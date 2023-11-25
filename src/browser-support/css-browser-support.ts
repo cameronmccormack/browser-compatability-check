@@ -8,7 +8,11 @@ import {
   CssSelector,
 } from '../types/css-feature';
 import { getCompatibilityData } from './bcd-data';
-import { CompatStatement, Identifier } from '@mdn/browser-compat-data/types';
+import {
+  CompatStatement,
+  Identifier,
+  VersionValue,
+} from '@mdn/browser-compat-data/types';
 import { findCompatNode } from './find-compat-node';
 
 const getCompatibilityStatement = (
@@ -68,6 +72,26 @@ const getCssFunctionCompatibilityStatement = (
   );
 };
 
+const getNumericVersion = (
+  rawVersion: VersionValue,
+  browser: string,
+): number => {
+  const version =
+    typeof rawVersion === 'string' ? rawVersion.replace('≤', '') : rawVersion;
+
+  const numericVersion = version ? Number(version) : Number.POSITIVE_INFINITY;
+  if (isNaN(numericVersion)) {
+    throw new Error(
+      `Browser version ${version} could not be converted to a number for ${browser}`,
+    );
+  }
+
+  return numericVersion;
+};
+
+const removeUndefinedValues = <T>(value: T | undefined): value is T =>
+  value !== undefined;
+
 export const getCssBrowserSupport = (
   feature: CssFeature,
 ): FeatureSupport | null => {
@@ -78,46 +102,33 @@ export const getCssBrowserSupport = (
   if (compatibilityStatement) {
     for (const browser of BROWSER_SLUGS) {
       const supportBrowser = compatibilityStatement.support[browser];
-      const supportBrowserIsArray = Array.isArray(supportBrowser);
+      const supportBrowserAsArray = (
+        Array.isArray(supportBrowser) ? supportBrowser : [supportBrowser]
+      )
+        .filter(removeUndefinedValues)
+        // remove prefixed values - these are separate CSS features and lead to nonsensical
+        // compatibility versions if included due to overlap with the non-prefixed value
+        .filter((supportStatement) => !supportStatement.prefix);
 
-      if (
-        supportBrowser === undefined ||
-        (supportBrowserIsArray && supportBrowser.length === 0)
-      ) {
+      if (supportBrowserAsArray.length === 0) {
         console.log(
           `No details found for browser ${browser} in compatibility data.`,
         );
         continue;
       }
 
-      // TODO: work out when this is boolean
-      const rawVersionAdded = supportBrowserIsArray
-        ? supportBrowser[0].version_added
-        : supportBrowser.version_added;
-      const isFlagged = Boolean(
-        supportBrowserIsArray
-          ? supportBrowser[1].flags?.length // todo why is this [1]?
-          : supportBrowser?.flags?.length,
-      );
-
-      const knownVersion =
-        typeof rawVersionAdded === 'string'
-          ? rawVersionAdded.replace('≤', '')
-          : rawVersionAdded;
-
-      const sinceVersion = knownVersion
-        ? Number(knownVersion)
-        : Number.POSITIVE_INFINITY;
-      if (isNaN(sinceVersion)) {
-        console.log(
-          `Browser version ${knownVersion} is not a number for ${browser}`,
-        );
-      } else {
-        report[browser] = {
-          sinceVersion: sinceVersion,
-          flagged: isFlagged,
-        };
-      }
+      report[browser] = supportBrowserAsArray.map((compatibilityItem) => ({
+        sinceVersion: getNumericVersion(
+          compatibilityItem.version_added,
+          browser,
+        ),
+        untilVersion:
+          compatibilityItem.version_removed !== undefined
+            ? getNumericVersion(compatibilityItem.version_removed, browser)
+            : undefined,
+        isPartialSupport: !!compatibilityItem.partial_implementation,
+        isFlagged: !!compatibilityItem.flags?.length,
+      }));
     }
   }
 

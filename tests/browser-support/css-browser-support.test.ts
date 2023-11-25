@@ -6,7 +6,7 @@ import {
   DISPLAY_GENERIC_COMPATIBILITY,
   DISPLAY_GRID_COMPATIBILITY,
   FLEX_GAP_COMPATIBILITY,
-  FLEX_NO_CONTEXT_COMPATIBILITY as GAP_NO_CONTEXT_COMPATIBILITY,
+  GAP_NO_CONTEXT_COMPATIBILITY,
   LAST_CHILD_COMPATIBILITY,
   MEDIA_AT_RULE_COMPATIBILITY,
   RGB_FUNCTION_COMPATABILITY,
@@ -42,12 +42,40 @@ const bcdDataWithLessThanValueForGap = produce(bcd, (draft) => {
   };
 });
 
+const bcdDataWithFirefoxFlagForGap = produce(bcd, (draft) => {
+  draft.css.properties.gap.__compat!.support.firefox = {
+    version_added: '999',
+    flags: [
+      {
+        type: 'preference',
+        name: 'layout.css.content-visibility.enabled',
+        value_to_set: 'true',
+      },
+    ],
+  };
+});
+
+const bcdDataWithFirefoxPartialSupportForGap = produce(bcd, (draft) => {
+  draft.css.properties.gap.__compat!.support.firefox = {
+    version_added: '999',
+    partial_implementation: true,
+  };
+});
+
+const bcdDataWithFirefoxVersionRemovedForGap = produce(bcd, (draft) => {
+  draft.css.properties.gap.__compat!.support.firefox = {
+    version_added: '999',
+    version_removed: '1000',
+  };
+});
+
 type TestData = {
   identifier: string;
   value?: string;
   context?: string;
   type: string;
-  expected: FeatureSupport | null;
+  expected?: FeatureSupport | null;
+  expectedErrorMessage?: string;
   mockBrowserCompatibilityData?: CompatData;
 };
 
@@ -105,12 +133,8 @@ const testCases: [string, TestData][] = [
       identifier: 'gap',
       value: '20px',
       type: 'property',
-      expected: produce(
-        GAP_NO_CONTEXT_COMPATIBILITY,
-        (draft: FeatureSupport) => {
-          delete draft.chrome;
-        },
-      ),
+      expectedErrorMessage:
+        'Browser version not a number could not be converted to a number for chrome',
       mockBrowserCompatibilityData: bcdDataWithNaNChromeVersionForGap,
     },
   ],
@@ -221,12 +245,88 @@ const testCases: [string, TestData][] = [
       value: '20px',
       type: 'property',
       expected: {
-        chrome: {
-          sinceVersion: 123.456,
-          flagged: false,
-        },
+        chrome: [
+          {
+            sinceVersion: 123.456,
+            isFlagged: false,
+            isPartialSupport: false,
+          },
+        ],
       },
       mockBrowserCompatibilityData: bcdDataWithLessThanValueForGap,
+    },
+  ],
+  [
+    'prefixed MDN items removed from formatted support compatibility',
+    {
+      identifier: 'display',
+      value: 'grid',
+      type: 'property',
+      expected: DISPLAY_GRID_COMPATIBILITY,
+    },
+  ],
+  [
+    'flagged feature',
+    {
+      identifier: 'gap',
+      value: '20px',
+      type: 'property',
+      expected: produce(
+        GAP_NO_CONTEXT_COMPATIBILITY,
+        (draft: FeatureSupport) => {
+          draft.firefox = [
+            {
+              sinceVersion: 999,
+              isFlagged: true,
+              isPartialSupport: false,
+            },
+          ];
+        },
+      ),
+      mockBrowserCompatibilityData: bcdDataWithFirefoxFlagForGap,
+    },
+  ],
+  [
+    'partially supported feature',
+    {
+      identifier: 'gap',
+      value: '20px',
+      type: 'property',
+      expected: produce(
+        GAP_NO_CONTEXT_COMPATIBILITY,
+        (draft: FeatureSupport) => {
+          draft.firefox = [
+            {
+              sinceVersion: 999,
+              isFlagged: false,
+              isPartialSupport: true,
+            },
+          ];
+        },
+      ),
+      mockBrowserCompatibilityData: bcdDataWithFirefoxPartialSupportForGap,
+    },
+  ],
+  [
+    'added then removed feature',
+    {
+      identifier: 'gap',
+      value: '20px',
+      type: 'property',
+      expected: produce(
+        GAP_NO_CONTEXT_COMPATIBILITY,
+        (draft: FeatureSupport) => {
+          draft.firefox = [
+            {
+              sinceVersion: 999,
+              untilVersion: 1000,
+              isFlagged: false,
+              isPartialSupport: false,
+            },
+          ];
+        },
+      ),
+      mockBrowserCompatibilityData: bcdDataWithFirefoxVersionRemovedForGap,
     },
   ],
 ];
@@ -244,6 +344,7 @@ test.each<[string, TestData]>(testCases)(
       value,
       context,
       expected,
+      expectedErrorMessage,
       type,
       mockBrowserCompatibilityData,
     },
@@ -255,6 +356,11 @@ test.each<[string, TestData]>(testCases)(
     }
 
     const feature = { identifier, value, context, type } as CssFeature;
-    expect(getCssBrowserSupport(feature)).toEqual(expected);
+
+    if (expectedErrorMessage) {
+      expect(() => getCssBrowserSupport(feature)).toThrow(expectedErrorMessage);
+    } else {
+      expect(getCssBrowserSupport(feature)).toEqual(expected);
+    }
   },
 );

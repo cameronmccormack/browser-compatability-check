@@ -1,6 +1,8 @@
 export type FeatureSupport = {
   [browser: string]: {
     sinceVersion: number;
-    flagged: boolean;
-  };
+    untilVersion?: number;
+    isPartialSupport: boolean;
+    isFlagged: boolean;
+  }[];
 };

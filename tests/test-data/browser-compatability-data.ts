@@ -1,116 +1,195 @@
 export const FLEX_GAP_COMPATIBILITY = {
-  chrome: { flagged: false, sinceVersion: 84 },
-  chrome_android: { flagged: false, sinceVersion: 84 },
-  edge: { flagged: false, sinceVersion: 84 },
-  firefox: { flagged: false, sinceVersion: 63 },
-  firefox_android: { flagged: false, sinceVersion: 63 },
-  ie: { flagged: false, sinceVersion: Number.POSITIVE_INFINITY },
-  opera: { flagged: false, sinceVersion: 70 },
-  safari: { flagged: false, sinceVersion: 14.1 },
-  safari_ios: { flagged: false, sinceVersion: 14.5 },
-  samsunginternet_android: { flagged: false, sinceVersion: 14 },
+  chrome: [{ isFlagged: false, sinceVersion: 84, isPartialSupport: false }],
+  chrome_android: [
+    { isFlagged: false, sinceVersion: 84, isPartialSupport: false },
+  ],
+  edge: [{ isFlagged: false, sinceVersion: 84, isPartialSupport: false }],
+  firefox: [{ isFlagged: false, sinceVersion: 63, isPartialSupport: false }],
+  firefox_android: [
+    { isFlagged: false, sinceVersion: 63, isPartialSupport: false },
+  ],
+  ie: [
+    {
+      isFlagged: false,
+      sinceVersion: Number.POSITIVE_INFINITY,
+      isPartialSupport: false,
+    },
+  ],
+  opera: [{ isFlagged: false, sinceVersion: 70, isPartialSupport: false }],
+  safari: [{ isFlagged: false, sinceVersion: 14.1, isPartialSupport: false }],
+  safari_ios: [
+    { isFlagged: false, sinceVersion: 14.5, isPartialSupport: false },
+  ],
+  samsunginternet_android: [
+    { isFlagged: false, sinceVersion: 14, isPartialSupport: false },
+  ],
 };
 
-export const FLEX_NO_CONTEXT_COMPATIBILITY = {
-  chrome: { flagged: false, sinceVersion: 57 },
-  chrome_android: { flagged: false, sinceVersion: 57 },
-  edge: { flagged: false, sinceVersion: 16 },
-  firefox: { flagged: false, sinceVersion: 52 },
-  firefox_android: { flagged: false, sinceVersion: 52 },
-  ie: { flagged: false, sinceVersion: Number.POSITIVE_INFINITY },
-  opera: { flagged: false, sinceVersion: 44 },
-  safari: { flagged: false, sinceVersion: 10.1 },
-  safari_ios: { flagged: false, sinceVersion: 10.3 },
-  samsunginternet_android: { flagged: false, sinceVersion: 7 },
+export const GAP_NO_CONTEXT_COMPATIBILITY = {
+  chrome: [{ isFlagged: false, sinceVersion: 57, isPartialSupport: false }],
+  chrome_android: [
+    { isFlagged: false, sinceVersion: 57, isPartialSupport: false },
+  ],
+  edge: [{ isFlagged: false, sinceVersion: 16, isPartialSupport: false }],
+  firefox: [{ isFlagged: false, sinceVersion: 52, isPartialSupport: false }],
+  firefox_android: [
+    { isFlagged: false, sinceVersion: 52, isPartialSupport: false },
+  ],
+  ie: [
+    {
+      isFlagged: false,
+      sinceVersion: Number.POSITIVE_INFINITY,
+      isPartialSupport: false,
+    },
+  ],
+  opera: [{ isFlagged: false, sinceVersion: 44, isPartialSupport: false }],
+  safari: [{ isFlagged: false, sinceVersion: 10.1, isPartialSupport: false }],
+  safari_ios: [
+    { isFlagged: false, sinceVersion: 10.3, isPartialSupport: false },
+  ],
+  samsunginternet_android: [
+    { isFlagged: false, sinceVersion: 7, isPartialSupport: false },
+  ],
 };
 
 export const DISPLAY_GRID_COMPATIBILITY = {
-  chrome: { flagged: false, sinceVersion: 57 },
-  chrome_android: { flagged: false, sinceVersion: 57 },
-  edge: { flagged: false, sinceVersion: 16 },
-  firefox: { flagged: false, sinceVersion: 52 },
-  firefox_android: { flagged: false, sinceVersion: 52 },
-  ie: { flagged: false, sinceVersion: 10 },
-  opera: { flagged: false, sinceVersion: 44 },
-  safari: { flagged: false, sinceVersion: 10.1 },
-  safari_ios: { flagged: false, sinceVersion: 10.3 },
-  samsunginternet_android: { flagged: false, sinceVersion: 6 },
+  chrome: [{ isFlagged: false, sinceVersion: 57, isPartialSupport: false }],
+  chrome_android: [
+    { isFlagged: false, sinceVersion: 57, isPartialSupport: false },
+  ],
+  edge: [{ isFlagged: false, sinceVersion: 16, isPartialSupport: false }],
+  firefox: [{ isFlagged: false, sinceVersion: 52, isPartialSupport: false }],
+  firefox_android: [
+    { isFlagged: false, sinceVersion: 52, isPartialSupport: false },
+  ],
+  opera: [{ isFlagged: false, sinceVersion: 44, isPartialSupport: false }],
+  safari: [{ isFlagged: false, sinceVersion: 10.1, isPartialSupport: false }],
+  safari_ios: [
+    { isFlagged: false, sinceVersion: 10.3, isPartialSupport: false },
+  ],
+  samsunginternet_android: [
+    { isFlagged: false, sinceVersion: 6, isPartialSupport: false },
+  ],
 };
 
 export const DISPLAY_GENERIC_COMPATIBILITY = {
-  chrome: { flagged: false, sinceVersion: 1 },
-  chrome_android: { flagged: false, sinceVersion: 18 },
-  edge: { flagged: false, sinceVersion: 12 },
-  firefox: { flagged: false, sinceVersion: 1 },
-  firefox_android: { flagged: false, sinceVersion: 4 },
-  ie: { flagged: false, sinceVersion: 4 },
-  opera: { flagged: false, sinceVersion: 7 },
-  safari: { flagged: false, sinceVersion: 1 },
-  safari_ios: { flagged: false, sinceVersion: 1 },
-  samsunginternet_android: { flagged: false, sinceVersion: 1 },
+  chrome: [{ isFlagged: false, sinceVersion: 1, isPartialSupport: false }],
+  chrome_android: [
+    { isFlagged: false, sinceVersion: 18, isPartialSupport: false },
+  ],
+  edge: [{ isFlagged: false, sinceVersion: 12, isPartialSupport: false }],
+  firefox: [{ isFlagged: false, sinceVersion: 1, isPartialSupport: false }],
+  firefox_android: [
+    { isFlagged: false, sinceVersion: 4, isPartialSupport: false },
+  ],
+  ie: [{ isFlagged: false, sinceVersion: 4, isPartialSupport: false }],
+  opera: [{ isFlagged: false, sinceVersion: 7, isPartialSupport: false }],
+  safari: [{ isFlagged: false, sinceVersion: 1, isPartialSupport: false }],
+  safari_ios: [{ isFlagged: false, sinceVersion: 1, isPartialSupport: false }],
+  samsunginternet_android: [
+    { isFlagged: false, sinceVersion: 1, isPartialSupport: false },
+  ],
 };
 
 export const LAST_CHILD_COMPATIBILITY = {
-  chrome: { sinceVersion: 1, flagged: false },
-  chrome_android: { sinceVersion: 18, flagged: false },
-  edge: { sinceVersion: 12, flagged: false },
-  firefox: { sinceVersion: 1, flagged: false },
-  firefox_android: { sinceVersion: 4, flagged: false },
-  ie: { sinceVersion: 9, flagged: false },
-  opera: { sinceVersion: 9.5, flagged: false },
-  safari: { sinceVersion: 3.1, flagged: false },
-  safari_ios: { sinceVersion: 2, flagged: false },
-  samsunginternet_android: { sinceVersion: 1, flagged: false },
+  chrome: [{ sinceVersion: 1, isFlagged: false, isPartialSupport: false }],
+  chrome_android: [
+    { sinceVersion: 18, isFlagged: false, isPartialSupport: false },
+  ],
+  edge: [{ sinceVersion: 12, isFlagged: false, isPartialSupport: false }],
+  firefox: [{ sinceVersion: 1, isFlagged: false, isPartialSupport: false }],
+  firefox_android: [
+    { sinceVersion: 4, isFlagged: false, isPartialSupport: false },
+  ],
+  ie: [{ sinceVersion: 9, isFlagged: false, isPartialSupport: false }],
+  opera: [{ sinceVersion: 9.5, isFlagged: false, isPartialSupport: false }],
+  safari: [{ sinceVersion: 3.1, isFlagged: false, isPartialSupport: false }],
+  safari_ios: [{ sinceVersion: 2, isFlagged: false, isPartialSupport: false }],
+  samsunginternet_android: [
+    { sinceVersion: 1, isFlagged: false, isPartialSupport: false },
+  ],
 };
 
 export const MEDIA_AT_RULE_COMPATIBILITY = {
-  chrome: { sinceVersion: 1, flagged: false },
-  chrome_android: { sinceVersion: 18, flagged: false },
-  edge: { sinceVersion: 12, flagged: false },
-  firefox: { sinceVersion: 1, flagged: false },
-  firefox_android: { sinceVersion: 4, flagged: false },
-  ie: { sinceVersion: 6, flagged: false },
-  opera: { sinceVersion: 9.2, flagged: false },
-  safari: { sinceVersion: 3, flagged: false },
-  safari_ios: { sinceVersion: 1, flagged: false },
-  samsunginternet_android: { sinceVersion: 1, flagged: false },
+  chrome: [{ sinceVersion: 1, isFlagged: false, isPartialSupport: false }],
+  chrome_android: [
+    { sinceVersion: 18, isFlagged: false, isPartialSupport: false },
+  ],
+  edge: [{ sinceVersion: 12, isFlagged: false, isPartialSupport: false }],
+  firefox: [{ sinceVersion: 1, isFlagged: false, isPartialSupport: false }],
+  firefox_android: [
+    { sinceVersion: 4, isFlagged: false, isPartialSupport: false },
+  ],
+  ie: [{ sinceVersion: 6, isFlagged: false, isPartialSupport: false }],
+  opera: [{ sinceVersion: 9.2, isFlagged: false, isPartialSupport: false }],
+  safari: [{ sinceVersion: 3, isFlagged: false, isPartialSupport: false }],
+  safari_ios: [{ sinceVersion: 1, isFlagged: false, isPartialSupport: false }],
+  samsunginternet_android: [
+    { sinceVersion: 1, isFlagged: false, isPartialSupport: false },
+  ],
 };
 
 export const CALC_FUNCTION_COMPATABILITY = {
-  chrome: { sinceVersion: 26, flagged: false },
-  chrome_android: { sinceVersion: 28, flagged: false },
-  edge: { sinceVersion: 12, flagged: false },
-  firefox: { sinceVersion: 16, flagged: false },
-  firefox_android: { sinceVersion: 16, flagged: false },
-  ie: { sinceVersion: 9, flagged: false },
-  opera: { sinceVersion: 15, flagged: false },
-  safari: { sinceVersion: 7, flagged: false },
-  safari_ios: { sinceVersion: 7, flagged: false },
-  samsunginternet_android: { sinceVersion: 1.5, flagged: false },
+  chrome: [{ sinceVersion: 26, isFlagged: false, isPartialSupport: false }],
+  chrome_android: [
+    { sinceVersion: 28, isFlagged: false, isPartialSupport: false },
+  ],
+  edge: [{ sinceVersion: 12, isFlagged: false, isPartialSupport: false }],
+  firefox: [{ sinceVersion: 16, isFlagged: false, isPartialSupport: false }],
+  firefox_android: [
+    { sinceVersion: 16, isFlagged: false, isPartialSupport: false },
+  ],
+  ie: [{ sinceVersion: 9, isFlagged: false, isPartialSupport: false }],
+  opera: [{ sinceVersion: 15, isFlagged: false, isPartialSupport: false }],
+  safari: [{ sinceVersion: 7, isFlagged: false, isPartialSupport: false }],
+  safari_ios: [{ sinceVersion: 7, isFlagged: false, isPartialSupport: false }],
+  samsunginternet_android: [
+    { sinceVersion: 1.5, isFlagged: false, isPartialSupport: false },
+  ],
 };
 
 export const VAR_FUNCTION_COMPATABILITY = {
-  chrome: { sinceVersion: 49, flagged: false },
-  chrome_android: { sinceVersion: 49, flagged: false },
-  edge: { sinceVersion: 15, flagged: false },
-  firefox: { sinceVersion: 31, flagged: false },
-  firefox_android: { sinceVersion: 31, flagged: false },
-  ie: { sinceVersion: Number.POSITIVE_INFINITY, flagged: false },
-  opera: { sinceVersion: 36, flagged: false },
-  safari: { sinceVersion: 9.1, flagged: false },
-  safari_ios: { sinceVersion: 9.3, flagged: false },
-  samsunginternet_android: { sinceVersion: 5, flagged: false },
+  chrome: [{ sinceVersion: 49, isFlagged: false, isPartialSupport: false }],
+  chrome_android: [
+    { sinceVersion: 49, isFlagged: false, isPartialSupport: false },
+  ],
+  edge: [{ sinceVersion: 15, isFlagged: false, isPartialSupport: false }],
+  firefox: [{ sinceVersion: 31, isFlagged: false, isPartialSupport: false }],
+  firefox_android: [
+    { sinceVersion: 31, isFlagged: false, isPartialSupport: false },
+  ],
+  ie: [
+    {
+      sinceVersion: Number.POSITIVE_INFINITY,
+      isFlagged: false,
+      isPartialSupport: false,
+    },
+  ],
+  opera: [{ sinceVersion: 36, isFlagged: false, isPartialSupport: false }],
+  safari: [{ sinceVersion: 9.1, isFlagged: false, isPartialSupport: false }],
+  safari_ios: [
+    { sinceVersion: 9.3, isFlagged: false, isPartialSupport: false },
+  ],
+  samsunginternet_android: [
+    { sinceVersion: 5, isFlagged: false, isPartialSupport: false },
+  ],
 };
 
 export const RGB_FUNCTION_COMPATABILITY = {
-  chrome: { sinceVersion: 1, flagged: false },
-  chrome_android: { sinceVersion: 18, flagged: false },
-  edge: { sinceVersion: 12, flagged: false },
-  firefox: { sinceVersion: 1, flagged: false },
-  firefox_android: { sinceVersion: 4, flagged: false },
-  ie: { sinceVersion: 4, flagged: false },
-  opera: { sinceVersion: 3.5, flagged: false },
-  safari: { sinceVersion: 1, flagged: false },
-  safari_ios: { sinceVersion: 1, flagged: false },
-  samsunginternet_android: { sinceVersion: 1, flagged: false },
+  chrome: [{ sinceVersion: 1, isFlagged: false, isPartialSupport: false }],
+  chrome_android: [
+    { sinceVersion: 18, isFlagged: false, isPartialSupport: false },
+  ],
+  edge: [{ sinceVersion: 12, isFlagged: false, isPartialSupport: false }],
+  firefox: [{ sinceVersion: 1, isFlagged: false, isPartialSupport: false }],
+  firefox_android: [
+    { sinceVersion: 4, isFlagged: false, isPartialSupport: false },
+  ],
+  ie: [{ sinceVersion: 4, isFlagged: false, isPartialSupport: false }],
+  opera: [{ sinceVersion: 3.5, isFlagged: false, isPartialSupport: false }],
+  safari: [{ sinceVersion: 1, isFlagged: false, isPartialSupport: false }],
+  safari_ios: [{ sinceVersion: 1, isFlagged: false, isPartialSupport: false }],
+  samsunginternet_android: [
+    { sinceVersion: 1, isFlagged: false, isPartialSupport: false },
+  ],
 };

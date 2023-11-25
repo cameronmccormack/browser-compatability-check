@@ -29,7 +29,10 @@ export const isFeatureCompatible = (
       );
     }
 
-    const minimumBrowserVersion = Number(featureDetailsForBrowser.sinceVersion);
+    // todo update this to search through the list
+    const minimumBrowserVersion = Number(
+      featureDetailsForBrowser[0].sinceVersion,
+    );
 
     if (isNaN(minimumBrowserVersion)) {
       throw new Error(
