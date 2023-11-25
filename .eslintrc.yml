@@ -12,9 +12,6 @@ plugins:
   - '@typescript-eslint'
   - 'prettier'
 rules:
-  quotes:
-    - error
-    - single
   semi:
     - error
     - always
