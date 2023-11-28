@@ -13,7 +13,14 @@ const getCompatibilityForBrowser = (
     .sort((a, b) => {
       const aValue = a.untilVersion ?? a.sinceVersion;
       const bValue = b.untilVersion ?? b.sinceVersion;
-      return aValue - bValue;
+
+      // where latest referenced versions are equal (an expected case as compatibility changes over time),
+      // prioritize the object without an untilVersion as this will reflect the current state of the compatibility
+      if (aValue === bValue) {
+        return a.untilVersion ? 1 : -1;
+      }
+
+      return bValue - aValue;
     })
     .find(
       (item) =>
