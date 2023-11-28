@@ -10,7 +10,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/cameronmccormack/browser-compatability-check">
+  <a href="https://github.com/cameronmccormack/browser-compatibility-check">
     <img src="images/logo.png" alt="Logo" width="80" height="80">
   </a>
 
@@ -19,12 +19,12 @@
   <p align="center">
     A utility for checking CSS browser compatibility.
     <br />
-    <a href="https://github.com/cameronmccormack/browser-compatability-check"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/cameronmccormack/browser-compatibility-check"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/cameronmccormack/browser-compatability-check/issues">Report Bug</a>
+    <a href="https://github.com/cameronmccormack/browser-compatibility-check/issues">Report Bug</a>
     ·
-    <a href="https://github.com/cameronmccormack/browser-compatability-check/issues">Request Feature</a>
+    <a href="https://github.com/cameronmccormack/browser-compatibility-check/issues">Request Feature</a>
   </p>
 </div>
 
@@ -102,7 +102,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 [Cameron McCormack](github.com/cameronmccormack)
 
-Project Link: [https://github.com/cameronmccormack/browser-compatability-check](https://github.com/cameronmccormack/browser-compatability-check)
+Project Link: [https://github.com/cameronmccormack/browser-compatibility-check](https://github.com/cameronmccormack/browser-compatibility-check)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -114,15 +114,15 @@ Project Link: [https://github.com/cameronmccormack/browser-compatability-check](
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-[contributors-shield]: https://img.shields.io/github/contributors/cameronmccormack/browser-compatability-check.svg?style=for-the-badge
-[contributors-url]: https://github.com/cameronmccormack/browser-compatability-check/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/cameronmccormack/browser-compatability-check.svg?style=for-the-badge
-[forks-url]: https://github.com/cameronmccormack/browser-compatability-check/network/members
-[stars-shield]: https://img.shields.io/github/stars/cameronmccormack/browser-compatability-check.svg?style=for-the-badge
-[stars-url]: https://github.com/cameronmccormack/browser-compatability-check/stargazers
-[issues-shield]: https://img.shields.io/github/issues/cameronmccormack/browser-compatability-check.svg?style=for-the-badge
-[issues-url]: https://github.com/cameronmccormack/browser-compatability-check/issues
-[license-shield]: https://img.shields.io/github/license/cameronmccormack/browser-compatability-check.svg?style=for-the-badge
-[license-url]: https://github.com/cameronmccormack/browser-compatability-check/blob/main/LICENSE.txt
+[contributors-shield]: https://img.shields.io/github/contributors/cameronmccormack/browser-compatibility-check.svg?style=for-the-badge
+[contributors-url]: https://github.com/cameronmccormack/browser-compatibility-check/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/cameronmccormack/browser-compatibility-check.svg?style=for-the-badge
+[forks-url]: https://github.com/cameronmccormack/browser-compatibility-check/network/members
+[stars-shield]: https://img.shields.io/github/stars/cameronmccormack/browser-compatibility-check.svg?style=for-the-badge
+[stars-url]: https://github.com/cameronmccormack/browser-compatibility-check/stargazers
+[issues-shield]: https://img.shields.io/github/issues/cameronmccormack/browser-compatibility-check.svg?style=for-the-badge
+[issues-url]: https://github.com/cameronmccormack/browser-compatibility-check/issues
+[license-shield]: https://img.shields.io/github/license/cameronmccormack/browser-compatibility-check.svg?style=for-the-badge
+[license-url]: https://github.com/cameronmccormack/browser-compatibility-check/blob/main/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/cameron-mccormack

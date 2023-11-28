@@ -1,5 +1,5 @@
 {
-  "name": "browser-compatability-check",
+  "name": "browser-compatibility-check",
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
@@ -10,6 +10,9 @@
     "test": "jest",
     "test:coverage": "jest --coverage",
     "transpile": "tsc"
+  },
+  "bin": {
+    "browser-compatibility-check": "bin/browser-compatibility-check"
   },
   "author": "Cameron McCormack",
   "license": "MIT",

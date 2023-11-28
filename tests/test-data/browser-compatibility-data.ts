@@ -135,7 +135,7 @@ export const MEDIA_AT_RULE_COMPATIBILITY = {
   ],
 };
 
-export const CALC_FUNCTION_COMPATABILITY = {
+export const CALC_FUNCTION_COMPATIBILITY = {
   chrome: [{ sinceVersion: 26, isFlagged: false, isPartialSupport: false }],
   chrome_android: [
     { sinceVersion: 28, isFlagged: false, isPartialSupport: false },
@@ -168,7 +168,7 @@ export const CALC_FUNCTION_COMPATABILITY = {
   ],
 };
 
-export const VAR_FUNCTION_COMPATABILITY = {
+export const VAR_FUNCTION_COMPATIBILITY = {
   chrome: [{ sinceVersion: 49, isFlagged: false, isPartialSupport: false }],
   chrome_android: [
     { sinceVersion: 49, isFlagged: false, isPartialSupport: false },
@@ -195,7 +195,7 @@ export const VAR_FUNCTION_COMPATABILITY = {
   ],
 };
 
-export const RGB_FUNCTION_COMPATABILITY = {
+export const RGB_FUNCTION_COMPATIBILITY = {
   chrome: [{ sinceVersion: 1, isFlagged: false, isPartialSupport: false }],
   chrome_android: [
     { sinceVersion: 18, isFlagged: false, isPartialSupport: false },

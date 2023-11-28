@@ -2,16 +2,16 @@ import { getCssBrowserSupport } from '../../src/browser-support/css-browser-supp
 import { FeatureSupport } from '../../src/types/browser-support-types';
 import { CssFeature } from '../../src/types/css-feature';
 import {
-  CALC_FUNCTION_COMPATABILITY,
+  CALC_FUNCTION_COMPATIBILITY,
   DISPLAY_GENERIC_COMPATIBILITY,
   DISPLAY_GRID_COMPATIBILITY,
   FLEX_GAP_COMPATIBILITY,
   GAP_NO_CONTEXT_COMPATIBILITY,
   LAST_CHILD_COMPATIBILITY,
   MEDIA_AT_RULE_COMPATIBILITY,
-  RGB_FUNCTION_COMPATABILITY,
-  VAR_FUNCTION_COMPATABILITY,
-} from '../test-data/browser-compatability-data';
+  RGB_FUNCTION_COMPATIBILITY,
+  VAR_FUNCTION_COMPATIBILITY,
+} from '../test-data/browser-compatibility-data';
 import { produce } from 'immer';
 import bcd, { CompatData } from '@mdn/browser-compat-data';
 import * as bcdData from '../../src/browser-support/bcd-data';
@@ -211,7 +211,7 @@ const testCases: [string, TestData][] = [
     {
       identifier: 'calc',
       type: 'function',
-      expected: CALC_FUNCTION_COMPATABILITY,
+      expected: CALC_FUNCTION_COMPATIBILITY,
     },
   ],
   [
@@ -219,7 +219,7 @@ const testCases: [string, TestData][] = [
     {
       identifier: 'rgb',
       type: 'function',
-      expected: RGB_FUNCTION_COMPATABILITY,
+      expected: RGB_FUNCTION_COMPATIBILITY,
     },
   ],
   [
@@ -227,7 +227,7 @@ const testCases: [string, TestData][] = [
     {
       identifier: 'var',
       type: 'function',
-      expected: VAR_FUNCTION_COMPATABILITY,
+      expected: VAR_FUNCTION_COMPATIBILITY,
     },
   ],
   [

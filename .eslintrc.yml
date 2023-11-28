@@ -11,6 +11,8 @@ parserOptions:
 plugins:
   - '@typescript-eslint'
   - 'prettier'
+ignorePatterns:
+  - bin
 rules:
   semi:
     - error
