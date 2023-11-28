@@ -4,6 +4,7 @@ import { Browser } from '../types/browser';
 import { CssFeature } from '../types/css-feature';
 import { BrowserCompatibility, Compatibility } from '../types/compatibility';
 import { FeatureDetailsForBrowser } from '../types/browser-support-types';
+import logger from '../logger';
 
 const getCompatibilityForBrowser = (
   browser: Browser,
@@ -62,7 +63,7 @@ export const isFeatureCompatible = (
   const browserSupport = getCssBrowserSupport(feature);
 
   if (!browserSupport) {
-    console.log(`Could not identify CSS feature: ${featureId}.`);
+    logger.warn(`Could not identify CSS feature: ${featureId}.`);
     return 'unknown-feature';
   }
 

@@ -1,7 +1,7 @@
 /* istanbul ignore file */
 
 import { isFeatureCompatible } from './browser-support/is-feature-compatible';
-import browserConfig from '../config/browser-config.json';
+import browserConfig from './browser-config.json';
 import { getFormattedCss } from './css-parser/css-parser';
 import * as csstree from 'css-tree';
 import * as fs from 'fs';
