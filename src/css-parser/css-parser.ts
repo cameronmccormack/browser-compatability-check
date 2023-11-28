@@ -24,18 +24,35 @@ export const getFormattedCss = (parsedCss: csstree.CssNode): FormattedCss => {
   csstree.walk(parsedCss, {
     enter(node: csstree.CssNode) {
       switch (node.type) {
-        case 'Declaration':
+        case 'Declaration': {
+          // TODO: apply context for flex/grid items (this only handles the flex/grid container at present)
+          const context =
+            node.property !== 'display' && contextStack.length > 0
+              ? contextStack[contextStack.length - 1]
+              : undefined;
+
           properties.push({
             identifier: node.property,
             value: csstree.generate(node.value),
             type: 'property',
-            context:
-              // TODO: apply context for flex/grid items (this only handles the flex/grid container at present)
-              node.property !== 'display' && contextStack.length > 0
-                ? contextStack[contextStack.length - 1]
-                : undefined,
+            context,
           });
+
+          // check each value individually if multiple values declared in-line
+          if (node.value.type !== 'Raw' && node.value.children.size > 1) {
+            node.value.children.forEach((child) => {
+              if (child.type === 'Identifier' || child.type === 'Dimension') {
+                properties.push({
+                  identifier: node.property,
+                  value: csstree.generate(child),
+                  type: 'property',
+                  context,
+                });
+              }
+            });
+          }
           break;
+        }
         case 'PseudoClassSelector':
         case 'PseudoElementSelector':
           selectors.push({

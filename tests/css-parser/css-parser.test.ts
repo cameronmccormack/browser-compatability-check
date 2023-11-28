@@ -260,4 +260,66 @@ describe('getFormattedCss works as expected', () => {
 
     expect(getFormattedCss(parsedCss)).toEqual(expectedResponse);
   });
+
+  test('splits space-separated values into separate elements', () => {
+    const css = 'a { grid-template-columns: min-content auto 20px 1fr }';
+    const parsedCss = csstree.parse(css);
+    const expectedResponse = {
+      ...EMPTY_FORMATTED_CSS,
+      properties: [
+        {
+          identifier: 'grid-template-columns',
+          value: 'min-content auto 20px 1fr',
+          type: 'property',
+        },
+        {
+          identifier: 'grid-template-columns',
+          value: 'min-content',
+          type: 'property',
+        },
+        {
+          identifier: 'grid-template-columns',
+          value: 'auto',
+          type: 'property',
+        },
+        {
+          identifier: 'grid-template-columns',
+          value: '20px',
+          type: 'property',
+        },
+        {
+          identifier: 'grid-template-columns',
+          value: '1fr',
+          type: 'property',
+        },
+      ],
+    };
+    expect(getFormattedCss(parsedCss)).toEqual(expectedResponse);
+  });
+
+  test('splits comma-separated values into separate elements', () => {
+    const css = 'a { font-family: arial, sans-serif; }';
+    const parsedCss = csstree.parse(css);
+    const expectedResponse = {
+      ...EMPTY_FORMATTED_CSS,
+      properties: [
+        {
+          identifier: 'font-family',
+          value: 'arial,sans-serif',
+          type: 'property',
+        },
+        {
+          identifier: 'font-family',
+          value: 'arial',
+          type: 'property',
+        },
+        {
+          identifier: 'font-family',
+          value: 'sans-serif',
+          type: 'property',
+        },
+      ],
+    };
+    expect(getFormattedCss(parsedCss)).toEqual(expectedResponse);
+  });
 });
