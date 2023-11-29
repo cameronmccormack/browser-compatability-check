@@ -1,4 +1,3 @@
-import { BROWSER_SLUGS } from './browser-slugs';
 import { FeatureSupport } from '../types/browser-support-types';
 import {
   CssAtRule,
@@ -9,6 +8,7 @@ import {
 } from '../types/css-feature';
 import { getCompatibilityData } from './bcd-data';
 import {
+  BrowserName,
   CompatStatement,
   Identifier,
   VersionValue,
@@ -98,13 +98,14 @@ const removeUndefinedValues = <T>(value: T | undefined): value is T =>
 
 export const getCssBrowserSupport = (
   feature: CssFeature,
+  browsers: BrowserName[],
 ): FeatureSupport | null => {
   const compatibilityStatement = getCompatibilityStatement(feature);
 
-  const report = {} as FeatureSupport;
+  const report: FeatureSupport = {};
 
   if (compatibilityStatement) {
-    for (const browser of BROWSER_SLUGS) {
+    for (const browser of browsers) {
       const supportBrowser = compatibilityStatement.support[browser];
       const supportBrowserAsArray = (
         Array.isArray(supportBrowser) ? supportBrowser : [supportBrowser]
@@ -137,7 +138,8 @@ export const getCssBrowserSupport = (
           : undefined,
       }));
     }
+    return report;
+  } else {
+    return null;
   }
-
-  return Object.keys(report).length > 0 ? report : null;
 };

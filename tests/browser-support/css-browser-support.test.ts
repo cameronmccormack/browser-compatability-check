@@ -13,8 +13,21 @@ import {
   VAR_FUNCTION_COMPATIBILITY,
 } from '../test-data/browser-compatibility-data';
 import { produce } from 'immer';
-import bcd, { CompatData } from '@mdn/browser-compat-data';
+import bcd, { BrowserName, CompatData } from '@mdn/browser-compat-data';
 import * as bcdData from '../../src/browser-support/bcd-data';
+
+const BROWSER_SLUGS: BrowserName[] = [
+  'chrome',
+  'chrome_android',
+  'edge',
+  'firefox',
+  'firefox_android',
+  'ie',
+  'opera',
+  'safari',
+  'safari_ios',
+  'samsunginternet_android',
+];
 
 const bcdDataWithNaNChromeVersionForGap = produce(bcd, (draft) => {
   draft.css.properties.gap.__compat!.support.chrome = {
@@ -358,9 +371,11 @@ test.each<[string, TestData]>(testCases)(
     const feature = { identifier, value, context, type } as CssFeature;
 
     if (expectedErrorMessage) {
-      expect(() => getCssBrowserSupport(feature)).toThrow(expectedErrorMessage);
+      expect(() => getCssBrowserSupport(feature, BROWSER_SLUGS)).toThrow(
+        expectedErrorMessage,
+      );
     } else {
-      expect(getCssBrowserSupport(feature)).toEqual(expected);
+      expect(getCssBrowserSupport(feature, BROWSER_SLUGS)).toEqual(expected);
     }
   },
 );

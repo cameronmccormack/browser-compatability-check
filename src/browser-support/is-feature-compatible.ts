@@ -60,7 +60,10 @@ export const isFeatureCompatible = (
   }
 
   const featureId = getIdFromFeature(feature);
-  const browserSupport = getCssBrowserSupport(feature);
+  const browserSupport = getCssBrowserSupport(
+    feature,
+    browsers.map((browser) => browser.identifier),
+  );
 
   if (!browserSupport) {
     logger.warn(`Could not identify CSS feature: ${featureId}.`);

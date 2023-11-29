@@ -1,3 +1,20 @@
+export type CompatibilityReport = {
+  knownFeatures: {
+    [featureId: string]: Compatibility;
+  };
+  unknownFeatures: string[];
+  browserSummaries: {
+    [browser: string]: {
+      total: number;
+      compatible: number;
+      'partial-support': number;
+      flagged: number;
+      incompatible: number;
+      unknown: number;
+    };
+  };
+};
+
 export type Compatibility = {
   [browser: string]: BrowserCompatibility;
 };

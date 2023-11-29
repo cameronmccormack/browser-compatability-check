@@ -3,43 +3,44 @@ import { CssFeature } from '../../src/types/css-feature';
 import { isFeatureCompatible } from '../../src/browser-support/is-feature-compatible';
 import * as cssBrowserSupportModule from '../../src/browser-support/css-browser-support';
 import { Compatibility } from '../../src/types/compatibility';
+import { BrowserName } from '@mdn/browser-compat-data';
 
-const MODERN_CHROME_CONFIG = [
+const MODERN_CHROME_CONFIG: Browser[] = [
   {
     identifier: 'chrome',
     version: 122,
   },
 ];
 
-const PRE_FLEX_GAP_CHROME_CONFIG = [
+const PRE_FLEX_GAP_CHROME_CONFIG: Browser[] = [
   {
     identifier: 'chrome',
     version: 80,
   },
 ];
 
-const PRE_DISPLAY_GRID_CHROME_CONFIG = [
+const PRE_DISPLAY_GRID_CHROME_CONFIG: Browser[] = [
   {
     identifier: 'chrome',
     version: 28,
   },
 ];
 
-const FLAGGED_VIEW_TIMELINE_CONFIG = [
+const FLAGGED_VIEW_TIMELINE_CONFIG: Browser[] = [
   {
     identifier: 'firefox',
     version: 114,
   },
 ];
 
-const PARTIALLY_SUPPORTED_OUTLINE_CONFIG = [
+const PARTIALLY_SUPPORTED_OUTLINE_CONFIG: Browser[] = [
   {
     identifier: 'chrome',
     version: 80,
   },
 ];
 
-const TOO_MODERN_EDGE_DOUBLE_TAP_ZOOM_CONFIG = [
+const TOO_MODERN_EDGE_DOUBLE_TAP_ZOOM_CONFIG: Browser[] = [
   {
     identifier: 'edge',
     version: 100,
@@ -137,7 +138,7 @@ const testCases: [string, TestData][] = [
       value: 'flex',
       browserConfig: [
         {
-          identifier: 'not-real-browser',
+          identifier: 'not-real-browser' as BrowserName,
           version: 20,
         },
       ],
