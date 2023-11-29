@@ -2,16 +2,10 @@
 
 import { isFeatureCompatible } from './browser-support/is-feature-compatible';
 import browserConfig from './browser-config.json';
-import { getFormattedCss } from './css-parser/css-parser';
-import * as csstree from 'css-tree';
-import * as fs from 'fs';
 import { getIdFromFeature } from './helpers/feature-id-helper';
+import { FormattedCss } from './types/css-feature';
 
-export const main = (): void => {
-  const file = fs.readFileSync('./src/css-parser/example.css', 'utf8');
-  const parsedCss = csstree.parse(file);
-  const formattedCss = getFormattedCss(parsedCss);
-
+export const main = (formattedCss: FormattedCss): void => {
   const unknownFeatureIds: string[] = [];
 
   const supportedFeatureIds: string[] = [];
@@ -87,5 +81,3 @@ export const main = (): void => {
   console.log('\n\nUnknown:\n\n');
   unknownFeatureIds.map((i) => console.log(i));
 };
-
-main();

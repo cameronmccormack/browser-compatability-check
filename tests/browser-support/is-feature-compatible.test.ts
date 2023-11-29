@@ -32,10 +32,10 @@ const FLAGGED_VIEW_TIMELINE_CONFIG = [
   },
 ];
 
-const PARTIALLY_SUPPORTED_VIEW_TIMELINE_CONFIG = [
+const PARTIALLY_SUPPORTED_OUTLINE_CONFIG = [
   {
     identifier: 'chrome',
-    version: 115,
+    version: 80,
   },
 ];
 
@@ -158,12 +158,12 @@ const testCases: [string, TestData][] = [
   [
     'partially supported feature',
     {
-      identifier: 'view-timeline',
+      identifier: 'outline',
       value: 'any',
-      browserConfig: PARTIALLY_SUPPORTED_VIEW_TIMELINE_CONFIG,
+      browserConfig: PARTIALLY_SUPPORTED_OUTLINE_CONFIG,
       expected: 'partial-support',
       expectedNotes:
-        '<code>view-timeline-attachment</code> not included in shorthand.',
+        'Before Chrome 94, <code>outline</code> does not follow the shape of <code>border-radius</code>.',
     },
   ],
   [
@@ -224,88 +224,107 @@ test('throws an error for missing browser config', () => {
   expect(() => isFeatureCompatible(feature, [])).toThrow(expectedMessage);
 });
 
-describe('correctly sorts back-to-back sets of compatibility items', () => {
-  const getExpectedResult = (version: number): Compatibility => {
-    if (version < 10) {
-      return {
-        chrome: {
-          compatibility: 'incompatible',
-        },
-      };
-    }
+describe.each<[string, number]>([
+  ['more recent than latest change', 35],
+  ['on boundary of latest change', 30],
+  ['within previous region', 25],
+  ['at start boundary of previous region', 20],
+  ['in first region', 15],
+  ['on start boundary of first region', 10],
+  ['before first region', 5],
+])(
+  'correctly sorts back-to-back sets of compatibility items for case: %s',
+  (_, chromeVersion) => {
+    const getExpectedResult = (version: number): Compatibility => {
+      if (version < 10) {
+        return {
+          chrome: {
+            compatibility: 'incompatible',
+          },
+        };
+      }
 
-    if (version < 20) {
+      if (version < 20) {
+        return {
+          chrome: {
+            compatibility: 'flagged',
+            notes: '2nd previous state of the compatibility',
+          },
+        };
+      }
+
+      if (version < 30) {
+        return {
+          chrome: {
+            compatibility: 'flagged',
+            notes: 'Previous state of the compatibility',
+          },
+        };
+      }
+
       return {
         chrome: {
           compatibility: 'flagged',
+          notes: 'Current state of the compatibility',
+        },
+      };
+    };
+
+    const mockBrowserSupport = {
+      chrome: [
+        // it is unlikely that these would be returned in this nonsensical order, but set up like this for the worst-case test
+        {
+          sinceVersion: 10,
+          untilVersion: 20,
+          isFlagged: true,
+          isPartialSupport: false,
           notes: '2nd previous state of the compatibility',
         },
-      };
-    }
-
-    if (version < 30) {
-      return {
-        chrome: {
-          compatibility: 'flagged',
+        {
+          sinceVersion: 30,
+          isFlagged: true,
+          isPartialSupport: false,
+          notes: 'Current state of the compatibility',
+        },
+        {
+          sinceVersion: 20,
+          untilVersion: 30,
+          isFlagged: true,
+          isPartialSupport: false,
           notes: 'Previous state of the compatibility',
         },
-      };
-    }
-
-    return {
-      chrome: {
-        compatibility: 'flagged',
-        notes: 'Current state of the compatibility',
-      },
+      ],
     };
-  };
 
-  test.each<[string, number]>([
-    ['more recent than latest change', 35],
-    ['on boundary of latest change', 30],
-    ['within previous region', 25],
-    ['at start boundary of previous region', 20],
-    ['in first region', 15],
-    ['on start boundary of first region', 10],
-    ['before first region', 5],
-  ])('gets expected item for case: %s', (_, chromeVersion) => {
     const feature = {
       identifier: 'gap',
       value: '20px',
       type: 'property',
     } as CssFeature;
-    jest
-      .spyOn(cssBrowserSupportModule, 'getCssBrowserSupport')
-      .mockReturnValueOnce({
-        chrome: [
-          // it is unlikely that these would be returned in this nonsensical order, but set up like this for the worst-case test
-          {
-            sinceVersion: 10,
-            untilVersion: 20,
-            isFlagged: true,
-            isPartialSupport: false,
-            notes: '2nd previous state of the compatibility',
-          },
-          {
-            sinceVersion: 30,
-            isFlagged: true,
-            isPartialSupport: false,
-            notes: 'Current state of the compatibility',
-          },
-          {
-            sinceVersion: 20,
-            untilVersion: 30,
-            isFlagged: true,
-            isPartialSupport: false,
-            notes: 'Previous state of the compatibility',
-          },
-        ],
-      });
 
-    expect(
-      isFeatureCompatible(feature, [
-        { identifier: 'chrome', version: chromeVersion },
-      ]),
-    ).toEqual(getExpectedResult(chromeVersion));
-  });
-});
+    test('gets expected item', () => {
+      jest
+        .spyOn(cssBrowserSupportModule, 'getCssBrowserSupport')
+        .mockReturnValueOnce(mockBrowserSupport);
+
+      expect(
+        isFeatureCompatible(feature, [
+          { identifier: 'chrome', version: chromeVersion },
+        ]),
+      ).toEqual(getExpectedResult(chromeVersion));
+    });
+
+    test('gets expected item with mock support data reversed', () => {
+      mockBrowserSupport.chrome.reverse();
+
+      jest
+        .spyOn(cssBrowserSupportModule, 'getCssBrowserSupport')
+        .mockReturnValueOnce(mockBrowserSupport);
+      expect(
+        isFeatureCompatible(feature, [
+          { identifier: 'chrome', version: chromeVersion },
+        ]),
+      ).toEqual(getExpectedResult(chromeVersion));
+    });
+  },
+);
