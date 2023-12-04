@@ -1,5 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
+import { CssFile } from '../types/css-file';
 
 const getAllCssFilePaths = (
   absolutePath: string,
@@ -20,10 +21,8 @@ const getAllCssFilePaths = (
   return filePathArray;
 };
 
-export const getAllCssFiles = (
-  absolutePath: string,
-): { filePath: string; fileContents: string }[] =>
+export const getAllCssFiles = (absolutePath: string): CssFile[] =>
   getAllCssFilePaths(absolutePath).map((path) => ({
-    filePath: path,
-    fileContents: fs.readFileSync(path, 'utf-8'),
+    path,
+    contents: fs.readFileSync(path, 'utf-8'),
   }));
