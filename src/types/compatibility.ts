@@ -5,7 +5,6 @@ export type CompatibilityReport = {
   unknownFeatures: string[];
   browserSummaries: {
     [browser: string]: {
-      total: number;
       compatible: number;
       'partial-support': number;
       flagged: number;

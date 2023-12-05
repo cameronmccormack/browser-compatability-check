@@ -4,48 +4,14 @@ import { isFeatureCompatible } from '../../src/browser-support/is-feature-compat
 import * as cssBrowserSupportModule from '../../src/browser-support/css-browser-support';
 import { Compatibility } from '../../src/types/compatibility';
 import { BrowserName } from '@mdn/browser-compat-data';
-
-const MODERN_CHROME_CONFIG: Browser[] = [
-  {
-    identifier: 'chrome',
-    version: 122,
-  },
-];
-
-const PRE_FLEX_GAP_CHROME_CONFIG: Browser[] = [
-  {
-    identifier: 'chrome',
-    version: 80,
-  },
-];
-
-const PRE_DISPLAY_GRID_CHROME_CONFIG: Browser[] = [
-  {
-    identifier: 'chrome',
-    version: 28,
-  },
-];
-
-const FLAGGED_VIEW_TIMELINE_CONFIG: Browser[] = [
-  {
-    identifier: 'firefox',
-    version: 114,
-  },
-];
-
-const PARTIALLY_SUPPORTED_OUTLINE_CONFIG: Browser[] = [
-  {
-    identifier: 'chrome',
-    version: 80,
-  },
-];
-
-const TOO_MODERN_EDGE_DOUBLE_TAP_ZOOM_CONFIG: Browser[] = [
-  {
-    identifier: 'edge',
-    version: 100,
-  },
-];
+import {
+  PRE_FLEX_GAP_CHROME_CONFIG,
+  PRE_DISPLAY_GRID_CHROME_CONFIG,
+  FLAGGED_VIEW_TIMELINE_CONFIG,
+  PARTIALLY_SUPPORTED_OUTLINE_CONFIG,
+  TOO_MODERN_EDGE_DOUBLE_TAP_ZOOM_CONFIG,
+  MODERN_CHROME_CONFIG,
+} from '../test-data/browser-configs';
 
 type TestData = {
   identifier: string;

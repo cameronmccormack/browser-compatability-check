@@ -5,7 +5,6 @@ import { CompatibilityReport } from '../types/compatibility';
 import { FormattedCss } from '../types/css-feature';
 
 const INITIAL_BROWSER_SUMMARY = {
-  total: 0,
   compatible: 0,
   'partial-support': 0,
   flagged: 0,
@@ -23,7 +22,7 @@ export const getCompatibilityReport = (
     browserSummaries: Object.fromEntries(
       browserConfig.map((browser) => [
         browser.identifier,
-        INITIAL_BROWSER_SUMMARY,
+        { ...INITIAL_BROWSER_SUMMARY },
       ]),
     ),
   };

@@ -26,7 +26,7 @@ export const runCli = (
 
   const reports: CompatibilityReport[] = [];
   cssFiles.forEach((file) => {
-    const formattedCss = getFormattedCss(csstree.parse(file.fileContents));
+    const formattedCss = getFormattedCss(csstree.parse(file.contents));
     reports.push(
       getCompatibilityReport(formattedCss, browserConfig as Browser[]),
     );
