@@ -2,9 +2,8 @@
   "name": "browser-compatibility-check",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/index.js",
   "scripts": {
-    "start": "tsc && node dist/index.js",
+    "start": "tsc && node bin/browser-compatibility-check",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint --ext .tsx --ext .ts . --fix",
     "test": "jest",

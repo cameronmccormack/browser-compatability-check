@@ -1,4 +1,6 @@
+import { BrowserName } from '@mdn/browser-compat-data/types';
+
 export type Browser = {
-  identifier: string;
+  identifier: BrowserName;
   version: number;
 };

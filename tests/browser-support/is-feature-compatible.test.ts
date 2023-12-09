@@ -3,48 +3,15 @@ import { CssFeature } from '../../src/types/css-feature';
 import { isFeatureCompatible } from '../../src/browser-support/is-feature-compatible';
 import * as cssBrowserSupportModule from '../../src/browser-support/css-browser-support';
 import { Compatibility } from '../../src/types/compatibility';
-
-const MODERN_CHROME_CONFIG = [
-  {
-    identifier: 'chrome',
-    version: 122,
-  },
-];
-
-const PRE_FLEX_GAP_CHROME_CONFIG = [
-  {
-    identifier: 'chrome',
-    version: 80,
-  },
-];
-
-const PRE_DISPLAY_GRID_CHROME_CONFIG = [
-  {
-    identifier: 'chrome',
-    version: 28,
-  },
-];
-
-const FLAGGED_VIEW_TIMELINE_CONFIG = [
-  {
-    identifier: 'firefox',
-    version: 114,
-  },
-];
-
-const PARTIALLY_SUPPORTED_OUTLINE_CONFIG = [
-  {
-    identifier: 'chrome',
-    version: 80,
-  },
-];
-
-const TOO_MODERN_EDGE_DOUBLE_TAP_ZOOM_CONFIG = [
-  {
-    identifier: 'edge',
-    version: 100,
-  },
-];
+import { BrowserName } from '@mdn/browser-compat-data';
+import {
+  PRE_FLEX_GAP_CHROME_CONFIG,
+  PRE_DISPLAY_GRID_CHROME_CONFIG,
+  FLAGGED_VIEW_TIMELINE_CONFIG,
+  PARTIALLY_SUPPORTED_OUTLINE_CONFIG,
+  TOO_MODERN_EDGE_DOUBLE_TAP_ZOOM_CONFIG,
+  MODERN_CHROME_CONFIG,
+} from '../test-data/browser-configs';
 
 type TestData = {
   identifier: string;
@@ -137,7 +104,7 @@ const testCases: [string, TestData][] = [
       value: 'flex',
       browserConfig: [
         {
-          identifier: 'not-real-browser',
+          identifier: 'not-real-browser' as BrowserName,
           version: 20,
         },
       ],
