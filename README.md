@@ -11,10 +11,10 @@
 <br />
 <div align="center">
   <a href="https://github.com/cameronmccormack/kompat">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+    <img src="images/logo.png" alt="Logo" width="200" height="200">
   </a>
 
-<h3 align="center">Browser Compatibility Check</h3>
+<h3 align="center">Kompat</h3>
 
   <p align="center">
     A utility for checking CSS browser compatibility.
