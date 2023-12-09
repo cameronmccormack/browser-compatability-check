@@ -140,8 +140,7 @@ Error: Malformed browser config: [
       expectedExitCode: 2,
       path: 'this/is/not/valid',
       cssFinderOverride: null,
-      expectedErrorMessage:
-        'Error: Invalid filepath: /Users/cammcc/Documents/Hobby/kompat/this/is/not/valid.',
+      expectedErrorMessage: `Error: Invalid filepath: ${process.cwd()}/this/is/not/valid.`,
     },
   ],
   [
