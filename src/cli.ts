@@ -3,7 +3,7 @@ import * as csstree from 'css-tree';
 import { getFormattedCss } from './css-parser/css-parser';
 import { getCompatibilityReport } from './compatibility-report/get-compatibility-report';
 import { CompatibilityReport } from './types/compatibility';
-import { printCompatibilityReport } from './compatibility-report/print-compatibility-report';
+import { printCompatibilityReports } from './compatibility-report/print-compatibility-reports';
 import { getValidatedBrowserConfig } from './schema-validation/browsers';
 import { getBrowserConfig } from './get-browser-config';
 
@@ -24,8 +24,9 @@ export const runCli = (
     return exitWith(2, `Error: ${validatedBrowserConfig.error}`);
   }
 
+  const currentWorkingDirectory = process.cwd();
   const formattedPath = relativePath?.replaceAll(/\/+$|^\.\//g, '');
-  const absolutePath = `${process.cwd()}${
+  const absolutePath = `${currentWorkingDirectory}${
     formattedPath ? `/${formattedPath}` : ''
   }`;
 
@@ -41,16 +42,15 @@ export const runCli = (
   cssFiles.forEach((file) => {
     const formattedCss = getFormattedCss(csstree.parse(file.contents));
     reports.push(
-      getCompatibilityReport(formattedCss, validatedBrowserConfig, file.path),
+      getCompatibilityReport(
+        formattedCss,
+        validatedBrowserConfig,
+        file.path.replace(currentWorkingDirectory, '.'),
+      ),
     );
   });
 
-  reports.forEach((report) =>
-    printCompatibilityReport(
-      report,
-      report.overallStatus === 'pass' ? 'concise' : 'full',
-    ),
-  );
+  printCompatibilityReports(reports);
 
   return reports.some((report) => report.overallStatus === 'fail')
     ? exitWith(1)
