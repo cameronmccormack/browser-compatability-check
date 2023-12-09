@@ -21,8 +21,13 @@ const getAllCssFilePaths = (
   return filePathArray;
 };
 
-export const getAllCssFiles = (absolutePath: string): CssFile[] =>
-  getAllCssFilePaths(absolutePath).map((path) => ({
-    path,
-    contents: fs.readFileSync(path, 'utf-8'),
-  }));
+export const getAllCssFiles = (absolutePath: string): CssFile[] | null => {
+  try {
+    return getAllCssFilePaths(absolutePath).map((path) => ({
+      path,
+      contents: fs.readFileSync(path, 'utf-8'),
+    }));
+  } catch {
+    return null;
+  }
+};
