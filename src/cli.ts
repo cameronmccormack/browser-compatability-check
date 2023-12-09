@@ -7,7 +7,7 @@ import { CompatibilityReport } from './types/compatibility';
 import { Browser } from './types/browser';
 import logger from './logger';
 
-enum ExitCode {
+export enum ExitCode {
   Compatible = 0,
   Incompatible = 1,
   BadArgsOrException = 2,
