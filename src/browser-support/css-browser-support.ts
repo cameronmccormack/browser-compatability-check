@@ -14,7 +14,6 @@ import {
   VersionValue,
 } from '@mdn/browser-compat-data/types';
 import { findCompatNode } from './find-compat-node';
-import logger from '../logger';
 
 const getCompatibilityStatement = (
   item: CssFeature,
@@ -116,9 +115,6 @@ export const getCssBrowserSupport = (
         .filter((supportStatement) => !supportStatement.prefix);
 
       if (supportBrowserAsArray.length === 0) {
-        logger.warn(
-          `No details found for browser ${browser} in compatibility data.`,
-        );
         continue;
       }
 
