@@ -33,6 +33,7 @@
   "dependencies": {
     "@mdn/browser-compat-data": "^5.3.30",
     "css-tree": "^2.3.1",
-    "winston": "^3.11.0"
+    "winston": "^3.11.0",
+    "zod": "^3.22.4"
   }
 }

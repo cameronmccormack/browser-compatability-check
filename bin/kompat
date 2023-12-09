@@ -1,5 +1,8 @@
 #!/usr/bin/env node
 require('../dist/cli.js').runCli(
-  process.exit,
+  (code, errorMessage) => {
+    if (errorMessage) console.log(errorMessage);
+    return process.exit(code);
+  },
   process.argv[2]
 );
