@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { CompatibilityReport } from '../types/compatibility';
 
 const printOverallSummary = (report: CompatibilityReport): void => {
