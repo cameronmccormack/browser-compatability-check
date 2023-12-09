@@ -1,9 +1,9 @@
 {
-  "name": "browser-compatibility-check",
+  "name": "kompat",
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "start": "tsc && node bin/browser-compatibility-check",
+    "start": "tsc && node bin/kompat",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint --ext .tsx --ext .ts . --fix",
     "test": "jest",
@@ -11,7 +11,7 @@
     "transpile": "tsc"
   },
   "bin": {
-    "browser-compatibility-check": "bin/browser-compatibility-check"
+    "kompat": "bin/kompat"
   },
   "author": "Cameron McCormack",
   "license": "MIT",
