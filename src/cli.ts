@@ -2,10 +2,10 @@ import { getAllCssFiles } from './css-finder/get-all-css-files';
 import * as csstree from 'css-tree';
 import { getFormattedCss } from './css-parser/css-parser';
 import { getCompatibilityReport } from './compatibility-report/get-compatibility-report';
-import browserConfig from './browser-config.json';
 import { CompatibilityReport } from './types/compatibility';
 import { printCompatibilityReport } from './compatibility-report/print-compatibility-report';
 import { getValidatedBrowserConfig } from './schema-validation/browsers';
+import { getBrowserConfig } from './get-browser-config';
 
 export enum ExitCode {
   Compatible = 0,
@@ -17,7 +17,8 @@ export const runCli = (
   exitWith: (code: ExitCode, errorMessage?: string) => ExitCode,
   relativePath?: string,
 ): ExitCode => {
-  const validatedBrowserConfig = getValidatedBrowserConfig(browserConfig);
+  const rawBrowserConfig = getBrowserConfig();
+  const validatedBrowserConfig = getValidatedBrowserConfig(rawBrowserConfig);
 
   if (!Array.isArray(validatedBrowserConfig)) {
     return exitWith(2, `Error: ${validatedBrowserConfig.error}`);
