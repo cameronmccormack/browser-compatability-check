@@ -1,4 +1,6 @@
 export type CompatibilityReport = {
+  filePath: string;
+  overallStatus: 'pass' | 'fail' | 'warn';
   knownFeatures: {
     [featureId: string]: Compatibility;
   };

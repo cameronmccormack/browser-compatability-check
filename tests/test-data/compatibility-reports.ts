@@ -1,7 +1,11 @@
 import { produce } from 'immer';
 import { CompatibilityReport } from '../../src/types/compatibility';
 
+export const EXAMPLE_FILEPATH = 'example/filepath/eg-file.css';
+
 export const compatibleReport: CompatibilityReport = {
+  filePath: EXAMPLE_FILEPATH,
+  overallStatus: 'pass',
   knownFeatures: {
     'property:color:red': { chrome: { compatibility: 'compatible' } },
     'selector:last-child': { chrome: { compatibility: 'compatible' } },
@@ -21,6 +25,7 @@ export const compatibleReport: CompatibilityReport = {
 };
 
 export const partiallyCompatibleReport = produce(compatibleReport, (draft) => {
+  draft.overallStatus = 'warn';
   draft.knownFeatures['property:color:red'].chrome.compatibility =
     'partial-support';
   draft.browserSummaries.chrome.compatible = 3;
@@ -28,12 +33,14 @@ export const partiallyCompatibleReport = produce(compatibleReport, (draft) => {
 });
 
 export const flaggedCompatibilityReport = produce(compatibleReport, (draft) => {
+  draft.overallStatus = 'warn';
   draft.knownFeatures['property:color:red'].chrome.compatibility = 'flagged';
   draft.browserSummaries.chrome.compatible = 3;
   draft.browserSummaries.chrome.flagged = 1;
 });
 
 export const incompatibleReport = produce(compatibleReport, (draft) => {
+  draft.overallStatus = 'fail';
   draft.knownFeatures['property:color:red'].chrome.compatibility =
     'incompatible';
   draft.browserSummaries.chrome.compatible = 3;
@@ -41,11 +48,13 @@ export const incompatibleReport = produce(compatibleReport, (draft) => {
 });
 
 export const unknownCompatibilityReport = produce(compatibleReport, (draft) => {
+  draft.overallStatus = 'warn';
   draft.knownFeatures['property:color:red'].chrome.compatibility = 'unknown';
   draft.browserSummaries.chrome.compatible = 3;
   draft.browserSummaries.chrome.unknown = 1;
 });
 
 export const unknownFeatureReport = produce(compatibleReport, (draft) => {
+  draft.overallStatus = 'fail';
   draft.unknownFeatures = ['property:not-a-real-feature:20px'];
 });

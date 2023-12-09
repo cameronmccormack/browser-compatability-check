@@ -5,7 +5,7 @@ import { getCompatibilityReport } from './compatibility-report/get-compatibility
 import browserConfig from './browser-config.json';
 import { CompatibilityReport } from './types/compatibility';
 import { Browser } from './types/browser';
-import logger from './logger';
+import { printCompatibilityReport } from './compatibility-report/print-compatibility-report';
 
 export enum ExitCode {
   Compatible = 0,
@@ -28,20 +28,22 @@ export const runCli = (
   cssFiles.forEach((file) => {
     const formattedCss = getFormattedCss(csstree.parse(file.contents));
     reports.push(
-      getCompatibilityReport(formattedCss, browserConfig as Browser[]),
+      getCompatibilityReport(
+        formattedCss,
+        browserConfig as Browser[],
+        file.path,
+      ),
     );
   });
 
-  if (
-    reports.some(
-      (report) =>
-        report.unknownFeatures.length > 0 ||
-        Object.values(report.browserSummaries).some(
-          (browser) => browser.incompatible > 0,
-        ),
-    )
-  ) {
-    reports.forEach((report) => logger.error(JSON.stringify(report)));
+  reports.forEach((report) =>
+    printCompatibilityReport(
+      report,
+      report.overallStatus === 'pass' ? 'concise' : 'full',
+    ),
+  );
+
+  if (reports.some((report) => report.overallStatus === 'fail')) {
     return exitWith(1);
   }
 

@@ -4,6 +4,7 @@ import {
   MODERN_CHROME_CONFIG,
   PRE_FLEX_GAP_CHROME_CONFIG,
 } from '../test-data/browser-configs';
+import { EXAMPLE_FILEPATH } from '../test-data/compatibility-reports';
 
 test('creates expected compatibility report for empty formatted css', () => {
   const formattedCss = {
@@ -13,6 +14,8 @@ test('creates expected compatibility report for empty formatted css', () => {
     functions: [],
   };
   const emptyChromeReport = {
+    filePath: EXAMPLE_FILEPATH,
+    overallStatus: 'pass',
     browserSummaries: {
       chrome: {
         compatible: 0,
@@ -26,9 +29,13 @@ test('creates expected compatibility report for empty formatted css', () => {
     unknownFeatures: [],
   };
 
-  expect(getCompatibilityReport(formattedCss, MODERN_CHROME_CONFIG)).toEqual(
-    emptyChromeReport,
-  );
+  expect(
+    getCompatibilityReport(
+      formattedCss,
+      MODERN_CHROME_CONFIG,
+      EXAMPLE_FILEPATH,
+    ),
+  ).toEqual(emptyChromeReport);
 });
 
 test('creates expected compatibility report for unsupported, partially supported and fully supported features', () => {
@@ -57,6 +64,8 @@ test('creates expected compatibility report for unsupported, partially supported
     functions: [],
   };
   const expectedReport = {
+    filePath: EXAMPLE_FILEPATH,
+    overallStatus: 'fail',
     browserSummaries: {
       chrome: {
         compatible: 1,
@@ -89,7 +98,68 @@ test('creates expected compatibility report for unsupported, partially supported
   };
 
   expect(
-    getCompatibilityReport(formattedCss, PRE_FLEX_GAP_CHROME_CONFIG),
+    getCompatibilityReport(
+      formattedCss,
+      PRE_FLEX_GAP_CHROME_CONFIG,
+      EXAMPLE_FILEPATH,
+    ),
+  ).toEqual(expectedReport);
+});
+
+test('creates expected compatibility report with warning for partially supported and fully supported features', () => {
+  const formattedCss: FormattedCss = {
+    properties: [
+      {
+        identifier: 'gap',
+        value: '20px',
+        context: 'grid_context',
+        type: 'property',
+      },
+      {
+        identifier: 'outline',
+        value: 'anything',
+        type: 'property',
+      },
+    ],
+    selectors: [],
+    atRules: [],
+    functions: [],
+  };
+  const expectedReport = {
+    filePath: EXAMPLE_FILEPATH,
+    overallStatus: 'warn',
+    browserSummaries: {
+      chrome: {
+        compatible: 1,
+        flagged: 0,
+        incompatible: 0,
+        'partial-support': 1,
+        unknown: 0,
+      },
+    },
+    knownFeatures: {
+      'property:gap:20px:grid_context': {
+        chrome: {
+          compatibility: 'compatible',
+        },
+      },
+      'property:outline:anything': {
+        chrome: {
+          compatibility: 'partial-support',
+          notes:
+            'Before Chrome 94, <code>outline</code> does not follow the shape of <code>border-radius</code>.',
+        },
+      },
+    },
+    unknownFeatures: [],
+  };
+
+  expect(
+    getCompatibilityReport(
+      formattedCss,
+      PRE_FLEX_GAP_CHROME_CONFIG,
+      EXAMPLE_FILEPATH,
+    ),
   ).toEqual(expectedReport);
 });
 
@@ -107,6 +177,8 @@ test('creates expected compatibility report for unknown feature', () => {
     functions: [],
   };
   const expectedReport = {
+    filePath: EXAMPLE_FILEPATH,
+    overallStatus: 'fail',
     browserSummaries: {
       chrome: {
         compatible: 0,
@@ -120,9 +192,13 @@ test('creates expected compatibility report for unknown feature', () => {
     unknownFeatures: ['property:not-a-real-feature:20px'],
   };
 
-  expect(getCompatibilityReport(formattedCss, MODERN_CHROME_CONFIG)).toEqual(
-    expectedReport,
-  );
+  expect(
+    getCompatibilityReport(
+      formattedCss,
+      MODERN_CHROME_CONFIG,
+      EXAMPLE_FILEPATH,
+    ),
+  ).toEqual(expectedReport);
 });
 
 test('adds all types of css feature to compatibility report', () => {
@@ -154,6 +230,8 @@ test('adds all types of css feature to compatibility report', () => {
     ],
   };
   const expectedReport = {
+    filePath: EXAMPLE_FILEPATH,
+    overallStatus: 'pass',
     knownFeatures: {
       'property:color:red': { chrome: { compatibility: 'compatible' } },
       'selector:last-child': { chrome: { compatibility: 'compatible' } },
@@ -172,7 +250,11 @@ test('adds all types of css feature to compatibility report', () => {
     },
   };
 
-  expect(getCompatibilityReport(formattedCss, MODERN_CHROME_CONFIG)).toEqual(
-    expectedReport,
-  );
+  expect(
+    getCompatibilityReport(
+      formattedCss,
+      MODERN_CHROME_CONFIG,
+      EXAMPLE_FILEPATH,
+    ),
+  ).toEqual(expectedReport);
 });
