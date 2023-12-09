@@ -1,8 +1,13 @@
 /* eslint-disable no-console */
 import { CompatibilityReport } from '../types/compatibility';
 
+const printSpacer = (): void => {
+  console.log('\n');
+};
+
 const printOverallSummary = (report: CompatibilityReport): void => {
   console.log(`${report.overallStatus.toUpperCase()}: ${report.filePath}`);
+  printSpacer();
 };
 
 const printBrowserSummaries = (report: CompatibilityReport): void => {
@@ -12,6 +17,7 @@ const printBrowserSummaries = (report: CompatibilityReport): void => {
   report.unknownFeatures.length > 0
     ? report.unknownFeatures.forEach((feature) => console.log(` - ${feature}`))
     : console.log('None');
+  printSpacer();
 };
 
 const printFeatureSummaries = (report: CompatibilityReport): void => {
@@ -31,10 +37,7 @@ const printFeatureSummaries = (report: CompatibilityReport): void => {
 
   console.log('Per-feature summary:');
   console.table(tabulatedFeatures);
-};
-
-const printSpacer = (): void => {
-  console.log('\n');
+  printSpacer();
 };
 
 export const printCompatibilityReport = (
@@ -42,11 +45,8 @@ export const printCompatibilityReport = (
   mode: 'full' | 'concise',
 ): void => {
   printOverallSummary(report);
-  printSpacer();
   printBrowserSummaries(report);
   if (mode === 'full') {
-    printSpacer();
     printFeatureSummaries(report);
   }
-  printSpacer();
 };
