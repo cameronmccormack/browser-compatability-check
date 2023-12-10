@@ -111,7 +111,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 ## Contact
 
-[Cameron McCormack](github.com/cameronmccormack)
+[Cameron McCormack](https://github.com/cameronmccormack)
 
 Project Link: [https://github.com/cameronmccormack/kompat](https://github.com/cameronmccormack/kompat)
 
