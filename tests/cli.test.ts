@@ -1,7 +1,7 @@
 import * as cssFinderModule from '../src/css-finder/get-all-css-files';
 import * as cssParserModule from '../src/css-parser/css-parser';
 import * as compatibilityReportModule from '../src/compatibility-report/get-compatibility-report';
-import * as browserConfigModule from '../src/get-browser-config';
+import * as kompatRcModule from '../src/run-commands/get-kompatrc';
 import {
   compatibleReport,
   flaggedCompatibilityReport,
@@ -13,11 +13,12 @@ import {
 import { runCli, ExitCode } from '../src/cli';
 import { CompatibilityReport } from '../src/types/compatibility';
 import { CssFile } from '../src/types/css-file';
+import { MODERN_CHROME_CONFIG } from './test-data/browser-configs';
 
 type TestData = {
   report: CompatibilityReport;
   expectedExitCode: ExitCode;
-  mockBrowserConfig?: unknown;
+  mockBrowserConfig?: { browsers: unknown } | null;
   expectedErrorMessage?: string;
   path?: string;
   cssFinderOverride?: CssFile[] | null;
@@ -99,7 +100,9 @@ const testCases: [string, TestData][] = [
     {
       report: compatibleReport,
       expectedExitCode: 2,
-      mockBrowserConfig: [{ identifier: 'chrome', version: 'not-a-number' }],
+      mockBrowserConfig: {
+        browsers: [{ identifier: 'chrome', version: 'not-a-number' }],
+      },
       expectedErrorMessage: `
 Error: Malformed browser config: [
   {
@@ -122,12 +125,14 @@ Error: Malformed browser config: [
     {
       report: compatibleReport,
       expectedExitCode: 2,
-      mockBrowserConfig: [
-        { identifier: 'chrome', version: 1 },
-        { identifier: 'chrome', version: 2 },
-        { identifier: 'firefox', version: 1 },
-        { identifier: 'firefox', version: 2 },
-      ],
+      mockBrowserConfig: {
+        browsers: [
+          { identifier: 'chrome', version: 1 },
+          { identifier: 'chrome', version: 2 },
+          { identifier: 'firefox', version: 1 },
+          { identifier: 'firefox', version: 2 },
+        ],
+      },
       expectedErrorMessage:
         'Error: Duplicate browsers in config. Duplicates: chrome, firefox.',
       path: 'this/could/be/anything',
@@ -151,6 +156,16 @@ Error: Malformed browser config: [
       path: 'this/contains/no/css',
       cssFinderOverride: [],
       expectedErrorMessage: 'Error: No CSS files found.',
+    },
+  ],
+  [
+    'run command file not found',
+    {
+      report: compatibleReport,
+      expectedExitCode: 2,
+      mockBrowserConfig: null,
+      expectedErrorMessage:
+        'Error: could not find .kompatrc.yml or .kompatrc.yaml file.',
     },
   ],
 ];
@@ -184,12 +199,13 @@ test.each<[string, TestData]>(testCases)(
       .mockReturnValueOnce(
         cssFinderOverride !== undefined ? cssFinderOverride : [dummyCssFile],
       );
-
-    if (mockBrowserConfig) {
-      jest
-        .spyOn(browserConfigModule, 'getBrowserConfig')
-        .mockReturnValueOnce(mockBrowserConfig);
-    }
+    jest
+      .spyOn(kompatRcModule, 'getKompatRc')
+      .mockReturnValueOnce(
+        mockBrowserConfig === null
+          ? null
+          : mockBrowserConfig ?? { browsers: MODERN_CHROME_CONFIG },
+      );
 
     let exitCode: ExitCode | null = null;
     let errorMessage: string | undefined = undefined;
