@@ -1,0 +1,7 @@
+browsers:
+  - identifier: chrome
+    version: 100
+  - identifier: firefox
+    version: 100
+  - identifier: edge
+    version: 23

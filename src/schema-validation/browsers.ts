@@ -1,6 +1,8 @@
 import { z } from 'zod';
 import { Browser } from '../types/browser';
 
+// The line below is linked directly from the README.
+// Please update the README link if modifying this file.
 const BrowsersSchema = z.array(
   z.object({
     identifier: z.enum([

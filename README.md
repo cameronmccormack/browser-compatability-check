@@ -75,6 +75,17 @@ qq
 
 qq
 
+### Configuration
+
+Kompat is configured with a `.kompatrc.yml` file at the root of your repository. This file must contain:
+
+- `browsers`: an array of browser identifiers and versions
+  - The acceptable browser slugs are defined [here](src/schema-validation/browsers.ts#L5)
+  - The browser version must be a number
+  - Duplicate browser slugs are not allowed
+
+An example `.kompatrc.yml` file (named `.kompatrc.example.yml`) is given [here](.kompatrc.example.yml) for reference.
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Contributing
