@@ -37,8 +37,6 @@ const getOverallStatus = (
     overallResultOptions.push(rules['unknown-feature']);
   }
 
-  console.log(JSON.stringify(rules));
-
   const browserSummariesArray = Object.values(report.browserSummaries);
 
   BROWSER_LEVEL_COMPATIBILITIES.forEach((outcome) => {
