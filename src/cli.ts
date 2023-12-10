@@ -7,22 +7,13 @@ import { printCompatibilityReports } from './compatibility-report/print-compatib
 import { getValidatedBrowserConfig } from './schema-validation/browsers';
 import { getKompatRc } from './run-commands/get-kompatrc';
 import { getValidatedRuleOverrides } from './schema-validation/rule-overrides';
-import { Rules } from './types/rule-overrides';
+import { DEFAULT_RULES } from './run-commands/default-rules';
 
 export enum ExitCode {
   Compatible = 0,
   Incompatible = 1,
   BadArgsOrException = 2,
 }
-
-const DEFAULT_RULES: Rules = {
-  compatible: 'pass',
-  'partial-support': 'warn',
-  flagged: 'warn',
-  unknown: 'warn',
-  incompatible: 'fail',
-  'unknown-feature': 'fail',
-};
 
 export const runCli = (
   exitWith: (code: ExitCode, errorMessage?: string) => ExitCode,
