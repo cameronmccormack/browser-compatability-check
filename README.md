@@ -80,7 +80,7 @@ qq
 Kompat is configured with a `.kompatrc.yml` file at the root of your repository. This file must contain:
 
 - `browsers`: an array of browser identifiers and versions
-  - The acceptable browser slugs are defined [here](src/schema-validation/browsers.ts#L5)
+  - The acceptable browser slugs are defined [here](src/schema-validation/browsers.ts#L6)
   - The browser version must be a number
   - Duplicate browser slugs are not allowed
 
