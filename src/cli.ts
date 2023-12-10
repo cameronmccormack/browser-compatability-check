@@ -6,12 +6,23 @@ import { CompatibilityReport } from './types/compatibility';
 import { printCompatibilityReports } from './compatibility-report/print-compatibility-reports';
 import { getValidatedBrowserConfig } from './schema-validation/browsers';
 import { getKompatRc } from './run-commands/get-kompatrc';
+import { getValidatedRuleOverrides } from './schema-validation/rule-overrides';
+import { Rules } from './types/rule-overrides';
 
 export enum ExitCode {
   Compatible = 0,
   Incompatible = 1,
   BadArgsOrException = 2,
 }
+
+const DEFAULT_RULES: Rules = {
+  compatible: 'pass',
+  'partial-support': 'warn',
+  flagged: 'warn',
+  unknown: 'warn',
+  incompatible: 'fail',
+  'unknown-feature': 'fail',
+};
 
 export const runCli = (
   exitWith: (code: ExitCode, errorMessage?: string) => ExitCode,
@@ -30,9 +41,18 @@ export const runCli = (
   const validatedBrowserConfig = getValidatedBrowserConfig(
     kompatRcFile.browsers,
   );
-
-  if (!Array.isArray(validatedBrowserConfig)) {
+  if ('error' in validatedBrowserConfig) {
     return exitWith(2, `Error: ${validatedBrowserConfig.error}`);
+  }
+
+  const validatedRuleOverrides = getValidatedRuleOverrides(
+    kompatRcFile.ruleOverrides,
+  );
+  if (
+    validatedRuleOverrides !== undefined &&
+    'error' in validatedRuleOverrides
+  ) {
+    return exitWith(2, `Error: ${validatedRuleOverrides.error}`);
   }
 
   const formattedPath = relativePath?.replaceAll(/\/+$|^\.\//g, '');
@@ -48,6 +68,16 @@ export const runCli = (
     return exitWith(1, `Error: No CSS files found.`);
   }
 
+  const rules = {
+    ...DEFAULT_RULES,
+    ...Object.fromEntries(
+      Object.entries(validatedRuleOverrides ?? {}).filter(
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        ([_, result]) => result != null,
+      ),
+    ),
+  };
+
   const reports: CompatibilityReport[] = [];
   cssFiles.forEach((file) => {
     const formattedCss = getFormattedCss(csstree.parse(file.contents));
@@ -56,6 +86,7 @@ export const runCli = (
         formattedCss,
         validatedBrowserConfig,
         file.path.replace(currentWorkingDirectory, '.'),
+        rules,
       ),
     );
   });

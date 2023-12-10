@@ -83,6 +83,9 @@ Kompat is configured with a `.kompatrc.yml` file at the root of your repository.
   - The acceptable browser slugs are defined [here](src/schema-validation/browsers.ts#L6)
   - The browser version must be a number
   - Duplicate browser slugs are not allowed
+- `ruleOverrides`: to change the default overall pass/warn/fail thresholds
+  - Acceptable rules config is defined [here](src/schema-validation/rule-overrides.ts#L6)
+  - e.g. for failing a pipeline if a partially compatible feature is identified
 
 An example `.kompatrc.yml` file (named `.kompatrc.example.yml`) is given [here](.kompatrc.example.yml) for reference.
 

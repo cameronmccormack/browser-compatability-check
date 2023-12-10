@@ -3,6 +3,7 @@ import YAML from 'yaml';
 
 type UnvalidatedKompatRc = {
   browsers?: unknown;
+  ruleOverrides?: unknown;
 };
 
 const getRawKompatRc = (currentWorkingDirectory: string): string | null => {
