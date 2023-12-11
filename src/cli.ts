@@ -61,12 +61,7 @@ export const runCli = (
 
   const rules = {
     ...DEFAULT_RULES,
-    ...Object.fromEntries(
-      Object.entries(validatedRuleOverrides ?? {}).filter(
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        ([_, result]) => result != null,
-      ),
-    ),
+    ...validatedRuleOverrides,
   };
 
   const reports: CompatibilityReport[] = [];

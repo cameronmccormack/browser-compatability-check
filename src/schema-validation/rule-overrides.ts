@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { RuleOverrides } from '../types/rule-overrides';
+import { Rules } from '../types/rule-overrides';
 
 // The schema below is linked directly from the README.
 // Please update the README link and/or line reference if modifying this file.
@@ -17,10 +17,20 @@ export const RuleOverridesSchema = z
 
 export const getValidatedRuleOverrides = (
   rawConfig: unknown,
-): RuleOverrides | { error: string } => {
+): Partial<Rules> | { error: string } => {
   const parsedConfig = RuleOverridesSchema.safeParse(rawConfig);
 
-  return parsedConfig.success
-    ? parsedConfig.data
-    : { error: `Malformed rule overrides config: ${parsedConfig.error}` };
+  if (parsedConfig.success) {
+    const parsedConfigWithUndefinedFieldsRemoved = {
+      ...Object.fromEntries(
+        Object.entries(parsedConfig.data ?? {}).filter(
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          ([_, result]) => result != null,
+        ),
+      ),
+    };
+    return parsedConfigWithUndefinedFieldsRemoved;
+  }
+
+  return { error: `Malformed rule overrides config: ${parsedConfig.error}` };
 };
