@@ -4,7 +4,7 @@ import { Rules } from '../types/rule-overrides';
 // The schema below is linked directly from the README.
 // Please update the README link and/or line reference if modifying this file.
 const RuleResultSchema = z.enum(['pass', 'warn', 'fail']);
-export const RuleOverridesSchema = z
+const RuleOverridesSchema = z
   .object({
     compatible: RuleResultSchema,
     'partial-support': RuleResultSchema,
@@ -18,18 +18,20 @@ export const RuleOverridesSchema = z
 export const getValidatedRuleOverrides = (
   rawConfig: unknown,
 ): Partial<Rules> | { error: string } => {
+  if (rawConfig === undefined) {
+    return {};
+  }
+
   const parsedConfig = RuleOverridesSchema.safeParse(rawConfig);
 
   if (parsedConfig.success) {
-    const parsedConfigWithUndefinedFieldsRemoved = {
+    return {
       ...Object.fromEntries(
-        Object.entries(parsedConfig.data ?? {}).filter(
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          ([_, result]) => result != null,
+        Object.entries(parsedConfig.data).filter(
+          ([, result]) => result != null,
         ),
       ),
     };
-    return parsedConfigWithUndefinedFieldsRemoved;
   }
 
   return { error: `Malformed rule overrides config: ${parsedConfig.error}` };
