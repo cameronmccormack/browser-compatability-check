@@ -3,12 +3,14 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "start": "tsc && node bin/kompat",
+    "build": "tsc",
+    "check:exports": "ts-unused-exports tsconfig.extended.json",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint --ext .tsx --ext .ts . --fix",
+    "start": "tsc && node bin/kompat",
     "test": "jest --silent",
     "test:coverage": "jest --coverage --silent",
-    "transpile": "tsc"
+    "typecheck": "tsc --project ./tsconfig.extended.json --noEmit"
   },
   "bin": {
     "kompat": "bin/kompat"
@@ -28,6 +30,7 @@
     "prettier": "^3.1.0",
     "ts-jest": "^29.1.1",
     "ts-node": "^10.9.2",
+    "ts-unused-exports": "^10.0.1",
     "typescript": "^5.3.3"
   },
   "dependencies": {
