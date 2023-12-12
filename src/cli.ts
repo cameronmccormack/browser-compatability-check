@@ -39,10 +39,7 @@ export const runCli = (
   const validatedRuleOverrides = getValidatedRuleOverrides(
     kompatRcFile.ruleOverrides,
   );
-  if (
-    validatedRuleOverrides !== undefined &&
-    'error' in validatedRuleOverrides
-  ) {
+  if ('error' in validatedRuleOverrides) {
     return exitWith(2, `Error: ${validatedRuleOverrides.error}`);
   }
 

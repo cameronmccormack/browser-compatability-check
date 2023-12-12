@@ -3,7 +3,7 @@ import { Rules } from '../types/rule-overrides';
 
 // The schema below is linked directly from the README.
 // Please update the README link and/or line reference if modifying this file.
-const RuleResultSchema = z.enum(['pass', 'warn', 'fail']).optional();
+const RuleResultSchema = z.enum(['pass', 'warn', 'fail']);
 export const RuleOverridesSchema = z
   .object({
     compatible: RuleResultSchema,
@@ -13,7 +13,7 @@ export const RuleOverridesSchema = z
     unknown: RuleResultSchema,
     'unknown-feature': RuleResultSchema,
   })
-  .optional();
+  .partial();
 
 export const getValidatedRuleOverrides = (
   rawConfig: unknown,
