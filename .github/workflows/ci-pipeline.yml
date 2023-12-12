@@ -22,7 +22,7 @@ jobs:
         run: npm run typecheck
 
       - name: Check unused exports
-        run: npm run check:unused-exports
+        run: npm run check:exports
 
       - name: Lint
         run: npm run lint
