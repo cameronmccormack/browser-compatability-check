@@ -5,3 +5,7 @@ browsers:
     version: 100
   - identifier: edge
     version: 23
+ruleOverrides:
+  partially-compatible: fail
+  flagged: fail
+  unknown-feature: warn

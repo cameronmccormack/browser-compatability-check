@@ -5,6 +5,7 @@ import * as kompatRcModule from '../src/run-commands/get-kompatrc';
 import {
   compatibleReport,
   flaggedCompatibilityReport,
+  flaggedCompatibilityReportWithOverallFailure,
   incompatibleReport,
   partiallyCompatibleReport,
   unknownCompatibilityReport,
@@ -14,11 +15,15 @@ import { runCli, ExitCode } from '../src/cli';
 import { CompatibilityReport } from '../src/types/compatibility';
 import { CssFile } from '../src/types/css-file';
 import { MODERN_CHROME_CONFIG } from './test-data/browser-configs';
+import { UnvalidatedKompatRc } from '../src/types/unvalidated-kompatrc';
+import { Rules } from '../src/types/rules';
+import { DEFAULT_RULES } from '../src/run-commands/default-rules';
 
 type TestData = {
   report: CompatibilityReport;
   expectedExitCode: ExitCode;
-  mockBrowserConfig?: { browsers: unknown } | null;
+  mockKompatRc?: UnvalidatedKompatRc | null;
+  expectedRules?: Rules;
   expectedErrorMessage?: string;
   path?: string;
   cssFinderOverride?: CssFile[] | null;
@@ -100,7 +105,7 @@ const testCases: [string, TestData][] = [
     {
       report: compatibleReport,
       expectedExitCode: 2,
-      mockBrowserConfig: {
+      mockKompatRc: {
         browsers: [{ identifier: 'chrome', version: 'not-a-number' }],
       },
       expectedErrorMessage: `
@@ -125,7 +130,7 @@ Error: Malformed browser config: [
     {
       report: compatibleReport,
       expectedExitCode: 2,
-      mockBrowserConfig: {
+      mockKompatRc: {
         browsers: [
           { identifier: 'chrome', version: 1 },
           { identifier: 'chrome', version: 2 },
@@ -163,9 +168,56 @@ Error: Malformed browser config: [
     {
       report: compatibleReport,
       expectedExitCode: 2,
-      mockBrowserConfig: null,
+      mockKompatRc: null,
       expectedErrorMessage:
         'Error: could not find .kompatrc.yml or .kompatrc.yaml file.',
+    },
+  ],
+  [
+    'overridden compatibility',
+    {
+      report: flaggedCompatibilityReportWithOverallFailure,
+      expectedExitCode: 1,
+      expectedRules: {
+        ...DEFAULT_RULES,
+        flagged: 'fail',
+      },
+      mockKompatRc: {
+        browsers: MODERN_CHROME_CONFIG,
+        ruleOverrides: {
+          flagged: 'fail',
+        },
+      },
+    },
+  ],
+  [
+    'unexpected value in rule overrides',
+    {
+      report: flaggedCompatibilityReportWithOverallFailure,
+      expectedExitCode: 2,
+      expectedErrorMessage: `
+Error: Malformed rule overrides config: [
+  {
+    "received": "not a known value",
+    "code": "invalid_enum_value",
+    "options": [
+      "pass",
+      "warn",
+      "fail"
+    ],
+    "path": [
+      "flagged"
+    ],
+    "message": "Invalid enum value. Expected 'pass' | 'warn' | 'fail', received 'not a known value'"
+  }
+]
+      `.trim(),
+      mockKompatRc: {
+        browsers: MODERN_CHROME_CONFIG,
+        ruleOverrides: {
+          flagged: 'not a known value',
+        },
+      },
     },
   ],
 ];
@@ -187,11 +239,12 @@ test.each<[string, TestData]>(testCases)(
       expectedExitCode,
       expectedErrorMessage,
       path,
-      mockBrowserConfig,
+      mockKompatRc,
       cssFinderOverride,
+      expectedRules,
     },
   ) => {
-    jest
+    const getCompatibilityReportSpy = jest
       .spyOn(compatibilityReportModule, 'getCompatibilityReport')
       .mockReturnValueOnce(report);
     jest
@@ -202,9 +255,9 @@ test.each<[string, TestData]>(testCases)(
     jest
       .spyOn(kompatRcModule, 'getKompatRc')
       .mockReturnValueOnce(
-        mockBrowserConfig === null
+        mockKompatRc === null
           ? null
-          : mockBrowserConfig ?? { browsers: MODERN_CHROME_CONFIG },
+          : mockKompatRc ?? { browsers: MODERN_CHROME_CONFIG },
       );
 
     let exitCode: ExitCode | null = null;
@@ -217,6 +270,14 @@ test.each<[string, TestData]>(testCases)(
 
     runCli(exitWith, path);
 
+    if (expectedRules) {
+      expect(getCompatibilityReportSpy).toHaveBeenCalledWith(
+        dummyFormattedCss,
+        mockKompatRc?.browsers ?? MODERN_CHROME_CONFIG,
+        dummyCssFile.path,
+        expectedRules,
+      );
+    }
     expect(exitCode).toEqual(expectedExitCode);
     expect(errorMessage).toEqual(expectedErrorMessage);
   },

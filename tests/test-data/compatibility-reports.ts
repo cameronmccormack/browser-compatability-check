@@ -39,6 +39,13 @@ export const flaggedCompatibilityReport = produce(compatibleReport, (draft) => {
   draft.browserSummaries.chrome.flagged = 1;
 });
 
+export const flaggedCompatibilityReportWithOverallFailure = produce(
+  flaggedCompatibilityReport,
+  (draft) => {
+    draft.overallStatus = 'fail';
+  },
+);
+
 export const incompatibleReport = produce(compatibleReport, (draft) => {
   draft.overallStatus = 'fail';
   draft.knownFeatures['property:color:red'].chrome.compatibility =

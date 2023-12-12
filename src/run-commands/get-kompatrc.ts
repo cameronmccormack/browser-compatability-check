@@ -1,9 +1,6 @@
 import fs from 'fs';
 import YAML from 'yaml';
-
-type UnvalidatedKompatRc = {
-  browsers?: unknown;
-};
+import { UnvalidatedKompatRc } from '../types/unvalidated-kompatrc';
 
 const getRawKompatRc = (currentWorkingDirectory: string): string | null => {
   try {

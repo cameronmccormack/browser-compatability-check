@@ -1,8 +1,13 @@
 import { isFeatureCompatible } from '../browser-support/is-feature-compatible';
 import { getIdFromFeature } from '../helpers/feature-id-helper';
 import { Browser } from '../types/browser';
-import { CompatibilityReport } from '../types/compatibility';
+import {
+  BrowserCompatibilityState,
+  CompatibilityReport,
+} from '../types/compatibility';
 import { FormattedCss } from '../types/css-feature';
+import { OverallResult } from '../types/overall-result';
+import { Rules } from '../types/rules';
 
 const INITIAL_BROWSER_SUMMARY = {
   compatible: 0,
@@ -17,39 +22,53 @@ type CompatibilityReportWithoutOverallStatus = Omit<
   'overallStatus'
 >;
 
+const BROWSER_LEVEL_COMPATIBILITIES: BrowserCompatibilityState[] = [
+  'flagged',
+  'partial-support',
+  'incompatible',
+  'unknown',
+  'compatible',
+];
+
 const getOverallStatus = (
   report: CompatibilityReportWithoutOverallStatus,
-): 'pass' | 'fail' | 'warn' => {
+  rules: Rules,
+): OverallResult => {
+  const overallResultOptions: OverallResult[] = [];
+
   if (report.unknownFeatures.length > 0) {
-    return 'fail';
+    overallResultOptions.push(rules['unknown-feature']);
   }
 
   const browserSummariesArray = Object.values(report.browserSummaries);
 
-  if (
-    browserSummariesArray.some((statusCounts) => statusCounts.incompatible > 0)
-  ) {
+  BROWSER_LEVEL_COMPATIBILITIES.forEach((outcome) => {
+    if (
+      browserSummariesArray.some((statusCounts) => statusCounts[outcome] > 0)
+    ) {
+      overallResultOptions.push(rules[outcome]);
+    }
+  });
+
+  if (overallResultOptions.length === 0) {
+    // empty css file: TODO add config for this
+    return 'pass';
+  }
+
+  if (overallResultOptions.includes('fail')) {
     return 'fail';
-  }
-
-  if (
-    browserSummariesArray.some(
-      (statusCounts) =>
-        statusCounts['partial-support'] > 0 ||
-        statusCounts.flagged > 0 ||
-        statusCounts.unknown > 0,
-    )
-  ) {
+  } else if (overallResultOptions.includes('warn')) {
     return 'warn';
+  } else {
+    return 'pass';
   }
-
-  return 'pass';
 };
 
 export const getCompatibilityReport = (
   formattedCss: FormattedCss,
   browserConfig: Browser[],
   filePath: string,
+  rules: Rules,
 ): CompatibilityReport => {
   const reportWithoutOverallStatus: CompatibilityReportWithoutOverallStatus = {
     filePath,
@@ -82,6 +101,6 @@ export const getCompatibilityReport = (
 
   return {
     ...reportWithoutOverallStatus,
-    overallStatus: getOverallStatus(reportWithoutOverallStatus),
+    overallStatus: getOverallStatus(reportWithoutOverallStatus, rules),
   };
 };

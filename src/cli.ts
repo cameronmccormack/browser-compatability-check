@@ -6,6 +6,8 @@ import { CompatibilityReport } from './types/compatibility';
 import { printCompatibilityReports } from './compatibility-report/print-compatibility-reports';
 import { getValidatedBrowserConfig } from './schema-validation/browsers';
 import { getKompatRc } from './run-commands/get-kompatrc';
+import { getValidatedRuleOverrides } from './schema-validation/rule-overrides';
+import { DEFAULT_RULES } from './run-commands/default-rules';
 
 export enum ExitCode {
   Compatible = 0,
@@ -30,9 +32,15 @@ export const runCli = (
   const validatedBrowserConfig = getValidatedBrowserConfig(
     kompatRcFile.browsers,
   );
-
-  if (!Array.isArray(validatedBrowserConfig)) {
+  if ('error' in validatedBrowserConfig) {
     return exitWith(2, `Error: ${validatedBrowserConfig.error}`);
+  }
+
+  const validatedRuleOverrides = getValidatedRuleOverrides(
+    kompatRcFile.ruleOverrides,
+  );
+  if ('error' in validatedRuleOverrides) {
+    return exitWith(2, `Error: ${validatedRuleOverrides.error}`);
   }
 
   const formattedPath = relativePath?.replaceAll(/\/+$|^\.\//g, '');
@@ -48,6 +56,11 @@ export const runCli = (
     return exitWith(1, `Error: No CSS files found.`);
   }
 
+  const rules = {
+    ...DEFAULT_RULES,
+    ...validatedRuleOverrides,
+  };
+
   const reports: CompatibilityReport[] = [];
   cssFiles.forEach((file) => {
     const formattedCss = getFormattedCss(csstree.parse(file.contents));
@@ -56,6 +69,7 @@ export const runCli = (
         formattedCss,
         validatedBrowserConfig,
         file.path.replace(currentWorkingDirectory, '.'),
+        rules,
       ),
     );
   });

@@ -25,7 +25,7 @@ export type BrowserCompatibility = {
   notes?: string;
 };
 
-type BrowserCompatibilityState =
+export type BrowserCompatibilityState =
   | 'compatible'
   | 'flagged'
   | 'partial-support'
