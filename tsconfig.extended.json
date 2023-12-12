@@ -1,0 +1,8 @@
+// All that should be type checked and export checked
+{
+  "extends": "./tsconfig.json",
+  "include": [
+    "./src/**/*.ts",
+    "./tests/**/*.ts"
+  ]
+}
