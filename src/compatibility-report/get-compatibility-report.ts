@@ -1,10 +1,13 @@
 import { isFeatureCompatible } from '../browser-support/is-feature-compatible';
 import { getIdFromFeature } from '../helpers/feature-id-helper';
 import { Browser } from '../types/browser';
-import { CompatibilityReport } from '../types/compatibility';
+import {
+  BrowserCompatibilityState,
+  CompatibilityReport,
+} from '../types/compatibility';
 import { FormattedCss } from '../types/css-feature';
 import { OverallResult } from '../types/overall-result';
-import { Rules } from '../types/rule-overrides';
+import { Rules } from '../types/rules';
 
 const INITIAL_BROWSER_SUMMARY = {
   compatible: 0,
@@ -19,13 +22,13 @@ type CompatibilityReportWithoutOverallStatus = Omit<
   'overallStatus'
 >;
 
-const BROWSER_LEVEL_COMPATIBILITIES: (
-  | 'flagged'
-  | 'partial-support'
-  | 'incompatible'
-  | 'unknown'
-  | 'compatible'
-)[] = ['flagged', 'partial-support', 'incompatible', 'unknown', 'compatible'];
+const BROWSER_LEVEL_COMPATIBILITIES: BrowserCompatibilityState[] = [
+  'flagged',
+  'partial-support',
+  'incompatible',
+  'unknown',
+  'compatible',
+];
 
 const getOverallStatus = (
   report: CompatibilityReportWithoutOverallStatus,

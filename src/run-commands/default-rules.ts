@@ -1,4 +1,4 @@
-import { Rules } from '../types/rule-overrides';
+import { Rules } from '../types/rules';
 
 export const DEFAULT_RULES: Rules = {
   compatible: 'pass',

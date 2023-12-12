@@ -16,7 +16,7 @@ import { CompatibilityReport } from '../src/types/compatibility';
 import { CssFile } from '../src/types/css-file';
 import { MODERN_CHROME_CONFIG } from './test-data/browser-configs';
 import { UnvalidatedKompatRc } from '../src/types/unvalidated-kompatrc';
-import { Rules } from '../src/types/rule-overrides';
+import { Rules } from '../src/types/rules';
 import { DEFAULT_RULES } from '../src/run-commands/default-rules';
 
 type TestData = {

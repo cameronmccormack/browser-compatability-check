@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { Rules } from '../types/rule-overrides';
+import { Rules } from '../types/rules';
 
 // The schema below is linked directly from the README.
 // Please update the README link and/or line reference if modifying this file.
