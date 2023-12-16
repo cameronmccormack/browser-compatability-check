@@ -1,6 +1,8 @@
+import { OverallResult } from './overall-result';
+
 export type CompatibilityReport = {
   filePath: string;
-  overallStatus: 'pass' | 'fail' | 'warn';
+  overallStatus: OverallResult;
   knownFeatures: {
     [featureId: string]: Compatibility;
   };

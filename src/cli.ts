@@ -3,11 +3,12 @@ import * as csstree from 'css-tree';
 import { getFormattedCss } from './css-parser/css-parser';
 import { getCompatibilityReport } from './compatibility-report/get-compatibility-report';
 import { CompatibilityReport } from './types/compatibility';
-import { printCompatibilityReports } from './compatibility-report/print-compatibility-reports';
+import { printCompatibilityReports } from './printers';
 import { getValidatedBrowserConfig } from './schema-validation/browsers';
 import { getKompatRc } from './run-commands/get-kompatrc';
 import { getValidatedRuleOverrides } from './schema-validation/rule-overrides';
 import { DEFAULT_RULES } from './run-commands/default-rules';
+import { getOverallStatus } from './compatibility-report/get-overall-status';
 
 export enum ExitCode {
   Compatible = 0,
@@ -74,9 +75,8 @@ export const runCli = (
     );
   });
 
-  printCompatibilityReports(reports);
+  const overallStatus = getOverallStatus(reports);
+  printCompatibilityReports(reports, overallStatus);
 
-  return reports.some((report) => report.overallStatus === 'fail')
-    ? exitWith(1)
-    : exitWith(0);
+  return exitWith(overallStatus === 'fail' ? 1 : 0);
 };
