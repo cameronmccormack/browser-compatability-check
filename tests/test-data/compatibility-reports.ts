@@ -3,6 +3,14 @@ import { CompatibilityReport } from '../../src/types/compatibility';
 
 export const EXAMPLE_FILEPATH = 'example/filepath/eg-file.css';
 
+export const emptyReport: CompatibilityReport = {
+  filePath: EXAMPLE_FILEPATH,
+  overallStatus: 'pass',
+  knownFeatures: {},
+  unknownFeatures: [],
+  browserSummaries: {},
+};
+
 export const compatibleReport: CompatibilityReport = {
   filePath: EXAMPLE_FILEPATH,
   overallStatus: 'pass',
@@ -43,6 +51,43 @@ export const flaggedCompatibilityReportWithOverallFailure = produce(
   flaggedCompatibilityReport,
   (draft) => {
     draft.overallStatus = 'fail';
+  },
+);
+
+export const flaggedCompatibilityReportWithLongFeatureId = produce(
+  flaggedCompatibilityReport,
+  (draft) => {
+    draft.knownFeatures[
+      "property:example:very very very very long identifying value that will certainly be truncated as it's so extremely, extraordinarily, phenomenally long"
+    ] = {
+      chrome: { compatibility: 'compatible' },
+    };
+    draft.browserSummaries.chrome.compatible =
+      flaggedCompatibilityReport.browserSummaries.chrome.compatible + 1;
+  },
+);
+
+export const flaggedCompatibilityReportWithManyBrowsers = produce(
+  flaggedCompatibilityReport,
+  (draft) => {
+    const knownFeatures = Object.keys(flaggedCompatibilityReport.knownFeatures);
+
+    ['firefox', 'samsunginternet_android', 'safari', 'edge'].forEach(
+      (browserSlug) => {
+        knownFeatures.forEach((feature) => {
+          draft.knownFeatures[feature][browserSlug] = {
+            compatibility: 'compatible',
+          };
+        });
+        draft.browserSummaries[browserSlug] = {
+          compatible: knownFeatures.length,
+          'partial-support': 0,
+          flagged: 0,
+          incompatible: 0,
+          unknown: 0,
+        };
+      },
+    );
   },
 );
 

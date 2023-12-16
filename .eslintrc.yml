@@ -11,6 +11,7 @@ parserOptions:
 plugins:
   - '@typescript-eslint'
   - 'prettier'
+  - 'filenames'
 ignorePatterns:
   - bin
 rules:
@@ -22,3 +23,4 @@ rules:
     - error
   curly: error
   no-console: warn
+  filenames/match-regex: [2, "^[a-z]+(-[a-z]+)*(\\.test|\\.config|\\.d)?$"]
