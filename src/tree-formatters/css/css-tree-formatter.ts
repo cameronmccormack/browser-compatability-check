@@ -6,8 +6,8 @@ import {
   CssPropertyContext,
   CssSelector,
   FormattedCss,
-} from '../types/css-feature';
-import { getUniqueObjectArray } from '../helpers/array-helper';
+} from '../../types/css-feature';
+import { getUniqueObjectArray } from '../../helpers/array-helper';
 import {
   popContextFromStackIfRequired,
   pushContextToStackIfRequired,

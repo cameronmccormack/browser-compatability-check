@@ -1,4 +1,4 @@
-import { isFeatureCompatible } from '../browser-support/is-feature-compatible';
+import { isFeatureCompatible } from '../compatibility-checkers/is-feature-compatible';
 import { getIdFromFeature } from '../helpers/feature-id-helper';
 import { Browser } from '../types/browser';
 import {

@@ -1,6 +1,6 @@
-import { getValidatedBrowserConfig } from '../../src/schema-validation/browsers';
-import { Browser } from '../../src/types/browser';
-import { MODERN_CHROME_CONFIG } from '../test-data/browser-configs';
+import { getValidatedBrowserConfig } from '../../../src/run-commands/schema-validation/browsers';
+import { Browser } from '../../../src/types/browser';
+import { MODERN_CHROME_CONFIG } from '../../test-data/browser-configs';
 
 type TestData = {
   inputConfig: unknown;

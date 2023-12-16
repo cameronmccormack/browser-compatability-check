@@ -1,4 +1,4 @@
-import { getAllCssFiles } from '../../src/css-finder/get-all-css-files';
+import { getAllCssFiles } from '../../src/globbers/css-globber';
 
 test('finds all CSS files in directory and children', () => {
   const expectedFiles = [
@@ -25,7 +25,7 @@ test('finds all CSS files in directory and children', () => {
 });
 
 test('returns empty array for location containing no css files', () => {
-  expect(getAllCssFiles('tests/css-finder')).toEqual([]);
+  expect(getAllCssFiles('tests/globbers')).toEqual([]);
 });
 
 test('returns null for filepath that does not exist', () => {

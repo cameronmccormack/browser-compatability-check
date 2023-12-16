@@ -1,19 +1,19 @@
-import { FeatureSupport } from '../types/browser-support-types';
+import { FeatureSupport } from '../../types/browser-support-types';
 import {
   CssAtRule,
   CssFeature,
   CssFunction,
   CssProperty,
   CssSelector,
-} from '../types/css-feature';
-import { getCompatibilityData } from './bcd-data';
+} from '../../types/css-feature';
+import { getCompatibilityData } from '../source-data/bcd-data';
 import {
   BrowserName,
   CompatStatement,
   Identifier,
   VersionValue,
 } from '@mdn/browser-compat-data/types';
-import { findCompatNode } from './find-compat-node';
+import { findCompatNode } from '../helpers/find-compat-node';
 
 const getCompatibilityStatement = (
   item: CssFeature,

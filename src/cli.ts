@@ -1,14 +1,14 @@
-import { getAllCssFiles } from './css-finder/get-all-css-files';
+import { getAllCssFiles } from './globbers/css-globber';
 import * as csstree from 'css-tree';
-import { getFormattedCss } from './css-parser/css-parser';
-import { getCompatibilityReport } from './compatibility-report/get-compatibility-report';
+import { getFormattedCss } from './tree-formatters/css/css-tree-formatter';
+import { getCompatibilityReport } from './report-generators/get-compatibility-report';
 import { CompatibilityReport } from './types/compatibility';
 import { printCompatibilityReports } from './printers';
-import { getValidatedBrowserConfig } from './schema-validation/browsers';
+import { getValidatedBrowserConfig } from './run-commands/schema-validation/browsers';
 import { getKompatRc } from './run-commands/get-kompatrc';
-import { getValidatedRuleOverrides } from './schema-validation/rule-overrides';
+import { getValidatedRuleOverrides } from './run-commands/schema-validation/rule-overrides';
 import { DEFAULT_RULES } from './run-commands/default-rules';
-import { getOverallStatus } from './compatibility-report/get-overall-status';
+import { getOverallStatus } from './report-generators/get-overall-status';
 
 export enum ExitCode {
   Compatible = 0,

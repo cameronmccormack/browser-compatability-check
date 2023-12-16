@@ -1,4 +1,4 @@
-import { getCssBrowserSupport } from './css-browser-support';
+import { getCssBrowserSupport } from './css/css-browser-support';
 import { Browser } from '../types/browser';
 import { CssFeature } from '../types/css-feature';
 import { BrowserCompatibility, Compatibility } from '../types/compatibility';

@@ -1,5 +1,5 @@
 import * as csstree from 'css-tree';
-import { getFormattedCss } from '../../src/css-parser/css-parser';
+import { getFormattedCss } from '../../../src/tree-formatters/css/css-tree-formatter';
 
 const EMPTY_FORMATTED_CSS = {
   properties: [],

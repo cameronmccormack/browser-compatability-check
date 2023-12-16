@@ -1,5 +1,5 @@
 import * as csstree from 'css-tree';
-import { CssPropertyContext } from '../types/css-feature';
+import { CssPropertyContext } from '../../types/css-feature';
 
 export const pushContextToStackIfRequired = (
   currentNode: csstree.CssNode,

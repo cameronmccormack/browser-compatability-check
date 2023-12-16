@@ -1,5 +1,5 @@
 import { CompatStatement, Identifier } from '@mdn/browser-compat-data/types';
-import { findCompatNode } from '../../src/browser-support/find-compat-node';
+import { findCompatNode } from '../../../src/compatibility-checkers/helpers/find-compat-node';
 
 const getChromeCompatStatementForVersion = (
   version: string,

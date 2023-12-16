@@ -1,6 +1,6 @@
-import * as cssFinderModule from '../src/css-finder/get-all-css-files';
-import * as cssParserModule from '../src/css-parser/css-parser';
-import * as compatibilityReportModule from '../src/compatibility-report/get-compatibility-report';
+import * as cssFinderModule from '../src/globbers/css-globber';
+import * as cssParserModule from '../src/tree-formatters/css/css-tree-formatter';
+import * as compatibilityReportModule from '../src/report-generators/get-compatibility-report';
 import * as kompatRcModule from '../src/run-commands/get-kompatrc';
 import {
   compatibleReport,

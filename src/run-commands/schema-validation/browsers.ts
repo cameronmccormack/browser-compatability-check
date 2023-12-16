@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { Browser } from '../types/browser';
+import { Browser } from '../../types/browser';
 
 // The schema below is linked directly from the README.
 // Please update the README link and/or line reference if modifying this file.

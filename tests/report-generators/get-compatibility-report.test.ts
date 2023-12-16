@@ -1,4 +1,4 @@
-import { getCompatibilityReport } from '../../src/compatibility-report/get-compatibility-report';
+import { getCompatibilityReport } from '../../src/report-generators/get-compatibility-report';
 import { DEFAULT_RULES } from '../../src/run-commands/default-rules';
 import { FormattedCss } from '../../src/types/css-feature';
 import {

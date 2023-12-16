@@ -1,6 +1,6 @@
-import { getCssBrowserSupport } from '../../src/browser-support/css-browser-support';
-import { FeatureSupport } from '../../src/types/browser-support-types';
-import { CssFeature } from '../../src/types/css-feature';
+import { getCssBrowserSupport } from '../../../src/compatibility-checkers/css/css-browser-support';
+import { FeatureSupport } from '../../../src/types/browser-support-types';
+import { CssFeature } from '../../../src/types/css-feature';
 import {
   CALC_FUNCTION_COMPATIBILITY,
   DISPLAY_GENERIC_COMPATIBILITY,
@@ -11,11 +11,10 @@ import {
   MEDIA_AT_RULE_COMPATIBILITY,
   RGB_FUNCTION_COMPATIBILITY,
   VAR_FUNCTION_COMPATIBILITY,
-} from '../test-data/browser-compatibility-data';
+} from '../../test-data/browser-compatibility-data';
 import { produce } from 'immer';
 import bcd, { BrowserName, CompatData } from '@mdn/browser-compat-data';
-import * as bcdData from '../../src/browser-support/bcd-data';
-
+import * as bcdData from '../../../src/compatibility-checkers/source-data/bcd-data';
 const BROWSER_SLUGS: BrowserName[] = [
   'chrome',
   'chrome_android',

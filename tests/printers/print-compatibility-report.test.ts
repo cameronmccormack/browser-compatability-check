@@ -1,4 +1,4 @@
-import { getOverallStatus } from '../../src/compatibility-report/get-overall-status';
+import { getOverallStatus } from '../../src/report-generators/get-overall-status';
 import { printCompatibilityReports } from '../../src/printers';
 import { CompatibilityReport } from '../../src/types/compatibility';
 import {
