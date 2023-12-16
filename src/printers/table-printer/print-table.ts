@@ -1,10 +1,10 @@
+/* eslint-disable no-console */
 import {
   printFullWidthRowWithText,
   printSingleColumnTableDivider,
   printSingleColumnTableSpacer,
 } from '../helpers/table-helper';
 
-/* eslint-disable no-console */
 type ValueCellsForRow = Record<string, string | number | boolean>;
 
 interface Row<Columns extends ValueCellsForRow> {
