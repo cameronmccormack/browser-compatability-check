@@ -3,7 +3,7 @@ import * as csstree from 'css-tree';
 import { getFormattedCss } from './css-parser/css-parser';
 import { getCompatibilityReport } from './compatibility-report/get-compatibility-report';
 import { CompatibilityReport } from './types/compatibility';
-import { printCompatibilityReports } from './compatibility-report/print-compatibility-reports';
+import { printCompatibilityReports } from './printers';
 import { getValidatedBrowserConfig } from './schema-validation/browsers';
 import { getKompatRc } from './run-commands/get-kompatrc';
 import { getValidatedRuleOverrides } from './schema-validation/rule-overrides';

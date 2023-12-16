@@ -1,3 +1,9 @@
+import {
+  printFullWidthRowWithText,
+  printSingleColumnTableDivider,
+  printSingleColumnTableSpacer,
+} from '../helpers/table-helper';
+
 /* eslint-disable no-console */
 type ValueCellsForRow = Record<string, string | number | boolean>;
 
@@ -28,7 +34,7 @@ const getCenterPaddedString = (
 const getDisplayString = (
   data: string,
   length: number,
-  alignment: 'left' | 'right' | 'center' = 'left',
+  alignment: 'left' | 'center' = 'left',
 ): string => {
   if (` ${data} `.length > length && data.length > 5) {
     return ` ...${data.slice(-length + 5)} `;
@@ -37,8 +43,6 @@ const getDisplayString = (
   switch (alignment) {
     case 'left':
       return ` ${data} `.slice(-length).padEnd(length);
-    case 'right':
-      return ` ${data} `.slice(-length).padStart(length);
     case 'center':
       return getCenterPaddedString(data, length);
   }
@@ -135,10 +139,10 @@ const printOverallHeading = (
   headingText: string,
   characterWidth: number,
 ): void => {
-  console.log(`|${'-'.repeat(characterWidth - 2)}|`);
-  console.log(`|${' '.repeat(characterWidth - 2)}|`);
-  console.log(`|${getCenterPaddedString(headingText, characterWidth - 2)}|`);
-  console.log(`|${' '.repeat(characterWidth - 2)}|`);
+  printSingleColumnTableDivider(characterWidth);
+  printSingleColumnTableSpacer(characterWidth);
+  printFullWidthRowWithText(headingText, characterWidth);
+  printSingleColumnTableSpacer(characterWidth);
 };
 
 export const printTable = (
