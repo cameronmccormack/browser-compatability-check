@@ -18,7 +18,7 @@ const applyStyles = (
   return styledText;
 };
 
-export const unstyledOneCompatibleFilePrintedReport = `
+const unstyledOneCompatibleFilePrintedReport = `
 |----------------------------------------------------------------------------------------------------------------------|
 |                                         ▄ •▄       • ▌ ▄ ·.  ▄▄▄· ▄▄▄· ▄▄▄▄▄                                         |
 |                                         █▌▄▌▪▪     ·██ ▐███▪▐█ ▄█▐█ ▀█ •██                                           |
@@ -89,7 +89,7 @@ export const oneCompatibleFilePrintedReport = applyStyles(
   ],
 );
 
-export const unstyledOneFileWithUnknownFeaturePrintedReport = `
+const unstyledOneFileWithUnknownFeaturePrintedReport = `
 |----------------------------------------------------------------------------------------------------------------------|
 |                                         ▄ •▄       • ▌ ▄ ·.  ▄▄▄· ▄▄▄· ▄▄▄▄▄                                         |
 |                                         █▌▄▌▪▪     ·██ ▐███▪▐█ ▄█▐█ ▀█ •██                                           |
