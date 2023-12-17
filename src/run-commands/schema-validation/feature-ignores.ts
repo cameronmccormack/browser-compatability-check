@@ -1,13 +1,18 @@
 import { z } from 'zod';
 
 const featureIdValidator = (input: string): boolean => {
-  const colonCount = input.split(':').length - 1;
-  return (
-    colonCount <= 3 &&
-    !input.includes('::') &&
-    !input.trim().startsWith(':') &&
-    !input.trim().endsWith(':')
-  );
+  const trimmedInput = input.trim();
+  if (
+    trimmedInput.length === 0 ||
+    trimmedInput.includes('::') ||
+    trimmedInput.startsWith(':') ||
+    trimmedInput.endsWith(':')
+  ) {
+    return false;
+  }
+
+  const colonCount = trimmedInput.split(':').length - 1;
+  return colonCount <= 3;
 };
 
 // The schema below is linked directly from the README.

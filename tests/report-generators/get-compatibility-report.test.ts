@@ -269,3 +269,73 @@ test('adds all types of css feature to compatibility report', () => {
     ),
   ).toEqual(expectedReport);
 });
+
+test('creates expected compatibility report with feature ignore, including overall status', () => {
+  const formattedCss: FormattedCss = {
+    properties: [
+      {
+        identifier: 'gap',
+        value: '20px',
+        context: 'flex_context',
+        type: 'property',
+      },
+      {
+        identifier: 'gap',
+        value: '20px',
+        context: 'grid_context',
+        type: 'property',
+      },
+      {
+        identifier: 'outline',
+        value: 'anything',
+        type: 'property',
+      },
+    ],
+    selectors: [],
+    atRules: [
+      {
+        identifier: 'media',
+        type: 'at-rule',
+      },
+    ],
+    functions: [],
+  };
+  const expectedReport = {
+    filePath: EXAMPLE_FILEPATH,
+    overallStatus: 'warn',
+    browserSummaries: {
+      chrome: {
+        compatible: 1,
+        flagged: 0,
+        incompatible: 0,
+        'partial-support': 1,
+        unknown: 0,
+      },
+    },
+    knownFeatures: {
+      'property:gap:20px:grid_context': {
+        chrome: {
+          compatibility: 'compatible',
+        },
+      },
+      'property:outline:anything': {
+        chrome: {
+          compatibility: 'partial-support',
+          notes:
+            'Before Chrome 94, <code>outline</code> does not follow the shape of <code>border-radius</code>.',
+        },
+      },
+    },
+    unknownFeatures: [],
+  };
+
+  expect(
+    getCompatibilityReport(
+      formattedCss,
+      PRE_FLEX_GAP_CHROME_CONFIG,
+      EXAMPLE_FILEPATH,
+      DEFAULT_RULES,
+      ['property:gap:20px:flex_context', 'at-rule'],
+    ),
+  ).toEqual(expectedReport);
+});
