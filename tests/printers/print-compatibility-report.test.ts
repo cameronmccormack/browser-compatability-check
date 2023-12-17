@@ -76,25 +76,25 @@ const testCases: [string, TestData][] = [
       expectedPrintedReport: emptyPrintedReport,
     },
   ],
-  // [
-  //   'non-default rules',
-  //   {
-  //     compatibilityReports: [
-  //       flaggedCompatibilityReport,
-  //       incompatibleReport,
-  //       unknownFeatureReport,
-  //     ],
-  //     expectedPrintedReport: nonDefaultRulesPrintedReport,
-  //     overrideRules: {
-  //       compatible: 'warn',
-  //       'partial-support': 'fail',
-  //       flagged: 'fail',
-  //       unknown: 'pass',
-  //       'unknown-feature': 'pass',
-  //       incompatible: 'warn',
-  //     },
-  //   },
-  // ],
+  [
+    'non-default rules',
+    {
+      compatibilityReports: [
+        flaggedCompatibilityReport,
+        incompatibleReport,
+        unknownFeatureReport,
+      ],
+      expectedPrintedReport: nonDefaultRulesPrintedReport,
+      overrideRules: {
+        compatible: 'fail',
+        'partial-support': 'fail',
+        flagged: 'warn',
+        unknown: 'pass',
+        'unknown-feature': 'pass',
+        incompatible: 'warn',
+      },
+    },
+  ],
 ];
 
 test.each<[string, TestData]>(testCases)(

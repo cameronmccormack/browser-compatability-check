@@ -651,4 +651,207 @@ export const emptyPrintedReport = applyStyles(unstyledEmptyPrintedReport, [
   },
 ]);
 
-export const nonDefaultRulesPrintedReport = '';
+const unstyledNonDefaultRulesPrintedReport = `
+|----------------------------------------------------------------------------------------------------------------------|
+|                                         ▄ •▄       • ▌ ▄ ·.  ▄▄▄· ▄▄▄· ▄▄▄▄▄                                         |
+|                                         █▌▄▌▪▪     ·██ ▐███▪▐█ ▄█▐█ ▀█ •██                                           |
+|                                         ▐▀▀▄· ▄█▀▄ ▐█ ▌▐▌▐█· ██▀·▄█▀▀█  ▐█.▪                                         |
+|                                         ▐█.█▌▐█▌.▐▌██ ██▌▐█▌▐█▪·•▐█ ▪▐▌ ▐█▌·                                         |
+|                                         ·▀  ▀ ▀█▄▀▪▀▀  █▪▀▀▀.▀    ▀  ▀  ▀▀▀                                          |
+|                                                                                                                      |
+|                                         Copyright (c) 2023 Cameron McCormack                                         |
+|----------------------------------------------------------------------------------------------------------------------|
+
+
+Overall Summary: FAIL
+ - WARN: example/filepath/eg-file.css
+ - FAIL: example/filepath/eg-file.css
+ - FAIL: example/filepath/eg-file.css
+
+
+Summary of all stylesheets:
+########################################################################################################################
+#                                                                                                                      #
+#                                          WARN: example/filepath/eg-file.css                                          #
+#                                                                                                                      #
+########################################################################################################################
+|----------------------------------------------------------------------------------------------------------------------|
+|                                                                                                                      |
+|                                                  High-level Summary                                                  |
+|                                                                                                                      |
+|----------------------------------------------------|------------|-----------------|---------|--------------|---------|
+| Index                                              | compatible | partial-support | flagged | incompatible | unknown |
+|----------------------------------------------------|------------|-----------------|---------|--------------|---------|
+| chrome                                             |      3     |        0        |    1    |       0      |    0    |
+|----------------------------------------------------|------------|-----------------|---------|--------------|---------|
+|                                                                                                                      |
+| Unknown features: None                                                                                               |
+|                                                                                                                      |
+|----------------------------------------------------------------------------------------------------------------------|
+
+
+|----------------------------------------------------------------------------------------------------------------------|
+|                                                                                                                      |
+|                                             Per-feature Summary (chrome)                                             |
+|                                                                                                                      |
+|---------------------------------------------------------------------------------------------------------|------------|
+| Index                                                                                                   |   chrome   |
+|---------------------------------------------------------------------------------------------------------|------------|
+| at-rule:charset                                                                                         | compatible |
+| function:calc                                                                                           | compatible |
+| property:color:red                                                                                      |   flagged  |
+| selector:last-child                                                                                     | compatible |
+|---------------------------------------------------------------------------------------------------------|------------|
+
+
+########################################################################################################################
+#                                                                                                                      #
+#                                          FAIL: example/filepath/eg-file.css                                          #
+#                                                                                                                      #
+########################################################################################################################
+|----------------------------------------------------------------------------------------------------------------------|
+|                                                                                                                      |
+|                                                  High-level Summary                                                  |
+|                                                                                                                      |
+|----------------------------------------------------|------------|-----------------|---------|--------------|---------|
+| Index                                              | compatible | partial-support | flagged | incompatible | unknown |
+|----------------------------------------------------|------------|-----------------|---------|--------------|---------|
+| chrome                                             |      3     |        0        |    0    |       1      |    0    |
+|----------------------------------------------------|------------|-----------------|---------|--------------|---------|
+|                                                                                                                      |
+| Unknown features: None                                                                                               |
+|                                                                                                                      |
+|----------------------------------------------------------------------------------------------------------------------|
+
+
+|----------------------------------------------------------------------------------------------------------------------|
+|                                                                                                                      |
+|                                             Per-feature Summary (chrome)                                             |
+|                                                                                                                      |
+|-------------------------------------------------------------------------------------------------------|--------------|
+| Index                                                                                                 |    chrome    |
+|-------------------------------------------------------------------------------------------------------|--------------|
+| at-rule:charset                                                                                       |  compatible  |
+| function:calc                                                                                         |  compatible  |
+| property:color:red                                                                                    | incompatible |
+| selector:last-child                                                                                   |  compatible  |
+|-------------------------------------------------------------------------------------------------------|--------------|
+
+
+########################################################################################################################
+#                                                                                                                      #
+#                                          FAIL: example/filepath/eg-file.css                                          #
+#                                                                                                                      #
+########################################################################################################################
+|----------------------------------------------------------------------------------------------------------------------|
+|                                                                                                                      |
+|                                                  High-level Summary                                                  |
+|                                                                                                                      |
+|----------------------------------------------------|------------|-----------------|---------|--------------|---------|
+| Index                                              | compatible | partial-support | flagged | incompatible | unknown |
+|----------------------------------------------------|------------|-----------------|---------|--------------|---------|
+| chrome                                             |      4     |        0        |    0    |       0      |    0    |
+|----------------------------------------------------|------------|-----------------|---------|--------------|---------|
+|                                                                                                                      |
+| Unknown features:                                                                                                    |
+| - property:not-a-real-feature:20px                                                                                   |
+|                                                                                                                      |
+|----------------------------------------------------------------------------------------------------------------------|
+
+
+|----------------------------------------------------------------------------------------------------------------------|
+|                                                                                                                      |
+|                                             Per-feature Summary (chrome)                                             |
+|                                                                                                                      |
+|---------------------------------------------------------------------------------------------------------|------------|
+| Index                                                                                                   |   chrome   |
+|---------------------------------------------------------------------------------------------------------|------------|
+| at-rule:charset                                                                                         | compatible |
+| function:calc                                                                                           | compatible |
+| property:color:red                                                                                      | compatible |
+| selector:last-child                                                                                     | compatible |
+|---------------------------------------------------------------------------------------------------------|------------|
+
+
+Overall Summary: FAIL
+ - WARN: example/filepath/eg-file.css
+ - FAIL: example/filepath/eg-file.css
+ - FAIL: example/filepath/eg-file.css
+ `.trim();
+
+export const nonDefaultRulesPrintedReport = applyStyles(
+  unstyledNonDefaultRulesPrintedReport,
+  [
+    {
+      substringToStyle: '0',
+      regexToFind: /(?<=\s)0(?=\s)/g,
+      style: chalk.green,
+    },
+    {
+      substringToStyle: '4',
+      regexToFind: /(?<=\s)4(?=\s)/g,
+      style: chalk.red,
+    },
+    {
+      substringToStyle: '3',
+      regexToFind: /(?<=\s)3(?=\s)/g,
+      style: chalk.red,
+    },
+    {
+      substringToStyle: '1',
+      regexToFind: /(?<=\s)1(?=\s)/g,
+      style: chalk.yellow,
+    },
+    {
+      substringToStyle: 'FAIL',
+      regexToFind: /(FAIL(?=\n))|((?<=- )FAIL(?=:))/g,
+      style: chalk.bgRed.bold,
+    },
+    {
+      substringToStyle: 'FAIL: example/filepath/eg-file.css',
+      regexToFind: /(FAIL: example\/filepath\/eg-file.css)(?!$)/g,
+      style: chalk.bgRed.bold,
+    },
+    {
+      substringToStyle: 'WARN',
+      regexToFind: /(WARN(?=\n))|((?<=- )WARN(?=:))/g,
+      style: chalk.bgYellow.bold,
+    },
+    {
+      substringToStyle: 'WARN: example/filepath/eg-file.css',
+      regexToFind: /(WARN: example\/filepath\/eg-file.css)(?!$)/g,
+      style: chalk.bgYellow.bold,
+    },
+    {
+      substringToStyle: 'Unknown features: None',
+      style: chalk.green,
+    },
+    {
+      substringToStyle: 'Unknown features:',
+      regexToFind: /Unknown features:(?=\s\s)/g,
+      style: chalk.green,
+    },
+    {
+      substringToStyle: '- property:not-a-real-feature:20px',
+      style: chalk.green,
+    },
+    {
+      substringToStyle: 'compatible',
+      // matches 'compatible' unless it appears in the same line as 'Index' (i.e. a header row)
+      regexToFind: /(?<=\n(?!.*Index.*).*\s)compatible(?=.*\n)/g,
+      style: chalk.red,
+    },
+    {
+      substringToStyle: 'flagged',
+      // matches 'flagged' unless it appears in the same line as 'Index' (i.e. a header row)
+      regexToFind: /(?<=\n(?!.*Index.*).*)flagged(?=.*\n)/g,
+      style: chalk.yellow,
+    },
+    {
+      substringToStyle: 'incompatible',
+      // matches 'flagged' unless it appears in the same line as 'Index' (i.e. a header row)
+      regexToFind: /(?<=\n(?!.*Index.*).*)incompatible(?=.*\n)/g,
+      style: chalk.yellow,
+    },
+  ],
+);
