@@ -7,6 +7,7 @@ import {
   flaggedCompatibilityReport,
   flaggedCompatibilityReportWithLongFeatureId,
   flaggedCompatibilityReportWithManyBrowsers,
+  incompatibleReport,
   partiallyCompatibleReport,
   unknownFeatureReport,
 } from '../test-data/compatibility-reports';
@@ -15,13 +16,17 @@ import {
   longFeatureIdPrintedReport,
   manyBrowsersPrintedReport,
   multipleFilesPrintedReport,
+  nonDefaultRulesPrintedReport,
   oneCompatibleFilePrintedReport,
   oneFileWithUnknownFeaturePrintedReport,
 } from './expected-printed-reports';
+import { DEFAULT_RULES } from '../../src/run-commands/default-rules';
+import { Rules } from '../../src/types/rules';
 
 type TestData = {
   compatibilityReports: CompatibilityReport[];
   expectedPrintedReport: string;
+  overrideRules?: Rules;
 };
 
 const testCases: [string, TestData][] = [
@@ -71,18 +76,41 @@ const testCases: [string, TestData][] = [
       expectedPrintedReport: emptyPrintedReport,
     },
   ],
+  // [
+  //   'non-default rules',
+  //   {
+  //     compatibilityReports: [
+  //       flaggedCompatibilityReport,
+  //       incompatibleReport,
+  //       unknownFeatureReport,
+  //     ],
+  //     expectedPrintedReport: nonDefaultRulesPrintedReport,
+  //     overrideRules: {
+  //       compatible: 'warn',
+  //       'partial-support': 'fail',
+  //       flagged: 'fail',
+  //       unknown: 'pass',
+  //       'unknown-feature': 'pass',
+  //       incompatible: 'warn',
+  //     },
+  //   },
+  // ],
 ];
 
 test.each<[string, TestData]>(testCases)(
   'prints expected report for case: %s',
-  (_, { compatibilityReports, expectedPrintedReport }) => {
+  (_, { compatibilityReports, expectedPrintedReport, overrideRules }) => {
     const loggedLines: string[] = [];
     jest
       .spyOn(global.console, 'log')
       .mockImplementation((message) => loggedLines.push(message));
 
     const overallStatus = getOverallStatus(compatibilityReports);
-    printCompatibilityReports(compatibilityReports, overallStatus);
+    printCompatibilityReports(
+      compatibilityReports,
+      overallStatus,
+      overrideRules ?? DEFAULT_RULES,
+    );
 
     expect(loggedLines.join('\n')).toEqual(expectedPrintedReport);
   },

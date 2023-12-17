@@ -10,9 +10,15 @@ import {
 } from './helpers/table-helper';
 import {
   getFeaturesForSpecifiedBrowserSlugs,
-  getTablulatedFeatures,
+  getTabulatedFeatures,
 } from './helpers/feature-summary-helper';
 import { getChunkedArray } from '../helpers/array-helper';
+import {
+  getChalkStylesForStatus,
+  getStyledOverallStatus,
+} from './helpers/chalk-helper';
+import { Rules } from '../types/rules';
+import { getTabulatedBrowserSummaries } from './helpers/browser-summary-helper';
 
 const MAX_WIDTH = 120;
 
@@ -38,22 +44,27 @@ const printOverallSummary = (
   reports: CompatibilityReport[],
   overallStatus: OverallResult,
 ): void => {
-  console.log(`Overall Summary: ${overallStatus.toUpperCase()}`);
+  console.log(`Overall Summary: ${getStyledOverallStatus(overallStatus)}`);
   reports.forEach((report) =>
-    console.log(` - ${report.overallStatus.toUpperCase()}: ${report.filePath}`),
+    console.log(
+      ` - ${getStyledOverallStatus(report.overallStatus)}: ${report.filePath}`,
+    ),
   );
 };
 
-const printReportSummaries = (reports: CompatibilityReport[]): void => {
+const printReportSummaries = (
+  reports: CompatibilityReport[],
+  rules: Rules,
+): void => {
   console.log('Summary of all stylesheets:');
   reports.forEach((report) => {
     printReportHeading(report);
-    printBrowserSummaries(report);
+    printBrowserSummaries(report, rules);
     if (
       report.overallStatus !== 'pass' &&
       Object.keys(report.knownFeatures).length > 0
     ) {
-      printFeatureSummaries(report);
+      printFeatureSummaries(report, rules);
     }
   });
 };
@@ -65,41 +76,75 @@ const printReportHeading = (report: CompatibilityReport): void => {
 
   printFullWidthCharacterRow('#', MAX_WIDTH);
   printSingleColumnTableSpacer(MAX_WIDTH, '#');
-  printFullWidthRowWithText(summaryText, MAX_WIDTH, { edgeCharacter: '#' });
+  printFullWidthRowWithText(
+    summaryText,
+    MAX_WIDTH,
+    { edgeCharacter: '#' },
+    getChalkStylesForStatus(
+      report.overallStatus,
+      report.overallStatus === 'pass' ? 'low' : 'high',
+    ),
+  );
   printSingleColumnTableSpacer(MAX_WIDTH, '#');
   printFullWidthCharacterRow('#', MAX_WIDTH);
 };
 
-const printBrowserSummaries = (report: CompatibilityReport): void => {
-  printTable(report.browserSummaries, {
+const printBrowserSummaries = (
+  report: CompatibilityReport,
+  rules: Rules,
+): void => {
+  const tabulatedBrowserSummaries = getTabulatedBrowserSummaries(
+    report.browserSummaries,
+    rules,
+  );
+  printTable(tabulatedBrowserSummaries, {
     characterWidth: MAX_WIDTH,
     headingText: 'High-level Summary',
   });
-  printUnknownFeaturesFooter(report.unknownFeatures);
+  printUnknownFeaturesFooter(report.unknownFeatures, rules);
   printSpacer();
 };
 
-const printUnknownFeaturesFooter = (unknownFeatures: string[]): void => {
+const printUnknownFeaturesFooter = (
+  unknownFeatures: string[],
+  rules: Rules,
+): void => {
+  const hasUnknownFeatures = unknownFeatures.length > 0;
+  const unknownFeaturesChalkStyles = getChalkStylesForStatus(
+    rules['unknown-feature'],
+  );
   printSingleColumnTableSpacer(MAX_WIDTH);
   printFullWidthRowWithText(
-    `Unknown features:${unknownFeatures.length > 0 ? '' : ' None'}`,
+    `Unknown features:${hasUnknownFeatures ? '' : ' None'}`,
     MAX_WIDTH,
     { justification: 'left' },
+    hasUnknownFeatures
+      ? unknownFeaturesChalkStyles
+      : getChalkStylesForStatus('pass'),
   );
   if (unknownFeatures.length > 0) {
     unknownFeatures.forEach((feature) =>
-      printFullWidthRowWithText(`- ${feature}`, MAX_WIDTH, {
-        justification: 'left',
-      }),
+      printFullWidthRowWithText(
+        `- ${feature}`,
+        MAX_WIDTH,
+        {
+          justification: 'left',
+        },
+        unknownFeaturesChalkStyles,
+      ),
     );
   }
   printSingleColumnTableSpacer(MAX_WIDTH);
   printSingleColumnTableDivider(MAX_WIDTH);
 };
 
-const printFeatureSummaries = (report: CompatibilityReport): void => {
-  const { tabulatedFeatures, browserSlugs } = getTablulatedFeatures(
+const printFeatureSummaries = (
+  report: CompatibilityReport,
+  rules: Rules,
+): void => {
+  const { tabulatedFeatures, browserSlugs } = getTabulatedFeatures(
     report.knownFeatures,
+    rules,
   );
 
   // only include max 3 browsers per table, to ensure legibility
@@ -124,11 +169,12 @@ const printSpacer = (): void => {
 export const printCompatibilityReports = (
   reports: CompatibilityReport[],
   overallStatus: OverallResult,
+  rules: Rules,
 ): void => {
   printAsciiHeader();
   printSpacer();
   printOverallSummary(reports, overallStatus);
   printSpacer();
-  printReportSummaries(reports);
+  printReportSummaries(reports, rules);
   printOverallSummary(reports, overallStatus);
 };

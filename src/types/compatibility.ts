@@ -7,15 +7,19 @@ export type CompatibilityReport = {
     [featureId: string]: Compatibility;
   };
   unknownFeatures: string[];
-  browserSummaries: {
-    [browser: string]: {
-      compatible: number;
-      'partial-support': number;
-      flagged: number;
-      incompatible: number;
-      unknown: number;
-    };
-  };
+  browserSummaries: BrowserSummaries;
+};
+
+export type BrowserSummaries = {
+  [browser: string]: BrowserSummary;
+};
+
+export type BrowserSummary = {
+  compatible: number;
+  'partial-support': number;
+  flagged: number;
+  incompatible: number;
+  unknown: number;
 };
 
 export type Compatibility = {

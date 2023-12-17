@@ -1,11 +1,17 @@
 /* eslint-disable no-console */
+import { applyChalkStyles } from '../helpers/chalk-helper';
 import {
   printFullWidthRowWithText,
   printSingleColumnTableDivider,
   printSingleColumnTableSpacer,
 } from '../helpers/table-helper';
+import { Chalk } from 'chalk';
 
-type ValueCellsForRow = Record<string, string | number | boolean>;
+type StringWithStyles = {
+  value: string;
+  styles?: Chalk;
+};
+type ValueCellsForRow = Record<string, StringWithStyles>;
 
 interface Row<Columns extends ValueCellsForRow> {
   indexValue: string;
@@ -35,16 +41,20 @@ const getDisplayString = (
   data: string,
   length: number,
   alignment: 'left' | 'center' = 'left',
+  styles?: Chalk,
 ): string => {
   if (` ${data} `.length > length && data.length > 5) {
-    return ` ...${data.slice(-length + 5)} `;
+    return applyChalkStyles(` ...${data.slice(-length + 5)} `, styles);
   }
 
   switch (alignment) {
     case 'left':
-      return ` ${data} `.slice(-length).padEnd(length);
+      return applyChalkStyles(
+        ` ${data} `.slice(-length).padEnd(length),
+        styles,
+      );
     case 'center':
-      return getCenterPaddedString(data, length);
+      return applyChalkStyles(getCenterPaddedString(data, length), styles);
   }
 };
 
@@ -76,7 +86,12 @@ const printRow = <Columns extends ValueCellsForRow>(
 ): void => {
   const indexCell = getDisplayString(row.indexValue, columnWidths.indexWidth);
   const otherCells = Object.entries(row.otherValues).map(([key, value]) =>
-    getDisplayString(value.toString(), columnWidths.otherWidths[key], 'center'),
+    getDisplayString(
+      value.value,
+      columnWidths.otherWidths[key],
+      'center',
+      value.styles,
+    ),
   );
   const allCells = [indexCell, ...otherCells];
   console.log(`|${allCells.join('|')}|`);
@@ -97,7 +112,7 @@ const getColumnWidths = <Columns extends ValueCellsForRow>(
     }
     Object.entries(row.otherValues).forEach(([key, value]) => {
       // add 2 to account for space on each side
-      const length = Math.max(value.toString().length, key.length) + 2;
+      const length = Math.max(value.value.toString().length, key.length) + 2;
       if (!(key in maxLengths) || length > maxLengths[key]) {
         maxLengths[key] = length;
       }
