@@ -9,3 +9,8 @@ ruleOverrides:
   partially-compatible: fail
   flagged: fail
   unknown-feature: warn
+featureIgnores:
+  - at-rule
+  - function:rgb
+  - property:align-items:center
+  - property:gap:20px:flex-context

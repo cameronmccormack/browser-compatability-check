@@ -9,6 +9,7 @@ import { getKompatRc } from './run-commands/get-kompatrc';
 import { getValidatedRuleOverrides } from './run-commands/schema-validation/rule-overrides';
 import { DEFAULT_RULES } from './run-commands/default-rules';
 import { getOverallStatus } from './report-generators/get-overall-status';
+import { getValidatedFeatureIgnores } from './run-commands/schema-validation/feature-ignores';
 
 export enum ExitCode {
   Compatible = 0,
@@ -44,6 +45,13 @@ export const runCli = (
     return exitWith(2, `Error: ${validatedRuleOverrides.error}`);
   }
 
+  const validatedFeatureIgnores = getValidatedFeatureIgnores(
+    kompatRcFile.featureIgnores,
+  );
+  if ('error' in validatedFeatureIgnores) {
+    return exitWith(2, `Error: ${validatedFeatureIgnores.error}`);
+  }
+
   const formattedPath = relativePath?.replaceAll(/\/+$|^\.\//g, '');
   const absolutePath = `${currentWorkingDirectory}${
     formattedPath ? `/${formattedPath}` : ''
@@ -71,6 +79,7 @@ export const runCli = (
         validatedBrowserConfig,
         file.path.replace(currentWorkingDirectory, '.'),
         rules,
+        validatedFeatureIgnores,
       ),
     );
   });

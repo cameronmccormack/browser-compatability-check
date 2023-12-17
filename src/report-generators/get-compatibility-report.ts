@@ -69,6 +69,7 @@ export const getCompatibilityReport = (
   browserConfig: Browser[],
   filePath: string,
   rules: Rules,
+  featuresToIgnore: string[],
 ): CompatibilityReport => {
   const reportWithoutOverallStatus: CompatibilityReportWithoutOverallStatus = {
     filePath,
@@ -82,9 +83,19 @@ export const getCompatibilityReport = (
     ),
   };
 
-  Object.values(formattedCss).forEach((featureArray) =>
-    featureArray.forEach((feature) => {
+  Object.values(formattedCss).forEach((featureArray) => {
+    for (const feature of featureArray) {
       const featureId = getIdFromFeature(feature);
+      console.log(featureId);
+      console.log(featuresToIgnore);
+      if (
+        featuresToIgnore.some((featurePrefix) =>
+          featureId.startsWith(featurePrefix),
+        )
+      ) {
+        continue;
+      }
+
       const compatibility = isFeatureCompatible(feature, browserConfig);
       if (compatibility === 'unknown-feature') {
         reportWithoutOverallStatus.unknownFeatures.push(featureId);
@@ -96,8 +107,8 @@ export const getCompatibilityReport = (
           ] += 1;
         });
       }
-    }),
-  );
+    }
+  });
 
   return {
     ...reportWithoutOverallStatus,

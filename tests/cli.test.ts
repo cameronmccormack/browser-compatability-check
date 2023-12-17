@@ -276,6 +276,7 @@ test.each<[string, TestData]>(testCases)(
         mockKompatRc?.browsers ?? MODERN_CHROME_CONFIG,
         dummyCssFile.path,
         expectedRules,
+        [],
       );
     }
     expect(exitCode).toEqual(expectedExitCode);

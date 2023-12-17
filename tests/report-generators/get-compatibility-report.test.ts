@@ -36,6 +36,7 @@ test('creates expected compatibility report for empty formatted css', () => {
       MODERN_CHROME_CONFIG,
       EXAMPLE_FILEPATH,
       DEFAULT_RULES,
+      [],
     ),
   ).toEqual(emptyChromeReport);
 });
@@ -105,6 +106,7 @@ test('creates expected compatibility report for unsupported, partially supported
       PRE_FLEX_GAP_CHROME_CONFIG,
       EXAMPLE_FILEPATH,
       DEFAULT_RULES,
+      [],
     ),
   ).toEqual(expectedReport);
 });
@@ -163,6 +165,7 @@ test('creates expected compatibility report with warning for partially supported
       PRE_FLEX_GAP_CHROME_CONFIG,
       EXAMPLE_FILEPATH,
       DEFAULT_RULES,
+      [],
     ),
   ).toEqual(expectedReport);
 });
@@ -202,6 +205,7 @@ test('creates expected compatibility report for unknown feature', () => {
       MODERN_CHROME_CONFIG,
       EXAMPLE_FILEPATH,
       DEFAULT_RULES,
+      [],
     ),
   ).toEqual(expectedReport);
 });
@@ -261,6 +265,7 @@ test('adds all types of css feature to compatibility report', () => {
       MODERN_CHROME_CONFIG,
       EXAMPLE_FILEPATH,
       DEFAULT_RULES,
+      [],
     ),
   ).toEqual(expectedReport);
 });
