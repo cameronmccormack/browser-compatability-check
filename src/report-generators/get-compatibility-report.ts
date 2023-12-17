@@ -64,11 +64,26 @@ const getOverallStatus = (
   }
 };
 
+const shouldIgnoreFeature = (
+  featureId: string,
+  idPrefixesToIgnore: string[],
+): boolean => {
+  const splitId = featureId.split(':');
+  return idPrefixesToIgnore.some((prefix) => {
+    const splitPrefix = prefix.split(':');
+    return (
+      splitPrefix.length <= splitId.length &&
+      splitPrefix.every((element, index) => element === splitId[index])
+    );
+  });
+};
+
 export const getCompatibilityReport = (
   formattedCss: FormattedCss,
   browserConfig: Browser[],
   filePath: string,
   rules: Rules,
+  featuresToIgnore: string[],
 ): CompatibilityReport => {
   const reportWithoutOverallStatus: CompatibilityReportWithoutOverallStatus = {
     filePath,
@@ -82,9 +97,13 @@ export const getCompatibilityReport = (
     ),
   };
 
-  Object.values(formattedCss).forEach((featureArray) =>
-    featureArray.forEach((feature) => {
+  Object.values(formattedCss).forEach((featureArray) => {
+    for (const feature of featureArray) {
       const featureId = getIdFromFeature(feature);
+      if (shouldIgnoreFeature(featureId, featuresToIgnore)) {
+        continue;
+      }
+
       const compatibility = isFeatureCompatible(feature, browserConfig);
       if (compatibility === 'unknown-feature') {
         reportWithoutOverallStatus.unknownFeatures.push(featureId);
@@ -96,8 +115,8 @@ export const getCompatibilityReport = (
           ] += 1;
         });
       }
-    }),
-  );
+    }
+  });
 
   return {
     ...reportWithoutOverallStatus,

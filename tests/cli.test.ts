@@ -220,6 +220,28 @@ Error: Malformed rule overrides config: [
       },
     },
   ],
+  [
+    'malformed feature ignores',
+    {
+      report: incompatibleReport,
+      mockKompatRc: {
+        browsers: MODERN_CHROME_CONFIG,
+        featureIgnores: ['property:color:'],
+      },
+      expectedExitCode: 2,
+      expectedErrorMessage: `
+Error: Malformed rule overrides config: [
+  {
+    "code": "custom",
+    "message": "Invalid feature ID: must have no more than 3 colons, no consecutive colons and no colons at the start or end of the ID.",
+    "path": [
+      0
+    ]
+  }
+]
+      `.trim(),
+    },
+  ],
 ];
 
 beforeEach(() => {
@@ -276,6 +298,7 @@ test.each<[string, TestData]>(testCases)(
         mockKompatRc?.browsers ?? MODERN_CHROME_CONFIG,
         dummyCssFile.path,
         expectedRules,
+        [],
       );
     }
     expect(exitCode).toEqual(expectedExitCode);

@@ -80,12 +80,16 @@ qq
 Kompat is configured with a `.kompatrc.yml` file at the root of your repository. This file must contain:
 
 - `browsers`: an array of browser identifiers and versions
-  - The acceptable browser slugs are defined [here](src/schema-validation/browsers.ts#L6)
+  - The acceptable browser slugs are defined [here](src/run-commands/schema-validation/browsers.ts#L6)
   - The browser version must be a number
   - Duplicate browser slugs are not allowed
 - `ruleOverrides`: to change the default overall pass/warn/fail thresholds
-  - Acceptable rules config is defined [here](src/schema-validation/rule-overrides.ts#L6)
+  - Acceptable rules config is defined [here](src/run-commands/schema-validation/rule-overrides.ts#L6)
   - e.g. for failing a pipeline if a partially compatible feature is identified
+- `featureIgnores`: to ignore specific rules from overall status and reporting
+  - These ignores should be configured as part of, or all of, a feature ID (as defined [here](src/run-commands/schema-validation/feature-ignores.ts#L20))
+  - Any features with an ID that is matched by the ignore (regardless of higher level of detail) will be excluded from the compatibility report
+    - e.g. if the ignore is "property:color" the features "property:color:red" and "property:color:orange:flex_context" will be ignored, and if the ignore is "at-rule", all at-rules will be ignored.
 
 An example `.kompatrc.yml` file (named `.kompatrc.example.yml`) is given [here](.kompatrc.example.yml) for reference.
 
