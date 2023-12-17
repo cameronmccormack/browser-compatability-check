@@ -87,7 +87,7 @@ Kompat is configured with a `.kompatrc.yml` file at the root of your repository.
   - Acceptable rules config is defined [here](src/run-commands/schema-validation/rule-overrides.ts#L6)
   - e.g. for failing a pipeline if a partially compatible feature is identified
 - `featureIgnores`: to ignore specific rules from overall status and reporting
-  - These ignores should be configured as part of, or all of, a feature ID (as defined [here](src/run-commands/schema-validation/feature-ignores.ts#L15))
+  - These ignores should be configured as part of, or all of, a feature ID (as defined [here](src/run-commands/schema-validation/feature-ignores.ts#L20))
   - Any features with an ID that is matched by the ignore (regardless of higher level of detail) will be excluded from the compatibility report
     - e.g. if the ignore is "property:color" the features "property:color:red" and "property:color:orange:flex_context" will be ignored, and if the ignore is "at-rule", all at-rules will be ignored.
 
