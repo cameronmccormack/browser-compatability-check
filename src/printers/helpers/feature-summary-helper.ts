@@ -1,14 +1,11 @@
 import { CompatibilityReport } from '../../types/compatibility';
-import { BrowserCompatibilityState } from '../../types/compatibility';
+import { Rules } from '../../types/rules';
+import { getChalkStylesForStatus } from './chalk-helper';
+import { TabulatedFeatures } from '../../types/tabulated-display-data';
 
-type TabulatedFeatures = {
-  [feature: string]: {
-    [browser: string]: BrowserCompatibilityState;
-  };
-};
-
-export const getTablulatedFeatures = (
+export const getTabulatedFeatures = (
   features: CompatibilityReport['knownFeatures'],
+  rules: Rules,
 ): { tabulatedFeatures: TabulatedFeatures; browserSlugs: string[] } => {
   const browserSlugs = new Set<string>();
   const tabulatedFeatures = Object.fromEntries(
@@ -19,7 +16,14 @@ export const getTablulatedFeatures = (
         Object.fromEntries(
           Object.keys(features[featureKey]).map((browserKey) => {
             browserSlugs.add(browserKey);
-            return [browserKey, features[featureKey][browserKey].compatibility];
+            const { compatibility } = features[featureKey][browserKey];
+            return [
+              browserKey,
+              {
+                value: compatibility,
+                styles: getChalkStylesForStatus(rules[compatibility]),
+              },
+            ];
           }),
         ),
       ]),

@@ -1,4 +1,6 @@
 /* eslint-disable no-console */
+import { Chalk } from 'chalk';
+import { applyChalkStyles } from './chalk-helper';
 
 export const printSingleColumnTableDivider = (width: number): void => {
   console.log(`|${'-'.repeat(width - 2)}|`);
@@ -28,13 +30,14 @@ export const printFullWidthRowWithText = (
     edgeCharacter: '|',
     justification: 'center',
   },
+  styles?: Chalk,
 ): void => {
   switch (justification) {
     case 'center':
-      printFullWidthRowWithCenteredText(text, width, edgeCharacter);
+      printFullWidthRowWithCenteredText(text, width, edgeCharacter, styles);
       break;
     case 'left':
-      printFullWidthRowWithLeftAlignedText(text, width, edgeCharacter);
+      printFullWidthRowWithLeftAlignedText(text, width, edgeCharacter, styles);
   }
 };
 
@@ -42,12 +45,14 @@ const printFullWidthRowWithCenteredText = (
   text: string,
   width: number,
   edgeCharacter: string,
+  styles?: Chalk,
 ): void => {
   const widthExcludingEdges = width - 2;
+  const paddedText = text
+    .padStart((text.length + widthExcludingEdges) / 2)
+    .padEnd(widthExcludingEdges);
   console.log(
-    `${edgeCharacter}${text
-      .padStart((text.length + widthExcludingEdges) / 2)
-      .padEnd(widthExcludingEdges)}${edgeCharacter}`,
+    `${edgeCharacter}${applyChalkStyles(paddedText, styles)}${edgeCharacter}`,
   );
 };
 
@@ -55,6 +60,10 @@ const printFullWidthRowWithLeftAlignedText = (
   text: string,
   width: number,
   edgeCharacter: string,
+  styles?: Chalk,
 ): void => {
-  console.log(`${edgeCharacter} ${text.padEnd(width - 3)}${edgeCharacter}`);
+  const paddedText = text.padEnd(width - 3);
+  console.log(
+    `${edgeCharacter} ${applyChalkStyles(paddedText, styles)}${edgeCharacter}`,
+  );
 };

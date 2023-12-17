@@ -76,7 +76,7 @@ export const runCli = (
   });
 
   const overallStatus = getOverallStatus(reports);
-  printCompatibilityReports(reports, overallStatus);
+  printCompatibilityReports(reports, overallStatus, rules);
 
   return exitWith(overallStatus === 'fail' ? 1 : 0);
 };
