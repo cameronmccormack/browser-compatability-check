@@ -13,4 +13,4 @@ featureIgnores:
   - at-rule
   - function:rgb
   - property:align-items:center
-  - property:gap:20px:flex-context
+  - property:gap:20px:flex_context
