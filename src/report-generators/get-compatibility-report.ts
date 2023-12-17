@@ -64,6 +64,20 @@ const getOverallStatus = (
   }
 };
 
+const shouldIgnoreFeature = (
+  featureId: string,
+  idPrefixesToIgnore: string[],
+): boolean => {
+  const splitId = featureId.split(':');
+  return idPrefixesToIgnore.some((prefix) => {
+    const splitPrefix = prefix.split(':');
+    return (
+      splitPrefix.length <= splitId.length &&
+      splitPrefix.every((element, index) => element === splitId[index])
+    );
+  });
+};
+
 export const getCompatibilityReport = (
   formattedCss: FormattedCss,
   browserConfig: Browser[],
@@ -86,13 +100,7 @@ export const getCompatibilityReport = (
   Object.values(formattedCss).forEach((featureArray) => {
     for (const feature of featureArray) {
       const featureId = getIdFromFeature(feature);
-      console.log(featureId);
-      console.log(featuresToIgnore);
-      if (
-        featuresToIgnore.some((featurePrefix) =>
-          featureId.startsWith(featurePrefix),
-        )
-      ) {
+      if (shouldIgnoreFeature(featureId, featuresToIgnore)) {
         continue;
       }
 
