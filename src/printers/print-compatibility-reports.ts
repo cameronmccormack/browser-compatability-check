@@ -55,12 +55,14 @@ const printOverallSummary = (
 const printReportSummaries = (
   reports: CompatibilityReport[],
   rules: Rules,
+  includePerFeatureSummary: boolean,
 ): void => {
   console.log('Summary of all stylesheets:');
   reports.forEach((report) => {
     printReportHeading(report);
     printBrowserSummaries(report, rules);
     if (
+      includePerFeatureSummary &&
       report.overallStatus !== 'pass' &&
       Object.keys(report.knownFeatures).length > 0
     ) {
@@ -170,11 +172,12 @@ export const printCompatibilityReports = (
   reports: CompatibilityReport[],
   overallStatus: OverallResult,
   rules: Rules,
+  includePerFeatureSummary: boolean,
 ): void => {
   printAsciiHeader();
   printSpacer();
   printOverallSummary(reports, overallStatus);
   printSpacer();
-  printReportSummaries(reports, rules);
+  printReportSummaries(reports, rules, includePerFeatureSummary);
   printOverallSummary(reports, overallStatus);
 };

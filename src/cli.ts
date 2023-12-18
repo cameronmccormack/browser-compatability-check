@@ -10,12 +10,23 @@ import { getValidatedRuleOverrides } from './run-commands/schema-validation/rule
 import { DEFAULT_RULES } from './run-commands/default-rules';
 import { getOverallStatus } from './report-generators/get-overall-status';
 import { getValidatedFeatureIgnores } from './run-commands/schema-validation/feature-ignores';
+import { UnvalidatedKompatRc, ValidatedKompatRc } from './types/kompatrc';
+import { getValidatedReportOptions } from './run-commands/schema-validation/report-options';
 
 export enum ExitCode {
   Compatible = 0,
   Incompatible = 1,
   BadArgsOrException = 2,
 }
+
+const getValidatedKompatRc = (
+  unvalidatedFile: UnvalidatedKompatRc,
+): ValidatedKompatRc => ({
+  browserConfig: getValidatedBrowserConfig(unvalidatedFile.browsers),
+  ruleOverrides: getValidatedRuleOverrides(unvalidatedFile.ruleOverrides),
+  featureIgnores: getValidatedFeatureIgnores(unvalidatedFile.featureIgnores),
+  reportOptions: getValidatedReportOptions(unvalidatedFile.reportOptions),
+});
 
 export const runCli = (
   exitWith: (code: ExitCode, errorMessage?: string) => ExitCode,
@@ -31,25 +42,23 @@ export const runCli = (
     );
   }
 
-  const validatedBrowserConfig = getValidatedBrowserConfig(
-    kompatRcFile.browsers,
-  );
-  if ('error' in validatedBrowserConfig) {
-    return exitWith(2, `Error: ${validatedBrowserConfig.error}`);
+  const { browserConfig, ruleOverrides, featureIgnores, reportOptions } =
+    getValidatedKompatRc(kompatRcFile);
+
+  if ('error' in browserConfig) {
+    return exitWith(2, `Error: ${browserConfig.error}`);
   }
 
-  const validatedRuleOverrides = getValidatedRuleOverrides(
-    kompatRcFile.ruleOverrides,
-  );
-  if ('error' in validatedRuleOverrides) {
-    return exitWith(2, `Error: ${validatedRuleOverrides.error}`);
+  if ('error' in ruleOverrides) {
+    return exitWith(2, `Error: ${ruleOverrides.error}`);
   }
 
-  const validatedFeatureIgnores = getValidatedFeatureIgnores(
-    kompatRcFile.featureIgnores,
-  );
-  if ('error' in validatedFeatureIgnores) {
-    return exitWith(2, `Error: ${validatedFeatureIgnores.error}`);
+  if ('error' in featureIgnores) {
+    return exitWith(2, `Error: ${featureIgnores.error}`);
+  }
+
+  if ('error' in reportOptions) {
+    return exitWith(2, `Error: ${reportOptions.error}`);
   }
 
   const formattedPath = relativePath?.replaceAll(/\/+$|^\.\//g, '');
@@ -67,7 +76,7 @@ export const runCli = (
 
   const rules = {
     ...DEFAULT_RULES,
-    ...validatedRuleOverrides,
+    ...ruleOverrides,
   };
 
   const reports: CompatibilityReport[] = [];
@@ -76,16 +85,24 @@ export const runCli = (
     reports.push(
       getCompatibilityReport(
         formattedCss,
-        validatedBrowserConfig,
+        browserConfig,
         file.path.replace(currentWorkingDirectory, '.'),
         rules,
-        validatedFeatureIgnores,
+        featureIgnores,
       ),
     );
   });
 
   const overallStatus = getOverallStatus(reports);
-  printCompatibilityReports(reports, overallStatus, rules);
+  printCompatibilityReports(
+    reports,
+    overallStatus,
+    rules,
+    reportOptions.includePerFeatureSummary,
+  );
+
+  // TODO: add this
+  //createCompatibilityReportFiles(reports, reportOptions.outputReportFiles);
 
   return exitWith(overallStatus === 'fail' ? 1 : 0);
 };

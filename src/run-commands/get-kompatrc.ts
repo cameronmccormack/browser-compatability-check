@@ -1,6 +1,6 @@
 import fs from 'fs';
 import YAML from 'yaml';
-import { UnvalidatedKompatRc } from '../types/unvalidated-kompatrc';
+import { UnvalidatedKompatRc } from '../types/kompatrc';
 
 const getRawKompatRc = (currentWorkingDirectory: string): string | null => {
   try {

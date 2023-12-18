@@ -15,7 +15,7 @@ import { runCli, ExitCode } from '../src/cli';
 import { CompatibilityReport } from '../src/types/compatibility';
 import { CssFile } from '../src/types/css-file';
 import { MODERN_CHROME_CONFIG } from './test-data/browser-configs';
-import { UnvalidatedKompatRc } from '../src/types/unvalidated-kompatrc';
+import { UnvalidatedKompatRc } from '../src/types/kompatrc';
 import { Rules } from '../src/types/rules';
 import { DEFAULT_RULES } from '../src/run-commands/default-rules';
 
@@ -237,6 +237,32 @@ Error: Malformed rule overrides config: [
     "path": [
       0
     ]
+  }
+]
+      `.trim(),
+    },
+  ],
+  [
+    'malformed report options',
+    {
+      report: incompatibleReport,
+      mockKompatRc: {
+        browsers: MODERN_CHROME_CONFIG,
+        reportOptions: {
+          includePerFeatureSummary: 'bad',
+        },
+      },
+      expectedExitCode: 2,
+      expectedErrorMessage: `
+Error: Malformed report options config: [
+  {
+    "code": "invalid_type",
+    "expected": "boolean",
+    "received": "string",
+    "path": [
+      "includePerFeatureSummary"
+    ],
+    "message": "Expected boolean, received string"
   }
 ]
       `.trim(),

@@ -106,7 +106,7 @@ Malformed rule overrides config: [
 ];
 
 test.each<[string, TestData]>(testCases)(
-  'Correctly validates browser config for case: %s',
+  'Correctly validates feature ignores for case: %s',
   (_, { inputConfig, expectedResult }) => {
     expect(getValidatedFeatureIgnores(inputConfig)).toEqual(expectedResult);
   },

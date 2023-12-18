@@ -855,3 +855,79 @@ export const nonDefaultRulesPrintedReport = applyStyles(
     },
   ],
 );
+
+const unstyledExcludedPerFeatureSummariesPrintedReport = `
+|----------------------------------------------------------------------------------------------------------------------|
+|                                         ▄ •▄       • ▌ ▄ ·.  ▄▄▄· ▄▄▄· ▄▄▄▄▄                                         |
+|                                         █▌▄▌▪▪     ·██ ▐███▪▐█ ▄█▐█ ▀█ •██                                           |
+|                                         ▐▀▀▄· ▄█▀▄ ▐█ ▌▐▌▐█· ██▀·▄█▀▀█  ▐█.▪                                         |
+|                                         ▐█.█▌▐█▌.▐▌██ ██▌▐█▌▐█▪·•▐█ ▪▐▌ ▐█▌·                                         |
+|                                         ·▀  ▀ ▀█▄▀▪▀▀  █▪▀▀▀.▀    ▀  ▀  ▀▀▀                                          |
+|                                                                                                                      |
+|                                         Copyright (c) 2023 Cameron McCormack                                         |
+|----------------------------------------------------------------------------------------------------------------------|
+
+
+Overall Summary: FAIL
+ - FAIL: example/filepath/eg-file.css
+
+
+Summary of all stylesheets:
+########################################################################################################################
+#                                                                                                                      #
+#                                          FAIL: example/filepath/eg-file.css                                          #
+#                                                                                                                      #
+########################################################################################################################
+|----------------------------------------------------------------------------------------------------------------------|
+|                                                                                                                      |
+|                                                  High-level Summary                                                  |
+|                                                                                                                      |
+|----------------------------------------------------|------------|-----------------|---------|--------------|---------|
+| Index                                              | compatible | partial-support | flagged | incompatible | unknown |
+|----------------------------------------------------|------------|-----------------|---------|--------------|---------|
+| chrome                                             |      4     |        0        |    0    |       0      |    0    |
+|----------------------------------------------------|------------|-----------------|---------|--------------|---------|
+|                                                                                                                      |
+| Unknown features:                                                                                                    |
+| - property:not-a-real-feature:20px                                                                                   |
+|                                                                                                                      |
+|----------------------------------------------------------------------------------------------------------------------|
+
+
+Overall Summary: FAIL
+ - FAIL: example/filepath/eg-file.css
+`.trim();
+
+export const excludedPerFeatureSummariesPrintedReport = applyStyles(
+  unstyledExcludedPerFeatureSummariesPrintedReport,
+  [
+    {
+      substringToStyle: '0',
+      regexToFind: /(?<=\s)0(?=\s)/g,
+      style: chalk.green,
+    },
+    {
+      substringToStyle: '4',
+      regexToFind: /(?<=\s)4(?=\s)/g,
+      style: chalk.green,
+    },
+    {
+      substringToStyle: 'FAIL',
+      regexToFind: /(FAIL(?=\n))|((?<=- )FAIL(?=:))/g,
+      style: chalk.bgRed.bold,
+    },
+    {
+      substringToStyle: 'FAIL: example/filepath/eg-file.css',
+      regexToFind: /(FAIL: example\/filepath\/eg-file.css)(?!$)/g,
+      style: chalk.bgRed.bold,
+    },
+    {
+      substringToStyle: 'Unknown features:',
+      style: chalk.red,
+    },
+    {
+      substringToStyle: '- property:not-a-real-feature:20px',
+      style: chalk.red,
+    },
+  ],
+);

@@ -14,3 +14,12 @@ featureIgnores:
   - function:rgb
   - property:align-items:center
   - property:gap:20px:flex_context
+reportOptions:
+  includePerFeatureSummary: false
+  outputReportFiles:
+    - type: json
+      location: reports/example.json
+    - type: html
+      location: reports/example.html
+    - type: txt
+      location: reports/example.txt

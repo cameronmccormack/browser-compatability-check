@@ -13,6 +13,7 @@ import {
 } from '../test-data/compatibility-reports';
 import {
   emptyPrintedReport,
+  excludedPerFeatureSummariesPrintedReport,
   longFeatureIdPrintedReport,
   manyBrowsersPrintedReport,
   multipleFilesPrintedReport,
@@ -27,6 +28,7 @@ type TestData = {
   compatibilityReports: CompatibilityReport[];
   expectedPrintedReport: string;
   overrideRules?: Rules;
+  includePerFeatureSummary?: boolean;
 };
 
 const testCases: [string, TestData][] = [
@@ -95,11 +97,27 @@ const testCases: [string, TestData][] = [
       },
     },
   ],
+  [
+    'explicitly excluded per-feature summaries',
+    {
+      compatibilityReports: [unknownFeatureReport],
+      expectedPrintedReport: excludedPerFeatureSummariesPrintedReport,
+      includePerFeatureSummary: false,
+    },
+  ],
 ];
 
 test.each<[string, TestData]>(testCases)(
   'prints expected report for case: %s',
-  (_, { compatibilityReports, expectedPrintedReport, overrideRules }) => {
+  (
+    _,
+    {
+      compatibilityReports,
+      expectedPrintedReport,
+      overrideRules,
+      includePerFeatureSummary,
+    },
+  ) => {
     const loggedLines: string[] = [];
     jest
       .spyOn(global.console, 'log')
@@ -110,6 +128,7 @@ test.each<[string, TestData]>(testCases)(
       compatibilityReports,
       overallStatus,
       overrideRules ?? DEFAULT_RULES,
+      includePerFeatureSummary ?? true,
     );
 
     expect(loggedLines.join('\n')).toEqual(expectedPrintedReport);
