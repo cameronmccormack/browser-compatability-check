@@ -1,0 +1,38 @@
+html
+  head
+    title Kompat Report
+    style.
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f0f0;
+        color: #333;
+      }
+
+      h1 {
+        color: #007bff;
+      }
+  body
+    h1 Kompat
+    div Copyright © 2023 Cameron McCormack
+
+    h2 Overall Summary: #[span #{overallResult.toUpperCase()}]
+    ul
+        each report in reports
+            li= `${report.overallStatus.toUpperCase()}: ${report.filePath}`
+
+    h2 Summary of All Stylesheets:
+
+    each report in reports
+        h3 #{report.overallStatus.toUpperCase()}: #{report.filePath}
+
+        if includePerFeatureSummary
+            table
+                tr
+                    th Rule Identifier
+                    each browserSlug in Object.keys(report.browserSummaries)
+                        th #{browserSlug}
+                each featureId in Object.keys(report.knownFeatures)
+                    tr
+                        td #{featureId}
+                        each browserSlug in Object.keys(report.knownFeatures[featureId])
+                            td #{report.knownFeatures[featureId][browserSlug].compatibility}

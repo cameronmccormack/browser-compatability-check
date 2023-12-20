@@ -21,5 +21,3 @@ reportOptions:
       location: reports/example.json
     - type: html
       location: reports/example.html
-    - type: txt
-      location: reports/example.txt

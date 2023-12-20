@@ -92,7 +92,7 @@ Kompat is configured with a `.kompatrc.yml` file at the root of your repository.
     - e.g. if the ignore is "property:color" the features "property:color:red" and "property:color:orange:flex_context" will be ignored, and if the ignore is "at-rule", all at-rules will be ignored.
 - `reportOptions`: to configure the logged report and create output log files
   - The correct format for these options is defined [here](src/run-commands/schema-validation/report-options.ts#L6)
-  - The per-browser summary can be suppressed in the console logs, and HTML, JSON and TXT file output reports may be configured.
+  - The per-browser summary can be suppressed in the console logs, and HTML and/or JSON file output reports may be configured.
 
 An example `.kompatrc.yml` file (named `.kompatrc.example.yml`) is given [here](.kompatrc.example.yml) for reference.
 

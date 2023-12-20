@@ -12,6 +12,7 @@ import { getOverallStatus } from './report-generators/get-overall-status';
 import { getValidatedFeatureIgnores } from './run-commands/schema-validation/feature-ignores';
 import { UnvalidatedKompatRc, ValidatedKompatRc } from './types/kompatrc';
 import { getValidatedReportOptions } from './run-commands/schema-validation/report-options';
+import { writeCompatibilityReportFiles } from './report-writers/report-writer';
 
 export enum ExitCode {
   Compatible = 0,
@@ -93,16 +94,22 @@ export const runCli = (
     );
   });
 
-  const overallStatus = getOverallStatus(reports);
+  const overallResult = getOverallStatus(reports);
   printCompatibilityReports(
     reports,
-    overallStatus,
+    overallResult,
     rules,
     reportOptions.includePerFeatureSummary,
   );
 
-  // TODO: add this
-  //createCompatibilityReportFiles(reports, reportOptions.outputReportFiles);
+  writeCompatibilityReportFiles(
+    {
+      overallResult,
+      reports,
+      includePerFeatureSummary: reportOptions.includePerFeatureSummary,
+    },
+    reportOptions.outputReportFiles,
+  );
 
-  return exitWith(overallStatus === 'fail' ? 1 : 0);
+  return exitWith(overallResult === 'fail' ? 1 : 0);
 };

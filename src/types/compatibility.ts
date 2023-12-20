@@ -1,5 +1,11 @@
 import { OverallResult } from './overall-result';
 
+export type OverallReport = {
+  overallResult: OverallResult;
+  reports: CompatibilityReport[];
+  includePerFeatureSummary: boolean;
+};
+
 export type CompatibilityReport = {
   filePath: string;
   overallStatus: OverallResult;

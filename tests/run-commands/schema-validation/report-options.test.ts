@@ -19,10 +19,6 @@ const testCases: [string, TestData][] = [
         includePerFeatureSummary: false,
         outputReportFiles: [
           {
-            type: 'txt',
-            location: 'example/file.txt',
-          },
-          {
             type: 'json',
             location: 'example/file.json',
           },
@@ -35,10 +31,6 @@ const testCases: [string, TestData][] = [
       expectedResult: {
         includePerFeatureSummary: false,
         outputReportFiles: [
-          {
-            type: 'txt',
-            location: 'example/file.txt',
-          },
           {
             type: 'json',
             location: 'example/file.json',
@@ -64,8 +56,8 @@ const testCases: [string, TestData][] = [
       inputConfig: {
         outputReportFiles: [
           {
-            type: 'txt',
-            location: 'example/file.txt',
+            type: 'json',
+            location: 'example/file.json',
           },
         ],
       },
@@ -74,8 +66,8 @@ const testCases: [string, TestData][] = [
           DEFAULT_REPORT_OPTIONS.includePerFeatureSummary,
         outputReportFiles: [
           {
-            type: 'txt',
-            location: 'example/file.txt',
+            type: 'json',
+            location: 'example/file.json',
           },
         ],
       },
@@ -116,7 +108,6 @@ Malformed report options config: [
     "received": "xml",
     "code": "invalid_enum_value",
     "options": [
-      "txt",
       "html",
       "json"
     ],
@@ -125,7 +116,7 @@ Malformed report options config: [
       0,
       "type"
     ],
-    "message": "Invalid enum value. Expected 'txt' | 'html' | 'json', received 'xml'"
+    "message": "Invalid enum value. Expected 'html' | 'json', received 'xml'"
   }
 ]
       `.trim(),
