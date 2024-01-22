@@ -123,13 +123,13 @@ test.each<[string, TestData]>(testCases)(
       .spyOn(global.console, 'log')
       .mockImplementation((message) => loggedLines.push(message));
 
-    const overallStatus = getOverallStatus(compatibilityReports);
-    printCompatibilityReports(
-      compatibilityReports,
-      overallStatus,
-      overrideRules ?? DEFAULT_RULES,
-      includePerFeatureSummary ?? true,
-    );
+    const overallResult = getOverallStatus(compatibilityReports);
+    printCompatibilityReports({
+      reports: compatibilityReports,
+      overallResult,
+      rules: overrideRules ?? DEFAULT_RULES,
+      includePerFeatureSummary: includePerFeatureSummary ?? true,
+    });
 
     expect(loggedLines.join('\n')).toEqual(expectedPrintedReport);
   },

@@ -3,7 +3,7 @@ export type ReportOptions = {
   outputReportFiles: OutputReportFile[];
 };
 
-type OutputReportFile = {
-  type: 'txt' | 'json' | 'html';
+export type OutputReportFile = {
+  type: 'json' | 'html';
   location: string;
 };

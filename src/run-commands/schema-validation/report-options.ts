@@ -6,9 +6,7 @@ import { ReportOptions } from '../../types/report-options';
 const ReportOptionsSchema = z.object({
   includePerFeatureSummary: z.boolean().default(true),
   outputReportFiles: z
-    .array(
-      z.object({ type: z.enum(['txt', 'html', 'json']), location: z.string() }),
-    )
+    .array(z.object({ type: z.enum(['html', 'json']), location: z.string() }))
     .default([]),
 });
 

@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import { printTable } from './table-printer/print-table';
-import { CompatibilityReport } from '../types/compatibility';
+import { CompatibilityReport, OverallReport } from '../types/compatibility';
 import { OverallResult } from '../types/overall-result';
 import {
   printFullWidthCharacterRow,
@@ -168,16 +168,16 @@ const printSpacer = (): void => {
   console.log('\n');
 };
 
-export const printCompatibilityReports = (
-  reports: CompatibilityReport[],
-  overallStatus: OverallResult,
-  rules: Rules,
-  includePerFeatureSummary: boolean,
-): void => {
+export const printCompatibilityReports = ({
+  reports,
+  overallResult,
+  rules,
+  includePerFeatureSummary,
+}: OverallReport): void => {
   printAsciiHeader();
   printSpacer();
-  printOverallSummary(reports, overallStatus);
+  printOverallSummary(reports, overallResult);
   printSpacer();
   printReportSummaries(reports, rules, includePerFeatureSummary);
-  printOverallSummary(reports, overallStatus);
+  printOverallSummary(reports, overallResult);
 };
