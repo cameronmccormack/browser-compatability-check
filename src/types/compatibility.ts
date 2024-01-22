@@ -1,9 +1,11 @@
 import { OverallResult } from './overall-result';
+import { Rules } from './rules';
 
 export type OverallReport = {
   overallResult: OverallResult;
   reports: CompatibilityReport[];
   includePerFeatureSummary: boolean;
+  rules: Rules;
 };
 
 export type CompatibilityReport = {

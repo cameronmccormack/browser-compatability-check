@@ -1,38 +1,181 @@
-html
+- var themeColors = { background: "#F6BF4F", text: "#331F00", highlight: "#F6BF4F", sectionBackground: "#FFEECB", reportBackground: "white" }
+- var statusColors = { pass: "#148A00", warn: "#FFB32B", fail: "#E51854", textOnPass: "white", textOnWarn: "black", textOnFail: "white" }
+
+html(lang="en-GB")
   head
     title Kompat Report
+    link(href="https://fonts.googleapis.com/css?family=Lato:400,700", rel="stylesheet", type="text/css")
     style.
       body {
-        font-family: Arial, sans-serif;
-        background-color: #f0f0f0;
-        color: #333;
+        font-family: Lato, sans-serif;
+        background-color: #{themeColors.background};
+        color: #{themeColors.text};
       }
 
-      h1 {
-        color: #007bff;
+      li {
+        width: fit-content;
+      }
+
+      dt {
+        width: fit-content;
+      }
+
+      table {
+        display: block;
+        overflow-x: auto;
+        border-collapse: collapse;
+        border: 4px solid #{themeColors.highlight}
+      }
+
+      table tbody {
+          display: table;
+          width: 100%;
+      }
+
+      th {
+        text-align: left;
+        background-color: #{themeColors.highlight};
+        padding: 0.25rem;
+      }
+
+      td {
+        padding: 0.25rem;
+      }
+
+      .result {
+        font-family: Lucida Console, monospace;
+        font-weight: bold;
+        padding: 0.25rem;
+      }
+
+      .bold {
+        font-weight: bold;
+      }
+
+      .pass {
+        color: #{statusColors.textOnPass};
+        background-color: #{statusColors.pass};
+      }
+
+      .pass-cell {
+        color: #{statusColors.pass};
+      }
+
+      .warn {
+        color: #{statusColors.textOnWarn};
+        background-color: #{statusColors.warn};
+      }
+
+      .warn-cell {
+        color: #{statusColors.textOnWarn};
+        background-color: #{statusColors.warn};
+      }
+
+      .fail {
+        color: #{statusColors.textOnFail};
+        background-color: #{statusColors.fail};
+      }
+
+      .fail-cell {
+        color: #{statusColors.textOnFail};
+        background-color: #{statusColors.fail};
+      }
+
+      .heading-wrapper {
+        margin: 1rem;
+        text-align: center;
+      }
+
+      .summary-wrapper {
+        margin: 1rem;
+        padding: 0.5rem 2rem;
+        background-color: #{themeColors.sectionBackground};
+        border-radius: 2rem;
+      }
+
+      .report-wrapper {
+        margin: 2rem 0;
+        padding: 0.5rem 2rem;
+        background-color: #{themeColors.reportBackground};
+        border-radius: 2rem;
+      }
+
+      .logo-heading {
+        color: #{themeColors.text};
+        letter-spacing: 0.5em;
+        margin: 0.5rem;
+        font-weight: 200;
+      }
+
+      .copyright {
+        color: #{themeColors.text};
+        margin: 0.5rem;
+        font-size: 0.75em;
+        letter-spacing: 0.25em;
       }
   body
-    h1 Kompat
-    div Copyright © 2023 Cameron McCormack
+    main
+      div(class="heading-wrapper")
+        img(src="static/logo.svg", alt="Kompat Logo", width="288")
+        h1(class="logo-heading") KOMPAT
+        div(class="copyright") COPYRIGHT &copy; 2023 CAMERON MCCORMACK
 
-    h2 Overall Summary: #[span #{overallResult.toUpperCase()}]
-    ul
-        each report in reports
-            li= `${report.overallStatus.toUpperCase()}: ${report.filePath}`
+      div(class="summary-wrapper")
+        h2 Overall Summary: #[span(class=`${overallResult} result`) #{overallResult.toUpperCase()}]
+        div(class="report-wrapper")
+          dl
+            each report, index in reports       
+              dt(class=`${report.overallStatus} result report-summary-status`)= `${report.overallStatus.toUpperCase()}:`
+              dd(class="bold")
+                a(href=`#report-${index}`) #{report.filePath}
 
-    h2 Summary of All Stylesheets:
+      div(class="summary-wrapper")
+        h2 Summary of All Stylesheets:
+        each report, index in reports
+          div(class="report-wrapper")
+            h3(id=`report-${index}`) #[span(class=`${report.overallStatus} result`) #{report.overallStatus.toUpperCase()}] #{report.filePath}
 
-    each report in reports
-        h3 #{report.overallStatus.toUpperCase()}: #{report.filePath}
-
-        if includePerFeatureSummary
+            h4 High-level Summary
             table
+              tr
+                th Browser
+                th Compatible
+                th Partial Support
+                th Flagged
+                th Incompatible
+                th Unknown
+              each browser in Object.keys(report.browserSummaries)
                 tr
-                    th Rule Identifier
+                  td #{browser}
+                  td(class=`${report.browserSummaries[browser].compatible === 0 ? 'pass' : rules.compatible}-cell`)
+                    | #{report.browserSummaries[browser].compatible}
+                  td(class=`${report.browserSummaries[browser]["partial-support"] === 0 ? 'pass' : rules["partial-support"]}-cell`)
+                    | #{report.browserSummaries[browser]["partial-support"]}
+                  td(class=`${report.browserSummaries[browser].flagged === 0 ? 'pass' : rules.flagged}-cell`)
+                    | #{report.browserSummaries[browser].flagged}
+                  td(class=`${report.browserSummaries[browser].incompatible === 0 ? 'pass' : rules.incompatible}-cell`)
+                    | #{report.browserSummaries[browser].incompatible}
+                  td(class=`${report.browserSummaries[browser].unknown === 0 ? 'pass' : rules.unknown}-cell`)
+                    | #{report.browserSummaries[browser].unknown}
+
+           
+            h4 Unknown features:
+            ul
+              each feature in report.unknownFeatures
+                li(class=`${rules['unknown-feature']}-cell`) #{feature}
+              if report.unknownFeatures.length === 0
+                li(class="pass-cell") None
+
+            if includePerFeatureSummary && Object.keys(report.knownFeatures).length > 0
+              h4 Per-feature Summary
+              table
+                tr
+                  th Rule Identifier
                     each browserSlug in Object.keys(report.browserSummaries)
-                        th #{browserSlug}
+                      th #{browserSlug}
                 each featureId in Object.keys(report.knownFeatures)
-                    tr
-                        td #{featureId}
-                        each browserSlug in Object.keys(report.knownFeatures[featureId])
-                            td #{report.knownFeatures[featureId][browserSlug].compatibility}
+                  tr
+                    td #{featureId}
+                      each browserSlug in Object.keys(report.knownFeatures[featureId])
+                        td(class=`${rules[report.knownFeatures[featureId][browserSlug].compatibility]}-cell`)
+                          | #{report.knownFeatures[featureId][browserSlug].compatibility}

@@ -4,17 +4,44 @@ import jsonfile from 'jsonfile';
 import pug from 'pug';
 import fs from 'fs';
 
+const createDirectoryIfNotExists = (filepath: string): void => {
+  const directoryPath = filepath.split('/').slice(0, -1).join('/');
+  try {
+    fs.mkdirSync(directoryPath, { recursive: true });
+  } catch {
+    // do nothing - it's fine if the directory already exists
+  }
+};
+
+const copyStaticAssets = (fileLocation: string): void => {
+  const staticFileDirectoryPath =
+    fileLocation.split('/').slice(0, -1).join('/') + '/static';
+
+  try {
+    fs.mkdirSync(staticFileDirectoryPath);
+  } catch {
+    // do nothing - it's fine if the directory already exists
+  }
+
+  fs.copyFileSync(
+    'images/logo-text.svg',
+    `${staticFileDirectoryPath}/logo.svg`,
+  );
+};
+
 export const writeCompatibilityReportFiles = (
   report: OverallReport,
   outputReportFiles: OutputReportFile[],
 ): void => {
   outputReportFiles.forEach((fileSpec) => {
+    createDirectoryIfNotExists(fileSpec.location);
     switch (fileSpec.type) {
       case 'html':
         fs.writeFileSync(
           fileSpec.location,
           pug.compileFile('src/report-writers/templates/report.pug')(report),
         );
+        copyStaticAssets(fileSpec.location);
         break;
       case 'json':
         jsonfile.writeFileSync(fileSpec.location, report, { spaces: 2 });

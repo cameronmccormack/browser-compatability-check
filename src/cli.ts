@@ -94,22 +94,15 @@ export const runCli = (
     );
   });
 
-  const overallResult = getOverallStatus(reports);
-  printCompatibilityReports(
+  const overallReport = {
+    overallResult: getOverallStatus(reports),
     reports,
-    overallResult,
+    includePerFeatureSummary: reportOptions.includePerFeatureSummary,
     rules,
-    reportOptions.includePerFeatureSummary,
-  );
+  };
 
-  writeCompatibilityReportFiles(
-    {
-      overallResult,
-      reports,
-      includePerFeatureSummary: reportOptions.includePerFeatureSummary,
-    },
-    reportOptions.outputReportFiles,
-  );
+  printCompatibilityReports(overallReport);
+  writeCompatibilityReportFiles(overallReport, reportOptions.outputReportFiles);
 
-  return exitWith(overallResult === 'fail' ? 1 : 0);
+  return exitWith(overallReport.overallResult === 'fail' ? 1 : 0);
 };
