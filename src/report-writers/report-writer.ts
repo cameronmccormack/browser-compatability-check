@@ -31,9 +31,9 @@ const copyStaticAssets = (fileLocation: string): void => {
 
 export const writeCompatibilityReportFiles = (
   report: OverallReport,
-  outputReportFiles: OutputReportFile[],
+  outputReportFileSpecifications: OutputReportFile[],
 ): void => {
-  outputReportFiles.forEach((fileSpec) => {
+  outputReportFileSpecifications.forEach((fileSpec) => {
     createDirectoryIfNotExists(fileSpec.location);
     switch (fileSpec.type) {
       case 'html':
