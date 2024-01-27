@@ -29,9 +29,10 @@ type TestData = {
   cssFinderOverride?: CssFile[] | null;
 };
 
-const dummyCssFile = {
+const dummyCssFile: CssFile = {
   path: 'stub-path',
   contents: '/* stub-contents */',
+  type: 'css',
 };
 
 const dummyFormattedCss = {

@@ -1,11 +1,11 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { CssFile } from '../types/css-file';
+import { CssPath, CssFile } from '../types/css-file';
 
 const getAllCssFilePaths = (
   absolutePath: string,
-  filePaths?: string[],
-): string[] => {
+  filePaths?: CssPath[],
+): CssPath[] => {
   const filePathArray = filePaths ?? [];
 
   fs.readdirSync(absolutePath).forEach((item) => {
@@ -14,7 +14,7 @@ const getAllCssFilePaths = (
     if (stat.isDirectory()) {
       getAllCssFilePaths(filepath, filePathArray);
     } else if (item.endsWith('.css')) {
-      filePathArray.push(filepath);
+      filePathArray.push({ path: filepath, type: 'css' });
     }
   });
 
@@ -23,9 +23,9 @@ const getAllCssFilePaths = (
 
 export const getAllCssFiles = (absolutePath: string): CssFile[] | null => {
   try {
-    return getAllCssFilePaths(absolutePath).map((path) => ({
-      path,
-      contents: fs.readFileSync(path, 'utf-8'),
+    return getAllCssFilePaths(absolutePath).map((cssPath) => ({
+      ...cssPath,
+      contents: fs.readFileSync(cssPath.path, 'utf-8'),
     }));
   } catch {
     return null;
