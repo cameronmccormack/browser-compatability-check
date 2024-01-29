@@ -1,8 +1,8 @@
-import { OverallReport } from '../types/compatibility';
-import { OutputReportFile } from '../types/report-options';
+import fs from 'fs';
 import jsonfile from 'jsonfile';
 import pug from 'pug';
-import fs from 'fs';
+import { OverallReport } from '../types/compatibility';
+import { OutputReportFile } from '../types/report-options';
 
 const createDirectoryIfNotExists = (filepath: string): void => {
   const directoryPath = filepath.split('/').slice(0, -1).join('/');

@@ -1,8 +1,8 @@
-import { getCssBrowserSupport } from './css/css-browser-support';
 import { Browser } from '../types/browser';
 import { CssFeature } from '../types/css-feature';
 import { BrowserCompatibility, Compatibility } from '../types/compatibility';
 import { FeatureDetailsForBrowser } from '../types/browser-support-types';
+import { getCssBrowserSupport } from './css/css-browser-support';
 
 const getCompatibilityForBrowser = (
   browser: Browser,

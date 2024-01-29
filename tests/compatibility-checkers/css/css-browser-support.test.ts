@@ -1,3 +1,5 @@
+import { produce } from 'immer';
+import bcd, { BrowserName, CompatData } from '@mdn/browser-compat-data';
 import { getCssBrowserSupport } from '../../../src/compatibility-checkers/css/css-browser-support';
 import { FeatureSupport } from '../../../src/types/browser-support-types';
 import { CssFeature } from '../../../src/types/css-feature';
@@ -12,8 +14,6 @@ import {
   RGB_FUNCTION_COMPATIBILITY,
   VAR_FUNCTION_COMPATIBILITY,
 } from '../../test-data/browser-compatibility-data';
-import { produce } from 'immer';
-import bcd, { BrowserName, CompatData } from '@mdn/browser-compat-data';
 import * as bcdData from '../../../src/compatibility-checkers/source-data/bcd-data';
 const BROWSER_SLUGS: BrowserName[] = [
   'chrome',

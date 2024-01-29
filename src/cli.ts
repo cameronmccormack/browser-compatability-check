@@ -1,5 +1,5 @@
-import { getAllCssFiles } from './globbers/css-globber';
 import * as csstree from 'css-tree';
+import { getAllCssFiles } from './globbers/css-globber';
 import { getFormattedCss } from './tree-formatters/css/css-tree-formatter';
 import { getCompatibilityReport } from './report-generators/get-compatibility-report';
 import { CompatibilityReport } from './types/compatibility';

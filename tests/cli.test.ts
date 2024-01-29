@@ -3,6 +3,13 @@ import * as cssParserModule from '../src/tree-formatters/css/css-tree-formatter'
 import * as compatibilityReportModule from '../src/report-generators/get-compatibility-report';
 import * as kompatRcModule from '../src/run-commands/get-kompatrc';
 import * as filepathHelperModule from '../src/helpers/filepath-helper';
+import { runCli, ExitCode } from '../src/cli';
+import { CompatibilityReport } from '../src/types/compatibility';
+import { CssFile } from '../src/types/css-file';
+import { UnvalidatedKompatRc } from '../src/types/kompatrc';
+import { Rules } from '../src/types/rules';
+import { DEFAULT_RULES } from '../src/run-commands/default-rules';
+import { MODERN_CHROME_CONFIG } from './test-data/browser-configs';
 import {
   compatibleReport,
   flaggedCompatibilityReport,
@@ -12,13 +19,6 @@ import {
   unknownCompatibilityReport,
   unknownFeatureReport,
 } from './test-data/compatibility-reports';
-import { runCli, ExitCode } from '../src/cli';
-import { CompatibilityReport } from '../src/types/compatibility';
-import { CssFile } from '../src/types/css-file';
-import { MODERN_CHROME_CONFIG } from './test-data/browser-configs';
-import { UnvalidatedKompatRc } from '../src/types/kompatrc';
-import { Rules } from '../src/types/rules';
-import { DEFAULT_RULES } from '../src/run-commands/default-rules';
 
 type TestData = {
   report: CompatibilityReport;
