@@ -1,6 +1,6 @@
 export interface CssPath {
   path: string;
-  type: 'css' | 'sass' | 'less';
+  type: 'css' | 'sass' | 'scss' | 'less';
 }
 
 export interface CssFile extends CssPath {
