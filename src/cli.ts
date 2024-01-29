@@ -13,6 +13,7 @@ import { getValidatedFeatureIgnores } from './run-commands/schema-validation/fea
 import { UnvalidatedKompatRc, ValidatedKompatRc } from './types/kompatrc';
 import { getValidatedReportOptions } from './run-commands/schema-validation/report-options';
 import { writeCompatibilityReportFiles } from './report-writers/report-writer';
+import { isValidFilepath } from './helpers/filepath-helper';
 
 export enum ExitCode {
   Compatible = 0,
@@ -30,6 +31,17 @@ const getValidatedKompatRc = (
 });
 
 export const runCli = (
+  exitWith: (code: ExitCode, errorMessage?: string) => ExitCode,
+  relativePath?: string,
+): ExitCode => {
+  try {
+    return runCliWithoutErrorWrapper(exitWith, relativePath);
+  } catch (e) {
+    return exitWith(1, e instanceof Error ? e.message : undefined);
+  }
+};
+
+const runCliWithoutErrorWrapper = (
   exitWith: (code: ExitCode, errorMessage?: string) => ExitCode,
   relativePath?: string,
 ): ExitCode => {
@@ -67,10 +79,11 @@ export const runCli = (
     formattedPath ? `/${formattedPath}` : ''
   }`;
 
-  const cssFiles = getAllCssFiles(absolutePath);
-  if (cssFiles === null) {
+  if (!isValidFilepath(absolutePath)) {
     return exitWith(2, `Error: Invalid filepath: ${absolutePath}.`);
   }
+
+  const cssFiles = getAllCssFiles(absolutePath);
   if (cssFiles.length === 0) {
     return exitWith(1, `Error: No CSS files found.`);
   }

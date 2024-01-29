@@ -2,6 +2,7 @@ import * as cssFinderModule from '../src/globbers/css-globber';
 import * as cssParserModule from '../src/tree-formatters/css/css-tree-formatter';
 import * as compatibilityReportModule from '../src/report-generators/get-compatibility-report';
 import * as kompatRcModule from '../src/run-commands/get-kompatrc';
+import * as filepathHelperModule from '../src/helpers/filepath-helper';
 import {
   compatibleReport,
   flaggedCompatibilityReport,
@@ -26,12 +27,15 @@ type TestData = {
   expectedRules?: Rules;
   expectedErrorMessage?: string;
   path?: string;
-  cssFinderOverride?: CssFile[] | null;
+  cssFinderOverride?: CssFile[] | { errorMessage: string };
 };
 
-const dummyCssFile = {
+const invalidCssPath = 'this/is/not/valid';
+
+const dummyCssFile: CssFile = {
   path: 'stub-path',
   contents: '/* stub-contents */',
+  type: 'css',
 };
 
 const dummyFormattedCss = {
@@ -148,8 +152,7 @@ Error: Malformed browser config: [
     {
       report: compatibleReport,
       expectedExitCode: 2,
-      path: 'this/is/not/valid',
-      cssFinderOverride: null,
+      path: invalidCssPath,
       expectedErrorMessage: `Error: Invalid filepath: ${process.cwd()}/this/is/not/valid.`,
     },
   ],
@@ -268,6 +271,15 @@ Error: Malformed report options config: [
       `.trim(),
     },
   ],
+  [
+    'error thrown from CSS finder',
+    {
+      report: compatibleReport,
+      cssFinderOverride: { errorMessage: 'bad SASS syntax' },
+      expectedExitCode: 1,
+      expectedErrorMessage: 'bad SASS syntax',
+    },
+  ],
 ];
 
 beforeEach(() => {
@@ -296,10 +308,23 @@ test.each<[string, TestData]>(testCases)(
       .spyOn(compatibilityReportModule, 'getCompatibilityReport')
       .mockReturnValueOnce(report);
     jest
-      .spyOn(cssFinderModule, 'getAllCssFiles')
-      .mockReturnValueOnce(
-        cssFinderOverride !== undefined ? cssFinderOverride : [dummyCssFile],
-      );
+      .spyOn(filepathHelperModule, 'isValidFilepath')
+      .mockReturnValueOnce(path !== invalidCssPath);
+
+    if (cssFinderOverride && 'errorMessage' in cssFinderOverride) {
+      jest
+        .spyOn(cssFinderModule, 'getAllCssFiles')
+        .mockImplementationOnce(() => {
+          throw new Error(cssFinderOverride.errorMessage);
+        });
+    } else {
+      jest
+        .spyOn(cssFinderModule, 'getAllCssFiles')
+        .mockReturnValueOnce(
+          cssFinderOverride !== undefined ? cssFinderOverride : [dummyCssFile],
+        );
+    }
+
     jest
       .spyOn(kompatRcModule, 'getKompatRc')
       .mockReturnValueOnce(
@@ -331,3 +356,22 @@ test.each<[string, TestData]>(testCases)(
     expect(errorMessage).toEqual(expectedErrorMessage);
   },
 );
+
+test('cli returns status 1 without message when an error is thrown that does not extend "Error"', () => {
+  jest.spyOn(kompatRcModule, 'getKompatRc').mockImplementationOnce(() => {
+    throw 'this is a string';
+  });
+
+  let exitCode: ExitCode | null = null;
+  let errorMessage: string | undefined = undefined;
+  const exitWith = (code: ExitCode, message?: string): ExitCode => {
+    exitCode = code;
+    errorMessage = message;
+    return code;
+  };
+
+  runCli(exitWith);
+
+  expect(exitCode).toEqual(1);
+  expect(errorMessage).toEqual(undefined);
+});
