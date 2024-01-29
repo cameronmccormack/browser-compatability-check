@@ -27,7 +27,7 @@ type TestData = {
   expectedRules?: Rules;
   expectedErrorMessage?: string;
   path?: string;
-  cssFinderOverride?: CssFile[] | string;
+  cssFinderOverride?: CssFile[] | { errorMessage: string };
 };
 
 const invalidCssPath = 'this/is/not/valid';
@@ -275,7 +275,7 @@ Error: Malformed report options config: [
     'error thrown from CSS finder',
     {
       report: compatibleReport,
-      cssFinderOverride: 'bad SASS syntax',
+      cssFinderOverride: { errorMessage: 'bad SASS syntax' },
       expectedExitCode: 1,
       expectedErrorMessage: 'bad SASS syntax',
     },
@@ -311,11 +311,11 @@ test.each<[string, TestData]>(testCases)(
       .spyOn(filepathHelperModule, 'isValidFilepath')
       .mockReturnValueOnce(path !== invalidCssPath);
 
-    if (typeof cssFinderOverride === 'string') {
+    if (cssFinderOverride && 'errorMessage' in cssFinderOverride) {
       jest
         .spyOn(cssFinderModule, 'getAllCssFiles')
         .mockImplementationOnce(() => {
-          throw new Error(cssFinderOverride);
+          throw new Error(cssFinderOverride.errorMessage);
         });
     } else {
       jest
