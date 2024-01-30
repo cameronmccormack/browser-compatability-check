@@ -34,6 +34,10 @@
   <ol>
     <li>
       <a href="#about-the-project">About The Project</a>
+      <ul>
+        <li><a href="#whats-included">What's Included?</a></li>
+        <li><a href="#future-development">Future Development</a></li>
+      </ul>
     </li>
     <li>
       <a href="#getting-started">Getting Started</a>
@@ -53,6 +57,26 @@
 ## About The Project
 
 qq
+
+### What's Included?
+
+### Future Development
+
+Kompat is still in its MVP phase, but there are many more planned features for future, post-MVP versions. These are grouped as follows:
+
+Improving existing functionality:
+- Support for more CSS techniques, including:
+  - Tailwind CSS
+  - Support for CSS-in-JS (e.g. Emotion/Styled Components) [note: perhaps will instead be solved with a chainable Kompat API for Puppeteer]
+- Detailing the compatibility of HTML and/or JavaScript features as well as CSS features
+- Improved contextual understanding of CSS usage (e.g. whether an attribute is being applied to the child of a flex/grid/other layout element)
+- Support for legacy names for features to prevent these showing as "unknown" (e.g. `-webkit-box-sizing:border-box` as well as `box-sizing:border-box`)
+- Exposing the "notes" field from the MDN data to the user when present
+
+Entirely new functionality:
+- Inspecting a codebase and returning the oldest version of each browser with which it is fully compatible
+- Creating a browser extension to run a similar check against the CSS in a webpage as well as in a codebase
+- A chainable API for Puppeteer to allow tests to be run against rendered pages in a CI pipeline
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
