@@ -1,7 +1,9 @@
 /* eslint-disable no-console */
-import { printTable } from './table-printer/print-table';
 import { CompatibilityReport, OverallReport } from '../types/compatibility';
 import { OverallResult } from '../types/overall-result';
+import { getChunkedArray } from '../helpers/array-helper';
+import { Rules } from '../types/rules';
+import { printTable } from './table-printer/print-table';
 import {
   printFullWidthCharacterRow,
   printFullWidthRowWithText,
@@ -12,12 +14,10 @@ import {
   getFeaturesForSpecifiedBrowserSlugs,
   getTabulatedFeatures,
 } from './helpers/feature-summary-helper';
-import { getChunkedArray } from '../helpers/array-helper';
 import {
   getChalkStylesForStatus,
   getStyledOverallStatus,
 } from './helpers/chalk-helper';
-import { Rules } from '../types/rules';
 import { getTabulatedBrowserSummaries } from './helpers/browser-summary-helper';
 
 const MAX_WIDTH = 120;

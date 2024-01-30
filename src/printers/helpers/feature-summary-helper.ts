@@ -1,7 +1,7 @@
 import { CompatibilityReport } from '../../types/compatibility';
 import { Rules } from '../../types/rules';
-import { getChalkStylesForStatus } from './chalk-helper';
 import { TabulatedFeatures } from '../../types/tabulated-display-data';
+import { getChalkStylesForStatus } from './chalk-helper';
 
 export const getTabulatedFeatures = (
   features: CompatibilityReport['knownFeatures'],

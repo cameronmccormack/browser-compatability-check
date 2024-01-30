@@ -1,9 +1,9 @@
+import { BrowserName } from '@mdn/browser-compat-data';
 import { Browser } from '../../src/types/browser';
 import { CssFeature } from '../../src/types/css-feature';
 import { isFeatureCompatible } from '../../src/compatibility-checkers/is-feature-compatible';
 import * as cssBrowserSupportModule from '../../src/compatibility-checkers/css/css-browser-support';
 import { Compatibility } from '../../src/types/compatibility';
-import { BrowserName } from '@mdn/browser-compat-data';
 import {
   PRE_FLEX_GAP_CHROME_CONFIG,
   PRE_DISPLAY_GRID_CHROME_CONFIG,

@@ -1,6 +1,6 @@
-import { getAllCssFiles } from '../../src/globbers/css-globber';
 import fs from 'fs';
 import sass from 'sass';
+import { getAllCssFiles } from '../../src/globbers/css-globber';
 
 test('finds all CSS files in directory and children', () => {
   const expectedFiles = [

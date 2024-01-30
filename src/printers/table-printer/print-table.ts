@@ -1,11 +1,11 @@
 /* eslint-disable no-console */
+import { Chalk } from 'chalk';
 import { applyChalkStyles } from '../helpers/chalk-helper';
 import {
   printFullWidthRowWithText,
   printSingleColumnTableDivider,
   printSingleColumnTableSpacer,
 } from '../helpers/table-helper';
-import { Chalk } from 'chalk';
 
 type StringWithStyles = {
   value: string;

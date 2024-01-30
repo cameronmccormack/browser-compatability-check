@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { CssPath, CssFile } from '../types/css-file';
 import * as sass from 'sass';
+import { CssPath, CssFile } from '../types/css-file';
 
 const getAllCssFilePaths = (
   absolutePath: string,

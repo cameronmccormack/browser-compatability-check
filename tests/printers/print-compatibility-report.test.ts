@@ -11,6 +11,8 @@ import {
   partiallyCompatibleReport,
   unknownFeatureReport,
 } from '../test-data/compatibility-reports';
+import { DEFAULT_RULES } from '../../src/run-commands/default-rules';
+import { Rules } from '../../src/types/rules';
 import {
   emptyPrintedReport,
   excludedPerFeatureSummariesPrintedReport,
@@ -21,8 +23,6 @@ import {
   oneCompatibleFilePrintedReport,
   oneFileWithUnknownFeaturePrintedReport,
 } from './expected-printed-reports';
-import { DEFAULT_RULES } from '../../src/run-commands/default-rules';
-import { Rules } from '../../src/types/rules';
 
 type TestData = {
   compatibilityReports: CompatibilityReport[];

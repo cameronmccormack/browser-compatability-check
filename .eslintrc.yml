@@ -12,6 +12,7 @@ plugins:
   - '@typescript-eslint'
   - 'prettier'
   - 'filenames'
+  - 'import'
 ignorePatterns:
   - bin
 rules:
@@ -24,3 +25,5 @@ rules:
   curly: error
   no-console: warn
   filenames/match-regex: [2, "^[a-z]+(-[a-z]+)*(\\.test|\\.config|\\.d)?$"]
+  import/order:
+    - error

@@ -1,5 +1,5 @@
-import { BrowserCompatibilityState } from './compatibility';
 import { Chalk } from 'chalk';
+import { BrowserCompatibilityState } from './compatibility';
 
 export interface StyledValue<T extends string = string> {
   value: T;
