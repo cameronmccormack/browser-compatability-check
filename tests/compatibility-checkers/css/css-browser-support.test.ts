@@ -35,6 +35,34 @@ const bcdDataWithNaNChromeVersionForGap = produce(bcd, (draft) => {
   };
 });
 
+const bcdDataWithNullChromeVersionForGap = produce(bcd, (draft) => {
+  draft.css.properties.gap.__compat!.support.chrome = {
+    version_added: null,
+    flags: [],
+  };
+});
+
+const bcdDataWithEmptyStringChromeVersionForGap = produce(bcd, (draft) => {
+  draft.css.properties.gap.__compat!.support.chrome = {
+    version_added: '',
+    flags: [],
+  };
+});
+
+const bcdDataWithTrueBooleanChromeVersionForGap = produce(bcd, (draft) => {
+  draft.css.properties.gap.__compat!.support.chrome = {
+    version_added: true,
+    flags: [],
+  };
+});
+
+const bcdDataWithFalseBooleanChromeVersionForGap = produce(bcd, (draft) => {
+  draft.css.properties.gap.__compat!.support.chrome = {
+    version_added: false,
+    flags: [],
+  };
+});
+
 const bcdDataWithEmptyArrayChromeForGap = produce(bcd, (draft) => {
   draft.css.properties.gap.__compat!.support.chrome = [];
 });
@@ -145,6 +173,82 @@ const testCases: [string, TestData][] = [
       value: '20px',
       type: 'property',
       mockBrowserCompatibilityData: bcdDataWithNaNChromeVersionForGap,
+      expected: {
+        ...GAP_NO_CONTEXT_COMPATIBILITY,
+        chrome: [
+          {
+            isFlagged: false,
+            sinceVersion: Number.POSITIVE_INFINITY,
+            isPartialSupport: false,
+          },
+        ],
+      },
+    },
+  ],
+  [
+    'null version added for a browser',
+    {
+      identifier: 'gap',
+      value: '20px',
+      type: 'property',
+      mockBrowserCompatibilityData: bcdDataWithNullChromeVersionForGap,
+      expected: {
+        ...GAP_NO_CONTEXT_COMPATIBILITY,
+        chrome: [
+          {
+            isFlagged: false,
+            sinceVersion: Number.POSITIVE_INFINITY,
+            isPartialSupport: false,
+          },
+        ],
+      },
+    },
+  ],
+  [
+    'empty string version added for a browser',
+    {
+      identifier: 'gap',
+      value: '20px',
+      type: 'property',
+      mockBrowserCompatibilityData: bcdDataWithEmptyStringChromeVersionForGap,
+      expected: {
+        ...GAP_NO_CONTEXT_COMPATIBILITY,
+        chrome: [
+          {
+            isFlagged: false,
+            sinceVersion: Number.POSITIVE_INFINITY,
+            isPartialSupport: false,
+          },
+        ],
+      },
+    },
+  ],
+  [
+    'true boolean version added for a browser',
+    {
+      identifier: 'gap',
+      value: '20px',
+      type: 'property',
+      mockBrowserCompatibilityData: bcdDataWithTrueBooleanChromeVersionForGap,
+      expected: {
+        ...GAP_NO_CONTEXT_COMPATIBILITY,
+        chrome: [
+          {
+            isFlagged: false,
+            sinceVersion: 0,
+            isPartialSupport: false,
+          },
+        ],
+      },
+    },
+  ],
+  [
+    'false boolean version added for a browser',
+    {
+      identifier: 'gap',
+      value: '20px',
+      type: 'property',
+      mockBrowserCompatibilityData: bcdDataWithFalseBooleanChromeVersionForGap,
       expected: {
         ...GAP_NO_CONTEXT_COMPATIBILITY,
         chrome: [
