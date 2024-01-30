@@ -72,21 +72,30 @@ const getCssFunctionCompatibilityStatement = (
   );
 };
 
-const getNumericVersion = (
-  rawVersion: VersionValue,
-  browser: string,
-): number => {
-  const version =
-    typeof rawVersion === 'string' ? rawVersion.replace('≤', '') : rawVersion;
+const getNumericVersion = (rawVersion: VersionValue): number => {
+  switch (typeof rawVersion) {
+    case 'boolean':
+      // MDN data uses true/false to indicate always supported/never supported
+      return rawVersion ? 0 : Number.POSITIVE_INFINITY;
+    case 'object':
+      // Null case, used for unknown compatibility (treated as incompatible)
+      return Number.POSITIVE_INFINITY;
+    case 'string':
+      return getNumericVersionFromString(rawVersion);
+  }
+};
 
-  const numericVersion = version ? Number(version) : Number.POSITIVE_INFINITY;
-  if (isNaN(numericVersion)) {
-    throw new Error(
-      `Browser version ${version} could not be converted to a number for ${browser}`,
-    );
+const getNumericVersionFromString = (rawVersion: string): number => {
+  if (rawVersion.length === 0) {
+    return Number.POSITIVE_INFINITY;
   }
 
-  return numericVersion;
+  const numericVersion = Number(rawVersion.replace('≤', ''));
+
+  // There are valid non-number strings for this value, e.g. the preview mode of Safari returns "preview".
+  // Until a browser is released with a numeric version, a feature is considered experimental, and therefore
+  // incompatible.
+  return isNaN(numericVersion) ? Number.POSITIVE_INFINITY : numericVersion;
 };
 
 const getNoteString = (notes: string | string[]): string =>
@@ -119,13 +128,10 @@ export const getCssBrowserSupport = (
       }
 
       report[browser] = supportBrowserAsArray.map((compatibilityItem) => ({
-        sinceVersion: getNumericVersion(
-          compatibilityItem.version_added,
-          browser,
-        ),
+        sinceVersion: getNumericVersion(compatibilityItem.version_added),
         untilVersion:
           compatibilityItem.version_removed !== undefined
-            ? getNumericVersion(compatibilityItem.version_removed, browser)
+            ? getNumericVersion(compatibilityItem.version_removed)
             : undefined,
         isPartialSupport: !!compatibilityItem.partial_implementation,
         isFlagged: !!compatibilityItem.flags?.length,
