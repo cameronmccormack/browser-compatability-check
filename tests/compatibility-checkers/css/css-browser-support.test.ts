@@ -86,8 +86,7 @@ type TestData = {
   value?: string;
   context?: string;
   type: string;
-  expected?: FeatureSupport | null;
-  expectedErrorMessage?: string;
+  expected: FeatureSupport | null;
   mockBrowserCompatibilityData?: CompatData;
 };
 
@@ -145,9 +144,17 @@ const testCases: [string, TestData][] = [
       identifier: 'gap',
       value: '20px',
       type: 'property',
-      expectedErrorMessage:
-        'Browser version not a number could not be converted to a number for chrome',
       mockBrowserCompatibilityData: bcdDataWithNaNChromeVersionForGap,
+      expected: {
+        ...GAP_NO_CONTEXT_COMPATIBILITY,
+        chrome: [
+          {
+            isFlagged: false,
+            sinceVersion: Number.POSITIVE_INFINITY,
+            isPartialSupport: false,
+          },
+        ],
+      },
     },
   ],
   [
@@ -356,7 +363,6 @@ test.each<[string, TestData]>(testCases)(
       value,
       context,
       expected,
-      expectedErrorMessage,
       type,
       mockBrowserCompatibilityData,
     },
@@ -369,12 +375,6 @@ test.each<[string, TestData]>(testCases)(
 
     const feature = { identifier, value, context, type } as CssFeature;
 
-    if (expectedErrorMessage) {
-      expect(() => getCssBrowserSupport(feature, BROWSER_SLUGS)).toThrow(
-        expectedErrorMessage,
-      );
-    } else {
-      expect(getCssBrowserSupport(feature, BROWSER_SLUGS)).toEqual(expected);
-    }
+    expect(getCssBrowserSupport(feature, BROWSER_SLUGS)).toEqual(expected);
   },
 );
