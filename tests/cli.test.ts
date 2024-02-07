@@ -167,6 +167,28 @@ Error: Malformed browser config: [
     },
   ],
   [
+    'malformed css found',
+    {
+      report: compatibleReport,
+      expectedExitCode: 1,
+      path: 'this/contains/bad/css',
+      cssFinderOverride: [
+        {
+          path: 'this/contains/bad/css/malformed.css',
+          type: 'css',
+          contents: '.a { ::: invalid css ::: }',
+        },
+      ],
+      expectedErrorMessage: `
+Error in this/contains/bad/css/malformed.css:
+
+Parse error: Identifier is expected
+    1 |.a { ::: invalid css ::: }
+------------^
+      `.trim(),
+    },
+  ],
+  [
     'run command file not found',
     {
       report: compatibleReport,
