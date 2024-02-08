@@ -21,15 +21,8 @@ html(lang="en-GB")
       }
 
       table {
-        display: block;
-        overflow-x: auto;
         border-collapse: collapse;
         border: 4px solid #{themeColors.highlight}
-      }
-
-      table tbody {
-          display: table;
-          width: 100%;
       }
 
       th {
@@ -100,6 +93,10 @@ html(lang="en-GB")
         border-radius: 2rem;
       }
 
+      .table-wrapper {
+        overflow-x: auto;
+      }
+
       .logo-heading {
         color: #{themeColors.text};
         letter-spacing: 0.5em;
@@ -136,27 +133,30 @@ html(lang="en-GB")
             h3(id=`report-${index}`) #[span(class=`${report.overallStatus} result`) #{report.overallStatus.toUpperCase()}] #{report.filePath}
 
             h4 High-level Summary
-            table
-              tr
-                th Browser
-                th Compatible
-                th Partial Support
-                th Flagged
-                th Incompatible
-                th Unknown
-              each browser in Object.keys(report.browserSummaries)
-                tr
-                  td #{browser}
-                  td(class=`${report.browserSummaries[browser].compatible === 0 ? 'pass' : rules.compatible}-cell`)
-                    | #{report.browserSummaries[browser].compatible}
-                  td(class=`${report.browserSummaries[browser]["partial-support"] === 0 ? 'pass' : rules["partial-support"]}-cell`)
-                    | #{report.browserSummaries[browser]["partial-support"]}
-                  td(class=`${report.browserSummaries[browser].flagged === 0 ? 'pass' : rules.flagged}-cell`)
-                    | #{report.browserSummaries[browser].flagged}
-                  td(class=`${report.browserSummaries[browser].incompatible === 0 ? 'pass' : rules.incompatible}-cell`)
-                    | #{report.browserSummaries[browser].incompatible}
-                  td(class=`${report.browserSummaries[browser].unknown === 0 ? 'pass' : rules.unknown}-cell`)
-                    | #{report.browserSummaries[browser].unknown}
+            div(class="table-wrapper")
+              table
+                thead
+                  tr
+                    th Browser
+                    th Compatible
+                    th Partial Support
+                    th Flagged
+                    th Incompatible
+                    th Unknown
+                tbody
+                  each browser in Object.keys(report.browserSummaries)
+                    tr
+                      td #{browser}
+                      td(class=`${report.browserSummaries[browser].compatible === 0 ? 'pass' : rules.compatible}-cell`)
+                        | #{report.browserSummaries[browser].compatible}
+                      td(class=`${report.browserSummaries[browser]["partial-support"] === 0 ? 'pass' : rules["partial-support"]}-cell`)
+                        | #{report.browserSummaries[browser]["partial-support"]}
+                      td(class=`${report.browserSummaries[browser].flagged === 0 ? 'pass' : rules.flagged}-cell`)
+                        | #{report.browserSummaries[browser].flagged}
+                      td(class=`${report.browserSummaries[browser].incompatible === 0 ? 'pass' : rules.incompatible}-cell`)
+                        | #{report.browserSummaries[browser].incompatible}
+                      td(class=`${report.browserSummaries[browser].unknown === 0 ? 'pass' : rules.unknown}-cell`)
+                        | #{report.browserSummaries[browser].unknown}
 
            
             h4 Unknown features:
@@ -168,14 +168,17 @@ html(lang="en-GB")
 
             if includePerFeatureSummary && Object.keys(report.knownFeatures).length > 0
               h4 Per-feature Summary
-              table
-                tr
-                  th Rule Identifier
-                    each browserSlug in Object.keys(report.browserSummaries)
-                      th #{browserSlug}
-                each featureId in Object.keys(report.knownFeatures)
-                  tr
-                    td #{featureId}
-                      each browserSlug in Object.keys(report.knownFeatures[featureId])
-                        td(class=`${rules[report.knownFeatures[featureId][browserSlug].compatibility]}-cell`)
-                          | #{report.knownFeatures[featureId][browserSlug].compatibility}
+              div(class="table-wrapper")
+                table
+                  thead
+                    tr
+                      th Rule Identifier
+                        each browserSlug in Object.keys(report.browserSummaries)
+                          th #{browserSlug}
+                  tbody
+                    each featureId in Object.keys(report.knownFeatures)
+                      tr
+                        td #{featureId}
+                          each browserSlug in Object.keys(report.knownFeatures[featureId])
+                            td(class=`${rules[report.knownFeatures[featureId][browserSlug].compatibility]}-cell`)
+                              | #{report.knownFeatures[featureId][browserSlug].compatibility}
