@@ -3,9 +3,11 @@ import * as path from 'path';
 import * as sass from 'sass';
 import less from 'less';
 import { CssPath, CssFile } from '../types/css-file';
+import { FILE_EXTENSIONS, FileExtension } from '../helpers/filetype-helper';
 
 const getAllCssFilePaths = (
   absolutePath: string,
+  fileExtensionIgnores: FileExtension[],
   filePaths?: CssPath[],
 ): CssPath[] => {
   const filePathArray = filePaths ?? [];
@@ -14,18 +16,18 @@ const getAllCssFilePaths = (
     const filepath = path.join(absolutePath, item);
     const stat = fs.lstatSync(filepath);
     if (stat.isDirectory()) {
-      getAllCssFilePaths(filepath, filePathArray);
-    } else if (item.endsWith('.css')) {
-      filePathArray.push({ path: filepath, type: 'css' });
-    } else if (item.endsWith('.scss')) {
-      filePathArray.push({ path: filepath, type: 'scss' });
-    } else if (item.endsWith('.sass')) {
-      filePathArray.push({ path: filepath, type: 'sass' });
-    } else if (item.endsWith('.less')) {
-      filePathArray.push({ path: filepath, type: 'less' });
+      getAllCssFilePaths(filepath, fileExtensionIgnores, filePathArray);
     }
-  });
 
+    FILE_EXTENSIONS.forEach((extension) => {
+      if (
+        item.endsWith(`.${extension}`) &&
+        !fileExtensionIgnores.includes(extension)
+      ) {
+        filePathArray.push({ path: filepath, type: extension });
+      }
+    });
+  });
   return filePathArray;
 };
 
@@ -43,10 +45,13 @@ const getFileContentsAsCss = async (cssPath: CssPath): Promise<string> => {
 
 export const getAllCssFiles = async (
   absolutePath: string,
+  fileExtensionIgnores: FileExtension[],
 ): Promise<CssFile[]> =>
   await Promise.all(
-    getAllCssFilePaths(absolutePath).map(async (cssPath) => ({
-      ...cssPath,
-      contents: await getFileContentsAsCss(cssPath),
-    })),
+    getAllCssFilePaths(absolutePath, fileExtensionIgnores).map(
+      async (cssPath) => ({
+        ...cssPath,
+        contents: await getFileContentsAsCss(cssPath),
+      }),
+    ),
   );

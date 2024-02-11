@@ -14,6 +14,9 @@ featureIgnores:
   - function:rgb
   - property:align-items:center
   - property:gap:20px:flex_context
+fileExtensionIgnores:
+  - sass
+  - less
 reportOptions:
   includePerFeatureSummary: false
   outputReportFiles:

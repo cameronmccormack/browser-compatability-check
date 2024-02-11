@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { ValidationError } from '../../types/kompatrc';
 
 const featureIdValidator = (input: string): boolean => {
   const trimmedInput = input.trim();
@@ -26,7 +27,7 @@ const FeatureIgnoresSchema = z.array(
 
 export const getValidatedFeatureIgnores = (
   rawConfig: unknown,
-): string[] | { error: string } => {
+): string[] | ValidationError => {
   if (rawConfig === undefined) {
     return [];
   }

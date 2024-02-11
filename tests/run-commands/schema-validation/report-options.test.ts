@@ -1,9 +1,10 @@
 import { getValidatedReportOptions } from '../../../src/run-commands/schema-validation/report-options';
+import { ValidationError } from '../../../src/types/kompatrc';
 import { ReportOptions } from '../../../src/types/report-options';
 
 type TestData = {
   inputConfig: unknown;
-  expectedResult: ReportOptions | { error: string };
+  expectedResult: ReportOptions | ValidationError;
 };
 
 const DEFAULT_REPORT_OPTIONS = {

@@ -1,8 +1,9 @@
 import { getValidatedFeatureIgnores } from '../../../src/run-commands/schema-validation/feature-ignores';
+import { ValidationError } from '../../../src/types/kompatrc';
 
 type TestData = {
   inputConfig: unknown;
-  expectedResult: string[] | { error: string };
+  expectedResult: string[] | ValidationError;
 };
 
 const CUSTOM_ERROR = `
