@@ -30,21 +30,21 @@ const getValidatedKompatRc = (
   reportOptions: getValidatedReportOptions(unvalidatedFile.reportOptions),
 });
 
-export const runCli = (
+export const runCli = async (
   exitWith: (code: ExitCode, errorMessage?: string) => ExitCode,
   relativePath?: string,
-): ExitCode => {
+): Promise<ExitCode> => {
   try {
-    return runCliWithoutErrorWrapper(exitWith, relativePath);
+    return await runCliWithoutErrorWrapper(exitWith, relativePath);
   } catch (e) {
     return exitWith(1, e instanceof Error ? e.message : undefined);
   }
 };
 
-const runCliWithoutErrorWrapper = (
+const runCliWithoutErrorWrapper = async (
   exitWith: (code: ExitCode, errorMessage?: string) => ExitCode,
   relativePath?: string,
-): ExitCode => {
+): Promise<ExitCode> => {
   const currentWorkingDirectory = process.cwd();
 
   const kompatRcFile = getKompatRc(currentWorkingDirectory);
@@ -83,7 +83,7 @@ const runCliWithoutErrorWrapper = (
     return exitWith(2, `Error: Invalid filepath: ${absolutePath}.`);
   }
 
-  const cssFiles = getAllCssFiles(absolutePath);
+  const cssFiles = await getAllCssFiles(absolutePath);
   if (cssFiles.length === 0) {
     return exitWith(1, `Error: No CSS files found.`);
   }

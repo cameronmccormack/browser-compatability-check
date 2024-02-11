@@ -1,6 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import * as sass from 'sass';
+import less from 'less';
 import { CssPath, CssFile } from '../types/css-file';
 
 const getAllCssFilePaths = (
@@ -28,7 +29,7 @@ const getAllCssFilePaths = (
   return filePathArray;
 };
 
-const getFileContentsAsCss = (cssPath: CssPath): string => {
+const getFileContentsAsCss = async (cssPath: CssPath): Promise<string> => {
   switch (cssPath.type) {
     case 'css':
       return fs.readFileSync(cssPath.path, 'utf-8');
@@ -36,13 +37,16 @@ const getFileContentsAsCss = (cssPath: CssPath): string => {
     case 'scss':
       return sass.compile(cssPath.path).css;
     case 'less':
-      // TODO: make less work
-      return '';
+      return (await less.render(fs.readFileSync(cssPath.path, 'utf-8'))).css;
   }
 };
 
-export const getAllCssFiles = (absolutePath: string): CssFile[] =>
-  getAllCssFilePaths(absolutePath).map((cssPath) => ({
-    ...cssPath,
-    contents: getFileContentsAsCss(cssPath),
-  }));
+export const getAllCssFiles = async (
+  absolutePath: string,
+): Promise<CssFile[]> =>
+  await Promise.all(
+    getAllCssFilePaths(absolutePath).map(async (cssPath) => ({
+      ...cssPath,
+      contents: await getFileContentsAsCss(cssPath),
+    })),
+  );

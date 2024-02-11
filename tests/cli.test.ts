@@ -314,7 +314,7 @@ afterEach(() => jest.restoreAllMocks());
 
 test.each<[string, TestData]>(testCases)(
   'exits with expected status code and message for case: %s',
-  (
+  async (
     _,
     {
       report,
@@ -343,7 +343,11 @@ test.each<[string, TestData]>(testCases)(
       jest
         .spyOn(cssFinderModule, 'getAllCssFiles')
         .mockReturnValueOnce(
-          cssFinderOverride !== undefined ? cssFinderOverride : [dummyCssFile],
+          Promise.resolve(
+            cssFinderOverride !== undefined
+              ? cssFinderOverride
+              : [dummyCssFile],
+          ),
         );
     }
 
@@ -363,7 +367,7 @@ test.each<[string, TestData]>(testCases)(
       return code;
     };
 
-    runCli(exitWith, path);
+    await runCli(exitWith, path);
 
     if (expectedRules) {
       expect(getCompatibilityReportSpy).toHaveBeenCalledWith(
@@ -379,7 +383,7 @@ test.each<[string, TestData]>(testCases)(
   },
 );
 
-test('cli returns status 1 without message when an error is thrown that does not extend "Error"', () => {
+test('cli returns status 1 without message when an error is thrown that does not extend "Error"', async () => {
   jest.spyOn(kompatRcModule, 'getKompatRc').mockImplementationOnce(() => {
     throw 'this is a string';
   });
@@ -392,7 +396,7 @@ test('cli returns status 1 without message when an error is thrown that does not
     return code;
   };
 
-  runCli(exitWith);
+  await runCli(exitWith);
 
   expect(exitCode).toEqual(1);
   expect(errorMessage).toEqual(undefined);
