@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { Rules } from '../../types/rules';
+import { ValidationError } from '../../types/kompatrc';
 
 // The schema below is linked directly from the README.
 // Please update the README link and/or line reference if modifying this file.
@@ -13,11 +14,12 @@ const RuleOverridesSchema = z
     unknown: RuleResultSchema,
     'unknown-feature': RuleResultSchema,
   })
+  .strict()
   .partial();
 
 export const getValidatedRuleOverrides = (
   rawConfig: unknown,
-): Partial<Rules> | { error: string } => {
+): Partial<Rules> | ValidationError => {
   if (rawConfig === undefined) {
     return {};
   }

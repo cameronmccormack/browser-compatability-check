@@ -117,6 +117,8 @@ Kompat is configured with a `.kompatrc.yml` file at the root of your repository.
 - `reportOptions`: to configure the logged report and create output log files
   - The correct format for these options is defined [here](src/run-commands/schema-validation/report-options.ts#L6)
   - The per-browser summary can be suppressed in the console logs, and HTML and/or JSON file output reports may be configured.
+- `fileExtensionOverrides`: to ignore a specific extension of CSS or unprocessed CSS file
+  - This array may only contain "css", "sass", "scss" or "less"
 
 An example `.kompatrc.yml` file (named `.kompatrc.example.yml`) is given [here](.kompatrc.example.yml) for reference.
 

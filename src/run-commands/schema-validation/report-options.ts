@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { ReportOptions } from '../../types/report-options';
+import { ValidationError } from '../../types/kompatrc';
 
 // The schema below is linked directly from the README.
 // Please update the README link and/or line reference if modifying this file.
@@ -17,7 +18,7 @@ const DEFAULT_REPORT_OPTIONS = {
 
 export const getValidatedReportOptions = (
   rawConfig: unknown,
-): ReportOptions | { error: string } => {
+): ReportOptions | ValidationError => {
   if (rawConfig === undefined) {
     return DEFAULT_REPORT_OPTIONS;
   }

@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { Browser } from '../../types/browser';
+import { ValidationError } from '../../types/kompatrc';
 
 // The schema below is linked directly from the README.
 // Please update the README link and/or line reference if modifying this file.
@@ -28,7 +29,7 @@ const BrowsersSchema = z.array(
 
 export const getValidatedBrowserConfig = (
   rawConfig: unknown,
-): Browser[] | { error: string } => {
+): Browser[] | ValidationError => {
   const parsedConfig = BrowsersSchema.safeParse(rawConfig);
 
   if (!parsedConfig.success) {

@@ -294,6 +294,35 @@ Error: Malformed report options config: [
     },
   ],
   [
+    'malformed file extension ignores',
+    {
+      report: incompatibleReport,
+      mockKompatRc: {
+        browsers: MODERN_CHROME_CONFIG,
+        fileExtensionIgnores: ['bad'],
+      },
+      expectedExitCode: 2,
+      expectedErrorMessage: `
+Error: Malformed file extension ignores config: [
+  {
+    "received": "bad",
+    "code": "invalid_enum_value",
+    "options": [
+      "css",
+      "sass",
+      "scss",
+      "less"
+    ],
+    "path": [
+      0
+    ],
+    "message": "Invalid enum value. Expected 'css' | 'sass' | 'scss' | 'less', received 'bad'"
+  }
+]
+      `.trim(),
+    },
+  ],
+  [
     'error thrown from CSS finder',
     {
       report: compatibleReport,

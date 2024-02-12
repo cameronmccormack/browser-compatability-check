@@ -1,6 +1,13 @@
 import fs from 'fs';
 import sass from 'sass';
+import less from 'less';
 import { getAllCssFiles } from '../../src/globbers/css-globber';
+import {
+  FILE_EXTENSIONS,
+  FileExtension,
+} from '../../src/helpers/filetype-helper';
+
+afterEach(() => jest.restoreAllMocks());
 
 test('finds all CSS files in directory and children', async () => {
   const expectedFiles = [
@@ -40,7 +47,7 @@ test('finds all CSS files in directory and children', async () => {
       type: 'css',
     },
   ];
-  expect(await getAllCssFiles('tests/test-data/dummy-css-files')).toEqual(
+  expect(await getAllCssFiles('tests/test-data/dummy-css-files', [])).toEqual(
     expectedFiles,
   );
 });
@@ -55,7 +62,7 @@ describe('calls expected transpilation and file reading methods for each type of
       .spyOn(fs, 'readFileSync')
       .mockReturnValue(fileContents);
 
-    const cssFiles = await getAllCssFiles(directoryPath);
+    const cssFiles = await getAllCssFiles(directoryPath, []);
 
     expect(cssFiles).toEqual([
       {
@@ -76,7 +83,7 @@ describe('calls expected transpilation and file reading methods for each type of
       .spyOn(sass, 'compile')
       .mockReturnValue({ css: fileContents, loadedUrls: [] });
 
-    const cssFiles = await getAllCssFiles(directoryPath);
+    const cssFiles = await getAllCssFiles(directoryPath, []);
 
     expect(cssFiles).toEqual([
       {
@@ -97,7 +104,7 @@ describe('calls expected transpilation and file reading methods for each type of
       .spyOn(sass, 'compile')
       .mockReturnValue({ css: fileContents, loadedUrls: [] });
 
-    const cssFiles = await getAllCssFiles(directoryPath);
+    const cssFiles = await getAllCssFiles(directoryPath, []);
 
     expect(cssFiles).toEqual([
       {
@@ -111,11 +118,20 @@ describe('calls expected transpilation and file reading methods for each type of
   });
 
   test('reads and transpiles LESS file', async () => {
-    const fileContents = '/* mock CSS 123 */\n';
+    const fileContents = '/* test LESS content */';
     const directoryPath = 'tests/test-data/dummy-css-files/less-files';
     const expectedFilepath = directoryPath + '/test-less.less';
 
-    const cssFiles = await getAllCssFiles(directoryPath);
+    const readFileSpy = jest
+      .spyOn(fs, 'readFileSync')
+      .mockReturnValue(fileContents);
+    const lessRenderSpy = jest
+      .spyOn(less, 'render')
+      .mockReturnValue(
+        Promise.resolve({ css: fileContents, map: '', imports: [] }),
+      );
+
+    const cssFiles = await getAllCssFiles(directoryPath, []);
 
     expect(cssFiles).toEqual([
       {
@@ -124,13 +140,75 @@ describe('calls expected transpilation and file reading methods for each type of
         type: 'less',
       },
     ]);
+
+    expect(readFileSpy).toHaveBeenCalledWith(expectedFilepath, 'utf-8');
+    expect(lessRenderSpy).toHaveBeenCalledWith(fileContents);
   });
 });
 
 test('returns empty array for location containing no css files', async () => {
-  expect(await getAllCssFiles('tests/globbers')).toEqual([]);
+  expect(await getAllCssFiles('tests/globbers', [])).toEqual([]);
 });
 
 test('throws error for filepath that does not exist', () => {
-  expect(() => getAllCssFiles('tests/not-a-real-filepath')).rejects.toThrow();
+  expect(() =>
+    getAllCssFiles('tests/not-a-real-filepath', []),
+  ).rejects.toThrow();
 });
+
+test.each([...FILE_EXTENSIONS, 'all'])(
+  'ignores %s files in directory and children',
+  async (extension) => {
+    const expectedFiles =
+      extension === 'all'
+        ? []
+        : [
+            {
+              path: 'tests/test-data/dummy-css-files/css-files/css-files-subdirectory/test.css',
+              contents: '/* test content */',
+              type: 'css',
+            },
+            {
+              path: 'tests/test-data/dummy-css-files/css-files/test.css',
+              contents: '/* test content */',
+              type: 'css',
+            },
+            {
+              path: 'tests/test-data/dummy-css-files/less-files/test-less.less',
+              contents: '/* test LESS content */\n',
+              type: 'less',
+            },
+            {
+              path: 'tests/test-data/dummy-css-files/sass-files/test-sass.sass',
+              contents: '/* test SASS content */',
+              type: 'sass',
+            },
+            {
+              path: 'tests/test-data/dummy-css-files/scss-files/test-scss.scss',
+              contents: '/* test SCSS content */',
+              type: 'scss',
+            },
+            {
+              path: 'tests/test-data/dummy-css-files/test1.css',
+              contents: '/* test content 1 */',
+              type: 'css',
+            },
+            {
+              path: 'tests/test-data/dummy-css-files/test2.css',
+              contents: '/* test content 2 */',
+              type: 'css',
+            },
+          ].filter(({ type }) => type !== extension);
+
+    const fileExtensionIgnores = (
+      extension === 'all' ? FILE_EXTENSIONS : [extension]
+    ) as FileExtension[];
+
+    expect(
+      await getAllCssFiles(
+        'tests/test-data/dummy-css-files',
+        fileExtensionIgnores,
+      ),
+    ).toEqual(expectedFiles);
+  },
+);

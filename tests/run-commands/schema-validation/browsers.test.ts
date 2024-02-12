@@ -1,10 +1,11 @@
 import { getValidatedBrowserConfig } from '../../../src/run-commands/schema-validation/browsers';
 import { Browser } from '../../../src/types/browser';
+import { ValidationError } from '../../../src/types/kompatrc';
 import { MODERN_CHROME_CONFIG } from '../../test-data/browser-configs';
 
 type TestData = {
   inputConfig: unknown;
-  expectedResult: Browser[] | { error: string };
+  expectedResult: Browser[] | ValidationError;
 };
 
 const testCases: [string, TestData][] = [

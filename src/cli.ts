@@ -14,6 +14,7 @@ import { UnvalidatedKompatRc, ValidatedKompatRc } from './types/kompatrc';
 import { getValidatedReportOptions } from './run-commands/schema-validation/report-options';
 import { writeCompatibilityReportFiles } from './report-writers/report-writer';
 import { isValidFilepath } from './helpers/filepath-helper';
+import { getValidatedFileExtensionIgnores } from './run-commands/schema-validation/file-extension-ignores';
 
 export enum ExitCode {
   Compatible = 0,
@@ -28,6 +29,9 @@ const getValidatedKompatRc = (
   ruleOverrides: getValidatedRuleOverrides(unvalidatedFile.ruleOverrides),
   featureIgnores: getValidatedFeatureIgnores(unvalidatedFile.featureIgnores),
   reportOptions: getValidatedReportOptions(unvalidatedFile.reportOptions),
+  fileExtensionIgnores: getValidatedFileExtensionIgnores(
+    unvalidatedFile.fileExtensionIgnores,
+  ),
 });
 
 export const runCli = async (
@@ -55,8 +59,14 @@ const runCliWithoutErrorWrapper = async (
     );
   }
 
-  const { browserConfig, ruleOverrides, featureIgnores, reportOptions } =
-    getValidatedKompatRc(kompatRcFile);
+  // TODO: refactor this
+  const {
+    browserConfig,
+    ruleOverrides,
+    featureIgnores,
+    reportOptions,
+    fileExtensionIgnores,
+  } = getValidatedKompatRc(kompatRcFile);
 
   if ('error' in browserConfig) {
     return exitWith(2, `Error: ${browserConfig.error}`);
@@ -74,6 +84,10 @@ const runCliWithoutErrorWrapper = async (
     return exitWith(2, `Error: ${reportOptions.error}`);
   }
 
+  if ('error' in fileExtensionIgnores) {
+    return exitWith(2, `Error: ${fileExtensionIgnores.error}`);
+  }
+
   const formattedPath = relativePath?.replaceAll(/\/+$|^\.\//g, '');
   const absolutePath = `${currentWorkingDirectory}${
     formattedPath ? `/${formattedPath}` : ''
@@ -83,7 +97,7 @@ const runCliWithoutErrorWrapper = async (
     return exitWith(2, `Error: Invalid filepath: ${absolutePath}.`);
   }
 
-  const cssFiles = await getAllCssFiles(absolutePath);
+  const cssFiles = await getAllCssFiles(absolutePath, fileExtensionIgnores);
   if (cssFiles.length === 0) {
     return exitWith(1, `Error: No CSS files found.`);
   }
