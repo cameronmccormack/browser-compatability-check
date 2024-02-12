@@ -203,6 +203,7 @@ test.each([...FILE_EXTENSIONS, 'all'])(
     const fileExtensionIgnores = (
       extension === 'all' ? FILE_EXTENSIONS : [extension]
     ) as FileExtension[];
+
     expect(
       await getAllCssFiles(
         'tests/test-data/dummy-css-files',
