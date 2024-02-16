@@ -113,8 +113,6 @@ const runCliWithoutErrorWrapper = async (
       csstree.parse(file.contents, {
         onParseError: (error) => {
           throw new Error(
-            // @ts-expect-error formattedMessage missing from types.
-            // PR raised to resolve here: https://github.com/DefinitelyTyped/DefinitelyTyped/pull/68551
             `Error in ${file.path}:\n\n${error.formattedMessage}`,
           );
         },
