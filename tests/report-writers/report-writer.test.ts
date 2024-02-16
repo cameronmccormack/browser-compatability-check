@@ -11,15 +11,6 @@ import {
   unknownFeatureOverallReport,
 } from '../test-data/overall-reports';
 import { OutputReportFile } from '../../src/types/report-options';
-import {
-  compatibleHtmlReportSnapshot,
-  customRulesCompatibilityReportSnapshot,
-  failedCompatibilityReportSnapshot,
-  multipleReportsCompatibilityReportSnapshot,
-  partiallyCompatibleReportSnapshot,
-  summaryOnlyCompatibilityReportSnapshot,
-  unknownFeatureCompatibilityReportSnapshot,
-} from '../test-data/output-report-snapshots/html-reports';
 import { OverallReport } from '../../src/types/compatibility';
 
 afterEach(() => jest.restoreAllMocks());
@@ -68,67 +59,20 @@ describe('unit tests', () => {
   });
 });
 
-type SnapshotTestData = {
-  overallReport: OverallReport;
-  expectedHtml: string;
-};
-
-const snapshotTestCases: [string, SnapshotTestData][] = [
-  [
-    'compatible report',
-    {
-      overallReport: compatibleOverallReport,
-      expectedHtml: compatibleHtmlReportSnapshot,
-    },
-  ],
-  [
-    'partially compatible report',
-    {
-      overallReport: partiallyCompatibleOverallReport,
-      expectedHtml: partiallyCompatibleReportSnapshot,
-    },
-  ],
-  [
-    'failed report',
-    {
-      overallReport: failedOverallReport,
-      expectedHtml: failedCompatibilityReportSnapshot,
-    },
-  ],
-  [
-    'unknown feature report',
-    {
-      overallReport: unknownFeatureOverallReport,
-      expectedHtml: unknownFeatureCompatibilityReportSnapshot,
-    },
-  ],
-  [
-    'custom rules report',
-    {
-      overallReport: customRulesOverallReport,
-      expectedHtml: customRulesCompatibilityReportSnapshot,
-    },
-  ],
-  [
-    'summary only report',
-    {
-      overallReport: summaryOnlyOverallReport,
-      expectedHtml: summaryOnlyCompatibilityReportSnapshot,
-    },
-  ],
-  [
-    'multiple CSS files report',
-    {
-      overallReport: multipleReportsOverallReport,
-      expectedHtml: multipleReportsCompatibilityReportSnapshot,
-    },
-  ],
+const snapshotTestCases: [string, OverallReport][] = [
+  ['compatible report', compatibleOverallReport],
+  ['partially compatible report', partiallyCompatibleOverallReport],
+  ['failed report', failedOverallReport],
+  ['unknown feature report', unknownFeatureOverallReport],
+  ['custom rules report', customRulesOverallReport],
+  ['summary only report', summaryOnlyOverallReport],
+  ['multiple CSS files report', multipleReportsOverallReport],
 ];
 
 describe('HTML report snapshot tests', () => {
-  test.each<[string, SnapshotTestData]>(snapshotTestCases)(
+  test.each<[string, OverallReport]>(snapshotTestCases)(
     'creates the expected HTML report for the case: %s',
-    (_, { overallReport, expectedHtml }) => {
+    (_, overallReport) => {
       let htmlReport: string = 'to be updated';
 
       jest.spyOn(fs, 'writeFileSync').mockImplementationOnce((_, data) => {
@@ -141,7 +85,7 @@ describe('HTML report snapshot tests', () => {
         { location: 'example.html', type: 'html' },
       ]);
 
-      expect(htmlReport).toEqual(expectedHtml);
+      expect(htmlReport).toMatchSnapshot();
     },
   );
 });
