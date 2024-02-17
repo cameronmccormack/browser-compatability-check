@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { Rules } from '../../types/rules';
-import { ValidationError } from '../../types/kompatrc';
+import { ClientError } from '../../errors/client-error';
 
 // The schema below is linked directly from the README.
 // Please update the README link and/or line reference if modifying this file.
@@ -19,7 +19,7 @@ const RuleOverridesSchema = z
 
 export const getValidatedRuleOverrides = (
   rawConfig: unknown,
-): Partial<Rules> | ValidationError => {
+): Partial<Rules> => {
   if (rawConfig === undefined) {
     return {};
   }
@@ -36,5 +36,7 @@ export const getValidatedRuleOverrides = (
     };
   }
 
-  return { error: `Malformed rule overrides config: ${parsedConfig.error}` };
+  throw new ClientError(
+    `Malformed rule overrides config: ${parsedConfig.error}`,
+  );
 };

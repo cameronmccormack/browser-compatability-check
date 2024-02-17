@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { ValidationError } from '../../types/kompatrc';
+import { ClientError } from '../../errors/client-error';
 
 const featureIdValidator = (input: string): boolean => {
   const trimmedInput = input.trim();
@@ -25,9 +25,7 @@ const FeatureIgnoresSchema = z.array(
   }),
 );
 
-export const getValidatedFeatureIgnores = (
-  rawConfig: unknown,
-): string[] | ValidationError => {
+export const getValidatedFeatureIgnores = (rawConfig: unknown): string[] => {
   if (rawConfig === undefined) {
     return [];
   }
@@ -38,5 +36,7 @@ export const getValidatedFeatureIgnores = (
     return parsedConfig.data.map((id) => id.trim());
   }
 
-  return { error: `Malformed rule overrides config: ${parsedConfig.error}` };
+  throw new ClientError(
+    `Malformed rule overrides config: ${parsedConfig.error}`,
+  );
 };

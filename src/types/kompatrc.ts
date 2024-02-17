@@ -11,12 +11,10 @@ export type UnvalidatedKompatRc = {
   fileExtensionIgnores?: unknown;
 };
 
-export type ValidationError = { error: string };
-
 export type ValidatedKompatRc = {
-  browserConfig: Browser[] | ValidationError;
-  ruleOverrides: Partial<Rules> | ValidationError;
-  featureIgnores: string[] | ValidationError;
-  reportOptions: ReportOptions | ValidationError;
-  fileExtensionIgnores: FileExtension[] | ValidationError;
+  browserConfig: Browser[];
+  ruleOverrides: Partial<Rules>;
+  featureIgnores: string[];
+  reportOptions: ReportOptions;
+  fileExtensionIgnores: FileExtension[];
 };

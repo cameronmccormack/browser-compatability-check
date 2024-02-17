@@ -15,6 +15,9 @@ import { getValidatedReportOptions } from './run-commands/schema-validation/repo
 import { writeCompatibilityReportFiles } from './report-writers/report-writer';
 import { isValidFilepath } from './helpers/filepath-helper';
 import { getValidatedFileExtensionIgnores } from './run-commands/schema-validation/file-extension-ignores';
+import { BaseKompatError } from './errors/base-kompat-error';
+import { ClientError } from './errors/client-error';
+import { InternalError } from './errors/internal-error';
 
 export enum ExitCode {
   Compatible = 0,
@@ -41,7 +44,15 @@ export const runCli = async (
   try {
     return await runCliWithoutErrorWrapper(exitWith, relativePath);
   } catch (e) {
-    return exitWith(1, e instanceof Error ? e.message : undefined);
+    if (e instanceof BaseKompatError) {
+      return exitWith(e.exitCode, `Error: ${e.message}`);
+    }
+
+    if (e instanceof Error) {
+      return exitWith(1, `Error: ${e.message}`);
+    }
+
+    return exitWith(1, 'Error: Unknown Error');
   }
 };
 
@@ -52,14 +63,7 @@ const runCliWithoutErrorWrapper = async (
   const currentWorkingDirectory = process.cwd();
 
   const kompatRcFile = getKompatRc(currentWorkingDirectory);
-  if (kompatRcFile === null) {
-    return exitWith(
-      2,
-      'Error: could not find .kompatrc.yml or .kompatrc.yaml file.',
-    );
-  }
 
-  // TODO: refactor this
   const {
     browserConfig,
     ruleOverrides,
@@ -68,38 +72,18 @@ const runCliWithoutErrorWrapper = async (
     fileExtensionIgnores,
   } = getValidatedKompatRc(kompatRcFile);
 
-  if ('error' in browserConfig) {
-    return exitWith(2, `Error: ${browserConfig.error}`);
-  }
-
-  if ('error' in ruleOverrides) {
-    return exitWith(2, `Error: ${ruleOverrides.error}`);
-  }
-
-  if ('error' in featureIgnores) {
-    return exitWith(2, `Error: ${featureIgnores.error}`);
-  }
-
-  if ('error' in reportOptions) {
-    return exitWith(2, `Error: ${reportOptions.error}`);
-  }
-
-  if ('error' in fileExtensionIgnores) {
-    return exitWith(2, `Error: ${fileExtensionIgnores.error}`);
-  }
-
   const formattedPath = relativePath?.replaceAll(/\/+$|^\.\//g, '');
   const absolutePath = `${currentWorkingDirectory}${
     formattedPath ? `/${formattedPath}` : ''
   }`;
 
   if (!isValidFilepath(absolutePath)) {
-    return exitWith(2, `Error: Invalid filepath: ${absolutePath}.`);
+    throw new ClientError(`Invalid filepath: ${absolutePath}.`);
   }
 
   const cssFiles = await getAllCssFiles(absolutePath, fileExtensionIgnores);
   if (cssFiles.length === 0) {
-    return exitWith(1, `Error: No CSS files found.`);
+    throw new InternalError(`No CSS files found.`);
   }
 
   const rules = {
@@ -112,7 +96,7 @@ const runCliWithoutErrorWrapper = async (
     const formattedCss = getFormattedCss(
       csstree.parse(file.contents, {
         onParseError: (error) => {
-          throw new Error(
+          throw new InternalError(
             `Error in ${file.path}:\n\n${error.formattedMessage}`,
           );
         },

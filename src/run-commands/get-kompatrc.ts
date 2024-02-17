@@ -1,8 +1,9 @@
 import fs from 'fs';
 import YAML from 'yaml';
 import { UnvalidatedKompatRc } from '../types/kompatrc';
+import { ClientError } from '../errors/client-error';
 
-const getRawKompatRc = (currentWorkingDirectory: string): string | null => {
+const getRawKompatRc = (currentWorkingDirectory: string): string => {
   try {
     return fs.readFileSync(`${currentWorkingDirectory}/.kompatrc.yml`, 'utf8');
   } catch {
@@ -12,14 +13,13 @@ const getRawKompatRc = (currentWorkingDirectory: string): string | null => {
         'utf8',
       );
     } catch {
-      return null;
+      throw new ClientError(
+        'Could not find .kompatrc.yml or .kompatrc.yaml file.',
+      );
     }
   }
 };
 
 export const getKompatRc = (
   currentWorkingDirectory: string,
-): null | UnvalidatedKompatRc => {
-  const kompatRcFile = getRawKompatRc(currentWorkingDirectory);
-  return kompatRcFile === null ? null : YAML.parse(kompatRcFile);
-};
+): UnvalidatedKompatRc => YAML.parse(getRawKompatRc(currentWorkingDirectory));

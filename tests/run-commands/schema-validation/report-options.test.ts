@@ -1,10 +1,10 @@
+import { ClientError } from '../../../src/errors/client-error';
 import { getValidatedReportOptions } from '../../../src/run-commands/schema-validation/report-options';
-import { ValidationError } from '../../../src/types/kompatrc';
 import { ReportOptions } from '../../../src/types/report-options';
 
 type TestData = {
   inputConfig: unknown;
-  expectedResult: ReportOptions | ValidationError;
+  expectedResult: ReportOptions | { error: string };
 };
 
 const DEFAULT_REPORT_OPTIONS = {
@@ -178,6 +178,12 @@ Malformed report options config: [
 test.each<[string, TestData]>(testCases)(
   'Correctly validates report options for case: %s',
   (_, { inputConfig, expectedResult }) => {
-    expect(getValidatedReportOptions(inputConfig)).toEqual(expectedResult);
+    if ('error' in expectedResult) {
+      expect(() => getValidatedReportOptions(inputConfig)).toThrow(
+        new ClientError(expectedResult.error),
+      );
+    } else {
+      expect(getValidatedReportOptions(inputConfig)).toEqual(expectedResult);
+    }
   },
 );
