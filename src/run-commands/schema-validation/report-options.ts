@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { ReportOptions } from '../../types/report-options';
-import { ValidationError } from '../../types/kompatrc';
+import { ClientError } from '../../errors/client-error';
 
 // The schema below is linked directly from the README.
 // Please update the README link and/or line reference if modifying this file.
@@ -18,7 +18,7 @@ const DEFAULT_REPORT_OPTIONS = {
 
 export const getValidatedReportOptions = (
   rawConfig: unknown,
-): ReportOptions | ValidationError => {
+): ReportOptions => {
   if (rawConfig === undefined) {
     return DEFAULT_REPORT_OPTIONS;
   }
@@ -29,5 +29,7 @@ export const getValidatedReportOptions = (
     return parsedConfig.data;
   }
 
-  return { error: `Malformed report options config: ${parsedConfig.error}` };
+  throw new ClientError(
+    `Malformed report options config: ${parsedConfig.error}`,
+  );
 };

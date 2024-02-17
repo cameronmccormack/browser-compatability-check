@@ -1,10 +1,10 @@
+import { ClientError } from '../../../src/errors/client-error';
 import { getValidatedRuleOverrides } from '../../../src/run-commands/schema-validation/rule-overrides';
-import { ValidationError } from '../../../src/types/kompatrc';
 import { Rules } from '../../../src/types/rules';
 
 type TestData = {
   inputConfig: unknown;
-  expectedResult: Partial<Rules> | ValidationError;
+  expectedResult: Partial<Rules> | { error: string };
 };
 
 const testCases: [string, TestData][] = [
@@ -103,6 +103,12 @@ Malformed rule overrides config: [
 test.each<[string, TestData]>(testCases)(
   'Correctly validates file extension ignores for case: %s',
   (_, { inputConfig, expectedResult }) => {
-    expect(getValidatedRuleOverrides(inputConfig)).toEqual(expectedResult);
+    if ('error' in expectedResult) {
+      expect(() => getValidatedRuleOverrides(inputConfig)).toThrow(
+        new ClientError(expectedResult.error),
+      );
+    } else {
+      expect(getValidatedRuleOverrides(inputConfig)).toEqual(expectedResult);
+    }
   },
 );

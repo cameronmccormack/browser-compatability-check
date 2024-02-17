@@ -1,12 +1,12 @@
 import { z } from 'zod';
-import { ValidationError } from '../../types/kompatrc';
 import { FILE_EXTENSIONS, FileExtension } from '../../helpers/filetype-helper';
+import { ClientError } from '../../errors/client-error';
 
 const FileExtensionIgnoresSchema = z.array(z.enum(FILE_EXTENSIONS));
 
 export const getValidatedFileExtensionIgnores = (
   rawConfig: unknown,
-): FileExtension[] | ValidationError => {
+): FileExtension[] => {
   if (rawConfig === undefined) {
     return [];
   }
@@ -17,7 +17,7 @@ export const getValidatedFileExtensionIgnores = (
     return parsedConfig.data;
   }
 
-  return {
-    error: `Malformed file extension ignores config: ${parsedConfig.error}`,
-  };
+  throw new ClientError(
+    `Malformed file extension ignores config: ${parsedConfig.error}`,
+  );
 };

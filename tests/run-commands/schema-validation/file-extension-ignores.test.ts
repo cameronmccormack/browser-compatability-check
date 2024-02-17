@@ -1,10 +1,10 @@
+import { ClientError } from '../../../src/errors/client-error';
 import { FileExtension } from '../../../src/helpers/filetype-helper';
 import { getValidatedFileExtensionIgnores } from '../../../src/run-commands/schema-validation/file-extension-ignores';
-import { ValidationError } from '../../../src/types/kompatrc';
 
 type TestData = {
   inputConfig: unknown;
-  expectedResult: FileExtension[] | ValidationError;
+  expectedResult: FileExtension[] | { error: string };
 };
 
 const testCases: [string, TestData][] = [
@@ -131,8 +131,14 @@ Malformed file extension ignores config: [
 test.each<[string, TestData]>(testCases)(
   'Correctly validates file extension ignores for case: %s',
   (_, { inputConfig, expectedResult }) => {
-    expect(getValidatedFileExtensionIgnores(inputConfig)).toEqual(
-      expectedResult,
-    );
+    if ('error' in expectedResult) {
+      expect(() => getValidatedFileExtensionIgnores(inputConfig)).toThrow(
+        new ClientError(expectedResult.error),
+      );
+    } else {
+      expect(getValidatedFileExtensionIgnores(inputConfig)).toEqual(
+        expectedResult,
+      );
+    }
   },
 );

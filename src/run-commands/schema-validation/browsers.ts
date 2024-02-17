@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { Browser } from '../../types/browser';
-import { ValidationError } from '../../types/kompatrc';
+import { ClientError } from '../../errors/client-error';
 
 // The schema below is linked directly from the README.
 // Please update the README link and/or line reference if modifying this file.
@@ -27,13 +27,11 @@ const BrowsersSchema = z.array(
   }),
 );
 
-export const getValidatedBrowserConfig = (
-  rawConfig: unknown,
-): Browser[] | ValidationError => {
+export const getValidatedBrowserConfig = (rawConfig: unknown): Browser[] => {
   const parsedConfig = BrowsersSchema.safeParse(rawConfig);
 
   if (!parsedConfig.success) {
-    return { error: `Malformed browser config: ${parsedConfig.error}` };
+    throw new ClientError(`Malformed browser config: ${parsedConfig.error}`);
   }
 
   const browserSlugs = parsedConfig.data.map((item) => item.identifier);
@@ -42,11 +40,11 @@ export const getValidatedBrowserConfig = (
   );
 
   if (duplicateSlugs.length > 0) {
-    return {
-      error: `Duplicate browsers in config. Duplicates: ${Array.from(
+    throw new ClientError(
+      `Duplicate browsers in config. Duplicates: ${Array.from(
         new Set(duplicateSlugs),
       ).join(', ')}.`,
-    };
+    );
   }
 
   return parsedConfig.data;

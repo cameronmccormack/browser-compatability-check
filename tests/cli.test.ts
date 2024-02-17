@@ -9,6 +9,7 @@ import { CssFile } from '../src/types/css-file';
 import { UnvalidatedKompatRc } from '../src/types/kompatrc';
 import { Rules } from '../src/types/rules';
 import { DEFAULT_RULES } from '../src/run-commands/default-rules';
+import { ClientError } from '../src/errors/client-error';
 import { MODERN_CHROME_CONFIG } from './test-data/browser-configs';
 import {
   compatibleReport,
@@ -180,7 +181,7 @@ Error: Malformed browser config: [
         },
       ],
       expectedErrorMessage: `
-Error in this/contains/bad/css/malformed.css:
+Error: Error in this/contains/bad/css/malformed.css:
 
 Parse error: Identifier is expected
     1 |.a { ::: invalid css ::: }
@@ -195,7 +196,7 @@ Parse error: Identifier is expected
       expectedExitCode: 2,
       mockKompatRc: null,
       expectedErrorMessage:
-        'Error: could not find .kompatrc.yml or .kompatrc.yaml file.',
+        'Error: Could not find .kompatrc.yml or .kompatrc.yaml file.',
     },
   ],
   [
@@ -326,9 +327,9 @@ Error: Malformed file extension ignores config: [
     'error thrown from CSS finder',
     {
       report: compatibleReport,
-      cssFinderOverride: { errorMessage: 'bad SASS syntax' },
+      cssFinderOverride: { errorMessage: 'Bad SASS syntax' },
       expectedExitCode: 1,
-      expectedErrorMessage: 'bad SASS syntax',
+      expectedErrorMessage: 'Error: Bad SASS syntax',
     },
   ],
 ];
@@ -380,13 +381,18 @@ test.each<[string, TestData]>(testCases)(
         );
     }
 
-    jest
-      .spyOn(kompatRcModule, 'getKompatRc')
-      .mockReturnValueOnce(
-        mockKompatRc === null
-          ? null
-          : mockKompatRc ?? { browsers: MODERN_CHROME_CONFIG },
+    const getKompatRcSpy = jest.spyOn(kompatRcModule, 'getKompatRc');
+    if (mockKompatRc === null) {
+      getKompatRcSpy.mockImplementationOnce(() => {
+        throw new ClientError(
+          'Could not find .kompatrc.yml or .kompatrc.yaml file.',
+        );
+      });
+    } else {
+      getKompatRcSpy.mockReturnValueOnce(
+        mockKompatRc ?? { browsers: MODERN_CHROME_CONFIG },
       );
+    }
 
     let exitCode: ExitCode | null = null;
     let errorMessage: string | undefined = undefined;
@@ -412,7 +418,7 @@ test.each<[string, TestData]>(testCases)(
   },
 );
 
-test('cli returns status 1 without message when an error is thrown that does not extend "Error"', async () => {
+test('cli returns status 1 with generic message when an error is thrown that does not extend "Error"', async () => {
   jest.spyOn(kompatRcModule, 'getKompatRc').mockImplementationOnce(() => {
     throw 'this is a string';
   });
@@ -428,5 +434,24 @@ test('cli returns status 1 without message when an error is thrown that does not
   await runCli(exitWith);
 
   expect(exitCode).toEqual(1);
-  expect(errorMessage).toEqual(undefined);
+  expect(errorMessage).toEqual('Error: Unknown Error');
+});
+
+test('cli returns status 1 with message when an error is thrown that extends "Error" but does not extend "BaseKompatError"', async () => {
+  jest.spyOn(kompatRcModule, 'getKompatRc').mockImplementationOnce(() => {
+    throw new Error('This is a message');
+  });
+
+  let exitCode: ExitCode | null = null;
+  let errorMessage: string | undefined = undefined;
+  const exitWith = (code: ExitCode, message?: string): ExitCode => {
+    exitCode = code;
+    errorMessage = message;
+    return code;
+  };
+
+  await runCli(exitWith);
+
+  expect(exitCode).toEqual(1);
+  expect(errorMessage).toEqual('Error: This is a message');
 });

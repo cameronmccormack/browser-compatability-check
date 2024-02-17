@@ -1,3 +1,4 @@
+import { ClientError } from '../../src/errors/client-error';
 import { getKompatRc } from '../../src/run-commands/get-kompatrc';
 
 const DUMMY_KOMPAT_RC_CONTENTS = {
@@ -29,8 +30,10 @@ test('gets valid kompatrc using YAML extension', () => {
   );
 });
 
-test('returns null when no .yml/.yaml files present', () => {
-  expect(getKompatRc('tests/test-data/dummy-kompatrc-files/json-only')).toEqual(
-    null,
+test('throws error when no .yml/.yaml files present', () => {
+  expect(() =>
+    getKompatRc('tests/test-data/dummy-kompatrc-files/json-only'),
+  ).toThrow(
+    new ClientError('Could not find .kompatrc.yml or .kompatrc.yaml file.'),
   );
 });

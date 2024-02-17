@@ -1,11 +1,11 @@
+import { ClientError } from '../../../src/errors/client-error';
 import { getValidatedBrowserConfig } from '../../../src/run-commands/schema-validation/browsers';
 import { Browser } from '../../../src/types/browser';
-import { ValidationError } from '../../../src/types/kompatrc';
 import { MODERN_CHROME_CONFIG } from '../../test-data/browser-configs';
 
 type TestData = {
   inputConfig: unknown;
-  expectedResult: Browser[] | ValidationError;
+  expectedResult: Browser[] | { error: string };
 };
 
 const testCases: [string, TestData][] = [
@@ -74,6 +74,12 @@ const testCases: [string, TestData][] = [
 test.each<[string, TestData]>(testCases)(
   'Correctly validates browser config for case: %s',
   (_, { inputConfig, expectedResult }) => {
-    expect(getValidatedBrowserConfig(inputConfig)).toEqual(expectedResult);
+    if ('error' in expectedResult) {
+      expect(() => getValidatedBrowserConfig(inputConfig)).toThrow(
+        new ClientError(expectedResult.error),
+      );
+    } else {
+      expect(getValidatedBrowserConfig(inputConfig)).toEqual(expectedResult);
+    }
   },
 );

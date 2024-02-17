@@ -1,9 +1,9 @@
+import { ClientError } from '../../../src/errors/client-error';
 import { getValidatedFeatureIgnores } from '../../../src/run-commands/schema-validation/feature-ignores';
-import { ValidationError } from '../../../src/types/kompatrc';
 
 type TestData = {
   inputConfig: unknown;
-  expectedResult: string[] | ValidationError;
+  expectedResult: string[] | { error: string };
 };
 
 const CUSTOM_ERROR = `
@@ -109,6 +109,12 @@ Malformed rule overrides config: [
 test.each<[string, TestData]>(testCases)(
   'Correctly validates feature ignores for case: %s',
   (_, { inputConfig, expectedResult }) => {
-    expect(getValidatedFeatureIgnores(inputConfig)).toEqual(expectedResult);
+    if ('error' in expectedResult) {
+      expect(() => getValidatedFeatureIgnores(inputConfig)).toThrow(
+        new ClientError(expectedResult.error),
+      );
+    } else {
+      expect(getValidatedFeatureIgnores(inputConfig)).toEqual(expectedResult);
+    }
   },
 );
