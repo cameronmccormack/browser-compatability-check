@@ -1,4 +1,5 @@
 import fs from 'fs';
+import path from 'path';
 import jsonfile from 'jsonfile';
 import pug from 'pug';
 import { OverallReport } from '../types/compatibility';
@@ -24,7 +25,7 @@ const copyStaticAssets = (fileLocation: string): void => {
   }
 
   fs.copyFileSync(
-    'images/logo-text.svg',
+    path.join(__dirname, '../../images/logo-text.svg'),
     `${staticFileDirectoryPath}/logo.svg`,
   );
 };
@@ -39,7 +40,7 @@ export const writeCompatibilityReportFiles = (
       case 'html':
         fs.writeFileSync(
           fileSpec.location,
-          pug.compileFile('src/report-writers/templates/report.pug')(report),
+          pug.compileFile(`${__dirname}/templates/report.pug`)(report),
         );
         copyStaticAssets(fileSpec.location);
         break;

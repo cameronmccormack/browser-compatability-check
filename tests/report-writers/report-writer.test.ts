@@ -39,7 +39,7 @@ describe('unit tests', () => {
       if (spec.type === 'html') {
         expect(mkdirSyncSpy).toHaveBeenCalledWith(`${outputDirectory}/static`);
         expect(copyFileSyncSpy).toHaveBeenCalledWith(
-          'images/logo-text.svg',
+          `${process.cwd()}/images/logo-text.svg`,
           `${outputDirectory}/static/logo.svg`,
         );
         expect(writeFileSyncSpy).toHaveBeenCalledWith(
