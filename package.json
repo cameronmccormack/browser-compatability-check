@@ -3,11 +3,12 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && npm run copy-templates",
+    "copy-templates": "mkdir -p dist/report-writers/templates && cp src/report-writers/templates/* dist/report-writers/templates/",
     "check:exports": "ts-unused-exports tsconfig.extended.json",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint --ext .tsx --ext .ts . --fix",
-    "start": "tsc && node bin/kompat",
+    "start": "npm run build && node bin/kompat",
     "test": "jest --silent",
     "test:coverage": "jest --coverage --silent",
     "typecheck": "tsc --project ./tsconfig.extended.json --noEmit"
