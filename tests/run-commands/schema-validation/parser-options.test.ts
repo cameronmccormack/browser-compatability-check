@@ -7,11 +7,6 @@ type TestData = {
   expectedResult: ParserOptions | { error: string };
 };
 
-const DEFAULT_REPORT_OPTIONS = {
-  includePerFeatureSummary: true,
-  outputReportFiles: [],
-};
-
 const testCases: [string, TestData][] = [
   [
     'valid config',

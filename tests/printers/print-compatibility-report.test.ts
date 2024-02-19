@@ -3,6 +3,7 @@ import { printCompatibilityReports } from '../../src/printers';
 import { CompatibilityReport } from '../../src/types/compatibility';
 import {
   compatibleReport,
+  compatibleReportWithParsingErrors,
   emptyReport,
   flaggedCompatibilityReport,
   flaggedCompatibilityReportWithLongFeatureId,
@@ -83,6 +84,13 @@ const testCases: [string, TestData][] = [
     'explicitly excluded per-feature summaries',
     {
       compatibilityReports: [unknownFeatureReport],
+      includePerFeatureSummary: false,
+    },
+  ],
+  [
+    'css parsing errors',
+    {
+      compatibilityReports: [compatibleReportWithParsingErrors],
       includePerFeatureSummary: false,
     },
   ],

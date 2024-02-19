@@ -351,3 +351,24 @@ test('creates expected compatibility report with feature ignore, including overa
     ),
   ).toEqual(expectedReport);
 });
+
+test('retains css parsing errors when creating report', () => {
+  const cssParsingError = 'ERROR: CSS PARSING ERROR 123';
+  const formattedCss = {
+    properties: [],
+    selectors: [],
+    atRules: [],
+    functions: [],
+  };
+
+  expect(
+    getCompatibilityReport(
+      formattedCss,
+      MODERN_CHROME_CONFIG,
+      EXAMPLE_FILEPATH,
+      DEFAULT_RULES,
+      [],
+      [cssParsingError],
+    ).cssParsingErrors,
+  ).toEqual([cssParsingError]);
+});

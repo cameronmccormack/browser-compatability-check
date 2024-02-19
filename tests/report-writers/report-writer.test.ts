@@ -9,6 +9,7 @@ import {
   partiallyCompatibleOverallReport,
   summaryOnlyOverallReport,
   unknownFeatureOverallReport,
+  cssParsingErrorsOverallReport,
 } from '../test-data/overall-reports';
 import { OutputReportFile } from '../../src/types/report-options';
 import { OverallReport } from '../../src/types/compatibility';
@@ -67,6 +68,7 @@ const snapshotTestCases: [string, OverallReport][] = [
   ['custom rules report', customRulesOverallReport],
   ['summary only report', summaryOnlyOverallReport],
   ['multiple CSS files report', multipleReportsOverallReport],
+  ['css parsing errors report', cssParsingErrorsOverallReport],
 ];
 
 describe('HTML report snapshot tests', () => {

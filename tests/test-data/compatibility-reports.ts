@@ -112,3 +112,16 @@ export const unknownFeatureReport = produce(compatibleReport, (draft) => {
   draft.overallStatus = 'fail';
   draft.unknownFeatures = ['property:not-a-real-feature:20px'];
 });
+
+export const compatibleReportWithParsingErrors = produce(
+  compatibleReport,
+  (draft) => {
+    draft.cssParsingErrors = [
+      `
+Parse error: Identifier is expected
+    1 |.a { ::: invalid css ::: }
+------------^
+    `.trim(),
+    ];
+  },
+);
