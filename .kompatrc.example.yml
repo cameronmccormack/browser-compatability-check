@@ -17,8 +17,10 @@ featureIgnores:
 fileExtensionIgnores:
   - sass
   - less
+parserOptions:
+  strict: false
 reportOptions:
-  includePerFeatureSummary: false
+  includePerFeatureSummary: true
   outputReportFiles:
     - type: json
       location: reports/example.json

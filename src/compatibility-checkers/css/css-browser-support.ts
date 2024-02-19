@@ -38,7 +38,9 @@ const getCssPropertyCompatibilityStatement = (
   css: Identifier,
 ): CompatStatement | null => {
   const itemWithContext =
-    item.context && item.context in css.properties[item.identifier]
+    item.context &&
+    css.properties[item.identifier] &&
+    item.context in css.properties[item.identifier]
       ? css.properties[item.identifier][item.context]
       : css.properties[item.identifier];
   return (

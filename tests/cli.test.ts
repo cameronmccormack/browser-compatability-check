@@ -168,11 +168,17 @@ Error: Malformed browser config: [
     },
   ],
   [
-    'malformed css found',
+    'malformed css found in strict mode',
     {
       report: compatibleReport,
       expectedExitCode: 1,
       path: 'this/contains/bad/css',
+      mockKompatRc: {
+        browsers: MODERN_CHROME_CONFIG,
+        parserOptions: {
+          strict: true,
+        },
+      },
       cssFinderOverride: [
         {
           path: 'this/contains/bad/css/malformed.css',
@@ -410,6 +416,7 @@ test.each<[string, TestData]>(testCases)(
         mockKompatRc?.browsers ?? MODERN_CHROME_CONFIG,
         dummyCssFile.path,
         expectedRules,
+        [],
         [],
       );
     }

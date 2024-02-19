@@ -114,6 +114,8 @@ Kompat is configured with a `.kompatrc.yml` file at the root of your repository.
   - These ignores should be configured as part of, or all of, a feature ID (as defined [here](src/run-commands/schema-validation/feature-ignores.ts#L20))
   - Any features with an ID that is matched by the ignore (regardless of higher level of detail) will be excluded from the compatibility report
     - e.g. if the ignore is "property:color" the features "property:color:red" and "property:color:orange:flex_context" will be ignored, and if the ignore is "at-rule", all at-rules will be ignored.
+- `parserOptions`: to configure the settings for parsing codebase content
+  - The correct format for these options is defined[here](src/run-commands/schema-validation/parser-options.ts#L7)
 - `reportOptions`: to configure the logged report and create output log files
   - The correct format for these options is defined [here](src/run-commands/schema-validation/report-options.ts#L6)
   - The per-browser summary can be suppressed in the console logs, and HTML and/or JSON file output reports may be configured.

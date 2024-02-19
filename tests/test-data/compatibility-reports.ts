@@ -9,6 +9,7 @@ export const emptyReport: CompatibilityReport = {
   knownFeatures: {},
   unknownFeatures: [],
   browserSummaries: {},
+  cssParsingErrors: [],
 };
 
 export const compatibleReport: CompatibilityReport = {
@@ -30,6 +31,7 @@ export const compatibleReport: CompatibilityReport = {
       unknown: 0,
     },
   },
+  cssParsingErrors: [],
 };
 
 export const partiallyCompatibleReport = produce(compatibleReport, (draft) => {

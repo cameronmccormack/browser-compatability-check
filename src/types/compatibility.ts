@@ -16,6 +16,7 @@ export type CompatibilityReport = {
   };
   unknownFeatures: string[];
   browserSummaries: BrowserSummaries;
+  cssParsingErrors: string[];
 };
 
 export type BrowserSummaries = {

@@ -92,6 +92,13 @@ td {
   overflow-x: auto;
 }
 
+.code-wrapper {
+  overflow-x: auto;
+  margin: 1rem 0;
+  width: fit-content;
+  max-width: 100%;
+}
+
 .logo-heading {
   color: #331F00;
   letter-spacing: 0.5em;
@@ -104,7 +111,7 @@ td {
   margin: 0.5rem;
   font-size: 0.75em;
   letter-spacing: 0.25em;
-}</style></head><body><main><div class="heading-wrapper"><img src="static/logo.svg" alt="Kompat Logo" width="288"/><h1 class="logo-heading">KOMPAT</h1><div class="copyright">COPYRIGHT &copy; 2023 CAMERON MCCORMACK</div></div><div class="summary-wrapper"><h2>Overall Summary: <span class="pass result">PASS</span></h2><div class="report-wrapper"><dl><dt class="pass result report-summary-status">PASS:</dt><dd class="bold"><a href="#report-0">example/filepath/eg-file.css</a></dd></dl></div></div><div class="summary-wrapper"><h2>Summary of All Stylesheets:</h2><div class="report-wrapper"><h3 id="report-0"><span class="pass result">PASS</span> example/filepath/eg-file.css</h3><h4>High-level Summary</h4><div class="table-wrapper"><table><thead><tr><th>Browser</th><th>Compatible</th><th>Partial Support</th><th>Flagged</th><th>Incompatible</th><th>Unknown</th></tr></thead><tbody><tr><td>chrome</td><td class="pass-cell">4</td><td class="pass-cell">0</td><td class="pass-cell">0</td><td class="pass-cell">0</td><td class="pass-cell">0</td></tr></tbody></table></div><h4>Unknown features:</h4><ul><li class="pass-cell">None</li></ul><h4>Per-feature Summary</h4><div class="table-wrapper"><table><thead><tr><th>Rule Identifier<th>chrome</th></th></tr></thead><tbody><tr><td>property:color:red<td class="pass-cell">compatible</td></td></tr><tr><td>selector:last-child<td class="pass-cell">compatible</td></td></tr><tr><td>at-rule:charset<td class="pass-cell">compatible</td></td></tr><tr><td>function:calc<td class="pass-cell">compatible</td></td></tr></tbody></table></div></div></div></main></body></html>"
+}</style></head><body><main><div class="heading-wrapper"><img src="static/logo.svg" alt="Kompat Logo" width="288"/><h1 class="logo-heading">KOMPAT</h1><div class="copyright">COPYRIGHT &copy; 2023 CAMERON MCCORMACK</div></div><div class="summary-wrapper"><h2>Overall Summary: <span class="pass result">PASS</span></h2><div class="report-wrapper"><dl><dt class="pass result report-summary-status">PASS:</dt><dd class="bold"><a href="#report-0">example/filepath/eg-file.css</a></dd></dl></div></div><div class="summary-wrapper"><h2>Summary of All Stylesheets:</h2><div class="report-wrapper"><h3 id="report-0"><span class="pass result">PASS</span> example/filepath/eg-file.css</h3><h4>High-level Summary</h4><div class="table-wrapper"><table><thead><tr><th>Browser</th><th>Compatible</th><th>Partial Support</th><th>Flagged</th><th>Incompatible</th><th>Unknown</th></tr></thead><tbody><tr><td>chrome</td><td class="pass-cell">4</td><td class="pass-cell">0</td><td class="pass-cell">0</td><td class="pass-cell">0</td><td class="pass-cell">0</td></tr></tbody></table></div><h4>Unknown Features:</h4><ul><li class="pass-cell">None</li></ul><h4>Per-feature Summary</h4><div class="table-wrapper"><table><thead><tr><th>Rule Identifier<th>chrome</th></th></tr></thead><tbody><tr><td>property:color:red<td class="pass-cell">compatible</td></td></tr><tr><td>selector:last-child<td class="pass-cell">compatible</td></td></tr><tr><td>at-rule:charset<td class="pass-cell">compatible</td></td></tr><tr><td>function:calc<td class="pass-cell">compatible</td></td></tr></tbody></table></div></div></div></main></body></html>"
 `;
 
 exports[`HTML report snapshot tests creates the expected HTML report for the case: custom rules report 1`] = `
@@ -199,6 +206,13 @@ td {
   overflow-x: auto;
 }
 
+.code-wrapper {
+  overflow-x: auto;
+  margin: 1rem 0;
+  width: fit-content;
+  max-width: 100%;
+}
+
 .logo-heading {
   color: #331F00;
   letter-spacing: 0.5em;
@@ -211,7 +225,7 @@ td {
   margin: 0.5rem;
   font-size: 0.75em;
   letter-spacing: 0.25em;
-}</style></head><body><main><div class="heading-wrapper"><img src="static/logo.svg" alt="Kompat Logo" width="288"/><h1 class="logo-heading">KOMPAT</h1><div class="copyright">COPYRIGHT &copy; 2023 CAMERON MCCORMACK</div></div><div class="summary-wrapper"><h2>Overall Summary: <span class="fail result">FAIL</span></h2><div class="report-wrapper"><dl><dt class="pass result report-summary-status">PASS:</dt><dd class="bold"><a href="#report-0">example/filepath/eg-file.css</a></dd></dl></div></div><div class="summary-wrapper"><h2>Summary of All Stylesheets:</h2><div class="report-wrapper"><h3 id="report-0"><span class="pass result">PASS</span> example/filepath/eg-file.css</h3><h4>High-level Summary</h4><div class="table-wrapper"><table><thead><tr><th>Browser</th><th>Compatible</th><th>Partial Support</th><th>Flagged</th><th>Incompatible</th><th>Unknown</th></tr></thead><tbody><tr><td>chrome</td><td class="fail-cell">4</td><td class="pass-cell">0</td><td class="pass-cell">0</td><td class="pass-cell">0</td><td class="pass-cell">0</td></tr></tbody></table></div><h4>Unknown features:</h4><ul><li class="pass-cell">None</li></ul><h4>Per-feature Summary</h4><div class="table-wrapper"><table><thead><tr><th>Rule Identifier<th>chrome</th></th></tr></thead><tbody><tr><td>property:color:red<td class="fail-cell">compatible</td></td></tr><tr><td>selector:last-child<td class="fail-cell">compatible</td></td></tr><tr><td>at-rule:charset<td class="fail-cell">compatible</td></td></tr><tr><td>function:calc<td class="fail-cell">compatible</td></td></tr></tbody></table></div></div></div></main></body></html>"
+}</style></head><body><main><div class="heading-wrapper"><img src="static/logo.svg" alt="Kompat Logo" width="288"/><h1 class="logo-heading">KOMPAT</h1><div class="copyright">COPYRIGHT &copy; 2023 CAMERON MCCORMACK</div></div><div class="summary-wrapper"><h2>Overall Summary: <span class="fail result">FAIL</span></h2><div class="report-wrapper"><dl><dt class="pass result report-summary-status">PASS:</dt><dd class="bold"><a href="#report-0">example/filepath/eg-file.css</a></dd></dl></div></div><div class="summary-wrapper"><h2>Summary of All Stylesheets:</h2><div class="report-wrapper"><h3 id="report-0"><span class="pass result">PASS</span> example/filepath/eg-file.css</h3><h4>High-level Summary</h4><div class="table-wrapper"><table><thead><tr><th>Browser</th><th>Compatible</th><th>Partial Support</th><th>Flagged</th><th>Incompatible</th><th>Unknown</th></tr></thead><tbody><tr><td>chrome</td><td class="fail-cell">4</td><td class="pass-cell">0</td><td class="pass-cell">0</td><td class="pass-cell">0</td><td class="pass-cell">0</td></tr></tbody></table></div><h4>Unknown Features:</h4><ul><li class="pass-cell">None</li></ul><h4>Per-feature Summary</h4><div class="table-wrapper"><table><thead><tr><th>Rule Identifier<th>chrome</th></th></tr></thead><tbody><tr><td>property:color:red<td class="fail-cell">compatible</td></td></tr><tr><td>selector:last-child<td class="fail-cell">compatible</td></td></tr><tr><td>at-rule:charset<td class="fail-cell">compatible</td></td></tr><tr><td>function:calc<td class="fail-cell">compatible</td></td></tr></tbody></table></div></div></div></main></body></html>"
 `;
 
 exports[`HTML report snapshot tests creates the expected HTML report for the case: failed report 1`] = `
@@ -306,6 +320,13 @@ td {
   overflow-x: auto;
 }
 
+.code-wrapper {
+  overflow-x: auto;
+  margin: 1rem 0;
+  width: fit-content;
+  max-width: 100%;
+}
+
 .logo-heading {
   color: #331F00;
   letter-spacing: 0.5em;
@@ -318,7 +339,7 @@ td {
   margin: 0.5rem;
   font-size: 0.75em;
   letter-spacing: 0.25em;
-}</style></head><body><main><div class="heading-wrapper"><img src="static/logo.svg" alt="Kompat Logo" width="288"/><h1 class="logo-heading">KOMPAT</h1><div class="copyright">COPYRIGHT &copy; 2023 CAMERON MCCORMACK</div></div><div class="summary-wrapper"><h2>Overall Summary: <span class="warn result">WARN</span></h2><div class="report-wrapper"><dl><dt class="fail result report-summary-status">FAIL:</dt><dd class="bold"><a href="#report-0">example/filepath/eg-file.css</a></dd></dl></div></div><div class="summary-wrapper"><h2>Summary of All Stylesheets:</h2><div class="report-wrapper"><h3 id="report-0"><span class="fail result">FAIL</span> example/filepath/eg-file.css</h3><h4>High-level Summary</h4><div class="table-wrapper"><table><thead><tr><th>Browser</th><th>Compatible</th><th>Partial Support</th><th>Flagged</th><th>Incompatible</th><th>Unknown</th></tr></thead><tbody><tr><td>chrome</td><td class="pass-cell">3</td><td class="pass-cell">0</td><td class="pass-cell">0</td><td class="fail-cell">1</td><td class="pass-cell">0</td></tr></tbody></table></div><h4>Unknown features:</h4><ul><li class="pass-cell">None</li></ul><h4>Per-feature Summary</h4><div class="table-wrapper"><table><thead><tr><th>Rule Identifier<th>chrome</th></th></tr></thead><tbody><tr><td>property:color:red<td class="fail-cell">incompatible</td></td></tr><tr><td>selector:last-child<td class="pass-cell">compatible</td></td></tr><tr><td>at-rule:charset<td class="pass-cell">compatible</td></td></tr><tr><td>function:calc<td class="pass-cell">compatible</td></td></tr></tbody></table></div></div></div></main></body></html>"
+}</style></head><body><main><div class="heading-wrapper"><img src="static/logo.svg" alt="Kompat Logo" width="288"/><h1 class="logo-heading">KOMPAT</h1><div class="copyright">COPYRIGHT &copy; 2023 CAMERON MCCORMACK</div></div><div class="summary-wrapper"><h2>Overall Summary: <span class="warn result">WARN</span></h2><div class="report-wrapper"><dl><dt class="fail result report-summary-status">FAIL:</dt><dd class="bold"><a href="#report-0">example/filepath/eg-file.css</a></dd></dl></div></div><div class="summary-wrapper"><h2>Summary of All Stylesheets:</h2><div class="report-wrapper"><h3 id="report-0"><span class="fail result">FAIL</span> example/filepath/eg-file.css</h3><h4>High-level Summary</h4><div class="table-wrapper"><table><thead><tr><th>Browser</th><th>Compatible</th><th>Partial Support</th><th>Flagged</th><th>Incompatible</th><th>Unknown</th></tr></thead><tbody><tr><td>chrome</td><td class="pass-cell">3</td><td class="pass-cell">0</td><td class="pass-cell">0</td><td class="fail-cell">1</td><td class="pass-cell">0</td></tr></tbody></table></div><h4>Unknown Features:</h4><ul><li class="pass-cell">None</li></ul><h4>Per-feature Summary</h4><div class="table-wrapper"><table><thead><tr><th>Rule Identifier<th>chrome</th></th></tr></thead><tbody><tr><td>property:color:red<td class="fail-cell">incompatible</td></td></tr><tr><td>selector:last-child<td class="pass-cell">compatible</td></td></tr><tr><td>at-rule:charset<td class="pass-cell">compatible</td></td></tr><tr><td>function:calc<td class="pass-cell">compatible</td></td></tr></tbody></table></div></div></div></main></body></html>"
 `;
 
 exports[`HTML report snapshot tests creates the expected HTML report for the case: multiple CSS files report 1`] = `
@@ -413,6 +434,13 @@ td {
   overflow-x: auto;
 }
 
+.code-wrapper {
+  overflow-x: auto;
+  margin: 1rem 0;
+  width: fit-content;
+  max-width: 100%;
+}
+
 .logo-heading {
   color: #331F00;
   letter-spacing: 0.5em;
@@ -425,7 +453,7 @@ td {
   margin: 0.5rem;
   font-size: 0.75em;
   letter-spacing: 0.25em;
-}</style></head><body><main><div class="heading-wrapper"><img src="static/logo.svg" alt="Kompat Logo" width="288"/><h1 class="logo-heading">KOMPAT</h1><div class="copyright">COPYRIGHT &copy; 2023 CAMERON MCCORMACK</div></div><div class="summary-wrapper"><h2>Overall Summary: <span class="pass result">PASS</span></h2><div class="report-wrapper"><dl><dt class="pass result report-summary-status">PASS:</dt><dd class="bold"><a href="#report-0">example/filepath/eg-file.css</a></dd><dt class="pass result report-summary-status">PASS:</dt><dd class="bold"><a href="#report-1">example/filepath/eg-file.css</a></dd><dt class="pass result report-summary-status">PASS:</dt><dd class="bold"><a href="#report-2">example/filepath/eg-file.css</a></dd></dl></div></div><div class="summary-wrapper"><h2>Summary of All Stylesheets:</h2><div class="report-wrapper"><h3 id="report-0"><span class="pass result">PASS</span> example/filepath/eg-file.css</h3><h4>High-level Summary</h4><div class="table-wrapper"><table><thead><tr><th>Browser</th><th>Compatible</th><th>Partial Support</th><th>Flagged</th><th>Incompatible</th><th>Unknown</th></tr></thead><tbody><tr><td>chrome</td><td class="pass-cell">4</td><td class="pass-cell">0</td><td class="pass-cell">0</td><td class="pass-cell">0</td><td class="pass-cell">0</td></tr></tbody></table></div><h4>Unknown features:</h4><ul><li class="pass-cell">None</li></ul><h4>Per-feature Summary</h4><div class="table-wrapper"><table><thead><tr><th>Rule Identifier<th>chrome</th></th></tr></thead><tbody><tr><td>property:color:red<td class="pass-cell">compatible</td></td></tr><tr><td>selector:last-child<td class="pass-cell">compatible</td></td></tr><tr><td>at-rule:charset<td class="pass-cell">compatible</td></td></tr><tr><td>function:calc<td class="pass-cell">compatible</td></td></tr></tbody></table></div></div><div class="report-wrapper"><h3 id="report-1"><span class="pass result">PASS</span> example/filepath/eg-file.css</h3><h4>High-level Summary</h4><div class="table-wrapper"><table><thead><tr><th>Browser</th><th>Compatible</th><th>Partial Support</th><th>Flagged</th><th>Incompatible</th><th>Unknown</th></tr></thead><tbody><tr><td>chrome</td><td class="pass-cell">4</td><td class="pass-cell">0</td><td class="pass-cell">0</td><td class="pass-cell">0</td><td class="pass-cell">0</td></tr></tbody></table></div><h4>Unknown features:</h4><ul><li class="pass-cell">None</li></ul><h4>Per-feature Summary</h4><div class="table-wrapper"><table><thead><tr><th>Rule Identifier<th>chrome</th></th></tr></thead><tbody><tr><td>property:color:red<td class="pass-cell">compatible</td></td></tr><tr><td>selector:last-child<td class="pass-cell">compatible</td></td></tr><tr><td>at-rule:charset<td class="pass-cell">compatible</td></td></tr><tr><td>function:calc<td class="pass-cell">compatible</td></td></tr></tbody></table></div></div><div class="report-wrapper"><h3 id="report-2"><span class="pass result">PASS</span> example/filepath/eg-file.css</h3><h4>High-level Summary</h4><div class="table-wrapper"><table><thead><tr><th>Browser</th><th>Compatible</th><th>Partial Support</th><th>Flagged</th><th>Incompatible</th><th>Unknown</th></tr></thead><tbody><tr><td>chrome</td><td class="pass-cell">4</td><td class="pass-cell">0</td><td class="pass-cell">0</td><td class="pass-cell">0</td><td class="pass-cell">0</td></tr></tbody></table></div><h4>Unknown features:</h4><ul><li class="pass-cell">None</li></ul><h4>Per-feature Summary</h4><div class="table-wrapper"><table><thead><tr><th>Rule Identifier<th>chrome</th></th></tr></thead><tbody><tr><td>property:color:red<td class="pass-cell">compatible</td></td></tr><tr><td>selector:last-child<td class="pass-cell">compatible</td></td></tr><tr><td>at-rule:charset<td class="pass-cell">compatible</td></td></tr><tr><td>function:calc<td class="pass-cell">compatible</td></td></tr></tbody></table></div></div></div></main></body></html>"
+}</style></head><body><main><div class="heading-wrapper"><img src="static/logo.svg" alt="Kompat Logo" width="288"/><h1 class="logo-heading">KOMPAT</h1><div class="copyright">COPYRIGHT &copy; 2023 CAMERON MCCORMACK</div></div><div class="summary-wrapper"><h2>Overall Summary: <span class="pass result">PASS</span></h2><div class="report-wrapper"><dl><dt class="pass result report-summary-status">PASS:</dt><dd class="bold"><a href="#report-0">example/filepath/eg-file.css</a></dd><dt class="pass result report-summary-status">PASS:</dt><dd class="bold"><a href="#report-1">example/filepath/eg-file.css</a></dd><dt class="pass result report-summary-status">PASS:</dt><dd class="bold"><a href="#report-2">example/filepath/eg-file.css</a></dd></dl></div></div><div class="summary-wrapper"><h2>Summary of All Stylesheets:</h2><div class="report-wrapper"><h3 id="report-0"><span class="pass result">PASS</span> example/filepath/eg-file.css</h3><h4>High-level Summary</h4><div class="table-wrapper"><table><thead><tr><th>Browser</th><th>Compatible</th><th>Partial Support</th><th>Flagged</th><th>Incompatible</th><th>Unknown</th></tr></thead><tbody><tr><td>chrome</td><td class="pass-cell">4</td><td class="pass-cell">0</td><td class="pass-cell">0</td><td class="pass-cell">0</td><td class="pass-cell">0</td></tr></tbody></table></div><h4>Unknown Features:</h4><ul><li class="pass-cell">None</li></ul><h4>Per-feature Summary</h4><div class="table-wrapper"><table><thead><tr><th>Rule Identifier<th>chrome</th></th></tr></thead><tbody><tr><td>property:color:red<td class="pass-cell">compatible</td></td></tr><tr><td>selector:last-child<td class="pass-cell">compatible</td></td></tr><tr><td>at-rule:charset<td class="pass-cell">compatible</td></td></tr><tr><td>function:calc<td class="pass-cell">compatible</td></td></tr></tbody></table></div></div><div class="report-wrapper"><h3 id="report-1"><span class="pass result">PASS</span> example/filepath/eg-file.css</h3><h4>High-level Summary</h4><div class="table-wrapper"><table><thead><tr><th>Browser</th><th>Compatible</th><th>Partial Support</th><th>Flagged</th><th>Incompatible</th><th>Unknown</th></tr></thead><tbody><tr><td>chrome</td><td class="pass-cell">4</td><td class="pass-cell">0</td><td class="pass-cell">0</td><td class="pass-cell">0</td><td class="pass-cell">0</td></tr></tbody></table></div><h4>Unknown Features:</h4><ul><li class="pass-cell">None</li></ul><h4>Per-feature Summary</h4><div class="table-wrapper"><table><thead><tr><th>Rule Identifier<th>chrome</th></th></tr></thead><tbody><tr><td>property:color:red<td class="pass-cell">compatible</td></td></tr><tr><td>selector:last-child<td class="pass-cell">compatible</td></td></tr><tr><td>at-rule:charset<td class="pass-cell">compatible</td></td></tr><tr><td>function:calc<td class="pass-cell">compatible</td></td></tr></tbody></table></div></div><div class="report-wrapper"><h3 id="report-2"><span class="pass result">PASS</span> example/filepath/eg-file.css</h3><h4>High-level Summary</h4><div class="table-wrapper"><table><thead><tr><th>Browser</th><th>Compatible</th><th>Partial Support</th><th>Flagged</th><th>Incompatible</th><th>Unknown</th></tr></thead><tbody><tr><td>chrome</td><td class="pass-cell">4</td><td class="pass-cell">0</td><td class="pass-cell">0</td><td class="pass-cell">0</td><td class="pass-cell">0</td></tr></tbody></table></div><h4>Unknown Features:</h4><ul><li class="pass-cell">None</li></ul><h4>Per-feature Summary</h4><div class="table-wrapper"><table><thead><tr><th>Rule Identifier<th>chrome</th></th></tr></thead><tbody><tr><td>property:color:red<td class="pass-cell">compatible</td></td></tr><tr><td>selector:last-child<td class="pass-cell">compatible</td></td></tr><tr><td>at-rule:charset<td class="pass-cell">compatible</td></td></tr><tr><td>function:calc<td class="pass-cell">compatible</td></td></tr></tbody></table></div></div></div></main></body></html>"
 `;
 
 exports[`HTML report snapshot tests creates the expected HTML report for the case: partially compatible report 1`] = `
@@ -520,6 +548,13 @@ td {
   overflow-x: auto;
 }
 
+.code-wrapper {
+  overflow-x: auto;
+  margin: 1rem 0;
+  width: fit-content;
+  max-width: 100%;
+}
+
 .logo-heading {
   color: #331F00;
   letter-spacing: 0.5em;
@@ -532,7 +567,7 @@ td {
   margin: 0.5rem;
   font-size: 0.75em;
   letter-spacing: 0.25em;
-}</style></head><body><main><div class="heading-wrapper"><img src="static/logo.svg" alt="Kompat Logo" width="288"/><h1 class="logo-heading">KOMPAT</h1><div class="copyright">COPYRIGHT &copy; 2023 CAMERON MCCORMACK</div></div><div class="summary-wrapper"><h2>Overall Summary: <span class="warn result">WARN</span></h2><div class="report-wrapper"><dl><dt class="warn result report-summary-status">WARN:</dt><dd class="bold"><a href="#report-0">example/filepath/eg-file.css</a></dd></dl></div></div><div class="summary-wrapper"><h2>Summary of All Stylesheets:</h2><div class="report-wrapper"><h3 id="report-0"><span class="warn result">WARN</span> example/filepath/eg-file.css</h3><h4>High-level Summary</h4><div class="table-wrapper"><table><thead><tr><th>Browser</th><th>Compatible</th><th>Partial Support</th><th>Flagged</th><th>Incompatible</th><th>Unknown</th></tr></thead><tbody><tr><td>chrome</td><td class="pass-cell">3</td><td class="warn-cell">1</td><td class="pass-cell">0</td><td class="pass-cell">0</td><td class="pass-cell">0</td></tr></tbody></table></div><h4>Unknown features:</h4><ul><li class="pass-cell">None</li></ul><h4>Per-feature Summary</h4><div class="table-wrapper"><table><thead><tr><th>Rule Identifier<th>chrome</th></th></tr></thead><tbody><tr><td>property:color:red<td class="warn-cell">partial-support</td></td></tr><tr><td>selector:last-child<td class="pass-cell">compatible</td></td></tr><tr><td>at-rule:charset<td class="pass-cell">compatible</td></td></tr><tr><td>function:calc<td class="pass-cell">compatible</td></td></tr></tbody></table></div></div></div></main></body></html>"
+}</style></head><body><main><div class="heading-wrapper"><img src="static/logo.svg" alt="Kompat Logo" width="288"/><h1 class="logo-heading">KOMPAT</h1><div class="copyright">COPYRIGHT &copy; 2023 CAMERON MCCORMACK</div></div><div class="summary-wrapper"><h2>Overall Summary: <span class="warn result">WARN</span></h2><div class="report-wrapper"><dl><dt class="warn result report-summary-status">WARN:</dt><dd class="bold"><a href="#report-0">example/filepath/eg-file.css</a></dd></dl></div></div><div class="summary-wrapper"><h2>Summary of All Stylesheets:</h2><div class="report-wrapper"><h3 id="report-0"><span class="warn result">WARN</span> example/filepath/eg-file.css</h3><h4>High-level Summary</h4><div class="table-wrapper"><table><thead><tr><th>Browser</th><th>Compatible</th><th>Partial Support</th><th>Flagged</th><th>Incompatible</th><th>Unknown</th></tr></thead><tbody><tr><td>chrome</td><td class="pass-cell">3</td><td class="warn-cell">1</td><td class="pass-cell">0</td><td class="pass-cell">0</td><td class="pass-cell">0</td></tr></tbody></table></div><h4>Unknown Features:</h4><ul><li class="pass-cell">None</li></ul><h4>Per-feature Summary</h4><div class="table-wrapper"><table><thead><tr><th>Rule Identifier<th>chrome</th></th></tr></thead><tbody><tr><td>property:color:red<td class="warn-cell">partial-support</td></td></tr><tr><td>selector:last-child<td class="pass-cell">compatible</td></td></tr><tr><td>at-rule:charset<td class="pass-cell">compatible</td></td></tr><tr><td>function:calc<td class="pass-cell">compatible</td></td></tr></tbody></table></div></div></div></main></body></html>"
 `;
 
 exports[`HTML report snapshot tests creates the expected HTML report for the case: summary only report 1`] = `
@@ -627,6 +662,13 @@ td {
   overflow-x: auto;
 }
 
+.code-wrapper {
+  overflow-x: auto;
+  margin: 1rem 0;
+  width: fit-content;
+  max-width: 100%;
+}
+
 .logo-heading {
   color: #331F00;
   letter-spacing: 0.5em;
@@ -639,7 +681,7 @@ td {
   margin: 0.5rem;
   font-size: 0.75em;
   letter-spacing: 0.25em;
-}</style></head><body><main><div class="heading-wrapper"><img src="static/logo.svg" alt="Kompat Logo" width="288"/><h1 class="logo-heading">KOMPAT</h1><div class="copyright">COPYRIGHT &copy; 2023 CAMERON MCCORMACK</div></div><div class="summary-wrapper"><h2>Overall Summary: <span class="pass result">PASS</span></h2><div class="report-wrapper"><dl><dt class="pass result report-summary-status">PASS:</dt><dd class="bold"><a href="#report-0">example/filepath/eg-file.css</a></dd></dl></div></div><div class="summary-wrapper"><h2>Summary of All Stylesheets:</h2><div class="report-wrapper"><h3 id="report-0"><span class="pass result">PASS</span> example/filepath/eg-file.css</h3><h4>High-level Summary</h4><div class="table-wrapper"><table><thead><tr><th>Browser</th><th>Compatible</th><th>Partial Support</th><th>Flagged</th><th>Incompatible</th><th>Unknown</th></tr></thead><tbody><tr><td>chrome</td><td class="pass-cell">4</td><td class="pass-cell">0</td><td class="pass-cell">0</td><td class="pass-cell">0</td><td class="pass-cell">0</td></tr></tbody></table></div><h4>Unknown features:</h4><ul><li class="pass-cell">None</li></ul></div></div></main></body></html>"
+}</style></head><body><main><div class="heading-wrapper"><img src="static/logo.svg" alt="Kompat Logo" width="288"/><h1 class="logo-heading">KOMPAT</h1><div class="copyright">COPYRIGHT &copy; 2023 CAMERON MCCORMACK</div></div><div class="summary-wrapper"><h2>Overall Summary: <span class="pass result">PASS</span></h2><div class="report-wrapper"><dl><dt class="pass result report-summary-status">PASS:</dt><dd class="bold"><a href="#report-0">example/filepath/eg-file.css</a></dd></dl></div></div><div class="summary-wrapper"><h2>Summary of All Stylesheets:</h2><div class="report-wrapper"><h3 id="report-0"><span class="pass result">PASS</span> example/filepath/eg-file.css</h3><h4>High-level Summary</h4><div class="table-wrapper"><table><thead><tr><th>Browser</th><th>Compatible</th><th>Partial Support</th><th>Flagged</th><th>Incompatible</th><th>Unknown</th></tr></thead><tbody><tr><td>chrome</td><td class="pass-cell">4</td><td class="pass-cell">0</td><td class="pass-cell">0</td><td class="pass-cell">0</td><td class="pass-cell">0</td></tr></tbody></table></div><h4>Unknown Features:</h4><ul><li class="pass-cell">None</li></ul></div></div></main></body></html>"
 `;
 
 exports[`HTML report snapshot tests creates the expected HTML report for the case: unknown feature report 1`] = `
@@ -734,6 +776,13 @@ td {
   overflow-x: auto;
 }
 
+.code-wrapper {
+  overflow-x: auto;
+  margin: 1rem 0;
+  width: fit-content;
+  max-width: 100%;
+}
+
 .logo-heading {
   color: #331F00;
   letter-spacing: 0.5em;
@@ -746,5 +795,5 @@ td {
   margin: 0.5rem;
   font-size: 0.75em;
   letter-spacing: 0.25em;
-}</style></head><body><main><div class="heading-wrapper"><img src="static/logo.svg" alt="Kompat Logo" width="288"/><h1 class="logo-heading">KOMPAT</h1><div class="copyright">COPYRIGHT &copy; 2023 CAMERON MCCORMACK</div></div><div class="summary-wrapper"><h2>Overall Summary: <span class="warn result">WARN</span></h2><div class="report-wrapper"><dl><dt class="fail result report-summary-status">FAIL:</dt><dd class="bold"><a href="#report-0">example/filepath/eg-file.css</a></dd></dl></div></div><div class="summary-wrapper"><h2>Summary of All Stylesheets:</h2><div class="report-wrapper"><h3 id="report-0"><span class="fail result">FAIL</span> example/filepath/eg-file.css</h3><h4>High-level Summary</h4><div class="table-wrapper"><table><thead><tr><th>Browser</th><th>Compatible</th><th>Partial Support</th><th>Flagged</th><th>Incompatible</th><th>Unknown</th></tr></thead><tbody><tr><td>chrome</td><td class="pass-cell">4</td><td class="pass-cell">0</td><td class="pass-cell">0</td><td class="pass-cell">0</td><td class="pass-cell">0</td></tr></tbody></table></div><h4>Unknown features:</h4><ul><li class="fail-cell">property:not-a-real-feature:20px</li></ul><h4>Per-feature Summary</h4><div class="table-wrapper"><table><thead><tr><th>Rule Identifier<th>chrome</th></th></tr></thead><tbody><tr><td>property:color:red<td class="pass-cell">compatible</td></td></tr><tr><td>selector:last-child<td class="pass-cell">compatible</td></td></tr><tr><td>at-rule:charset<td class="pass-cell">compatible</td></td></tr><tr><td>function:calc<td class="pass-cell">compatible</td></td></tr></tbody></table></div></div></div></main></body></html>"
+}</style></head><body><main><div class="heading-wrapper"><img src="static/logo.svg" alt="Kompat Logo" width="288"/><h1 class="logo-heading">KOMPAT</h1><div class="copyright">COPYRIGHT &copy; 2023 CAMERON MCCORMACK</div></div><div class="summary-wrapper"><h2>Overall Summary: <span class="warn result">WARN</span></h2><div class="report-wrapper"><dl><dt class="fail result report-summary-status">FAIL:</dt><dd class="bold"><a href="#report-0">example/filepath/eg-file.css</a></dd></dl></div></div><div class="summary-wrapper"><h2>Summary of All Stylesheets:</h2><div class="report-wrapper"><h3 id="report-0"><span class="fail result">FAIL</span> example/filepath/eg-file.css</h3><h4>High-level Summary</h4><div class="table-wrapper"><table><thead><tr><th>Browser</th><th>Compatible</th><th>Partial Support</th><th>Flagged</th><th>Incompatible</th><th>Unknown</th></tr></thead><tbody><tr><td>chrome</td><td class="pass-cell">4</td><td class="pass-cell">0</td><td class="pass-cell">0</td><td class="pass-cell">0</td><td class="pass-cell">0</td></tr></tbody></table></div><h4>Unknown Features:</h4><ul><li class="fail-cell">property:not-a-real-feature:20px</li></ul><h4>Per-feature Summary</h4><div class="table-wrapper"><table><thead><tr><th>Rule Identifier<th>chrome</th></th></tr></thead><tbody><tr><td>property:color:red<td class="pass-cell">compatible</td></td></tr><tr><td>selector:last-child<td class="pass-cell">compatible</td></td></tr><tr><td>at-rule:charset<td class="pass-cell">compatible</td></td></tr><tr><td>function:calc<td class="pass-cell">compatible</td></td></tr></tbody></table></div></div></div></main></body></html>"
 `;

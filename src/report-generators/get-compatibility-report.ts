@@ -84,6 +84,7 @@ export const getCompatibilityReport = (
   filePath: string,
   rules: Rules,
   featuresToIgnore: string[],
+  cssParsingErrors: string[],
 ): CompatibilityReport => {
   const reportWithoutOverallStatus: CompatibilityReportWithoutOverallStatus = {
     filePath,
@@ -95,6 +96,7 @@ export const getCompatibilityReport = (
         { ...INITIAL_BROWSER_SUMMARY },
       ]),
     ),
+    cssParsingErrors,
   };
 
   Object.values(formattedCss).forEach((featureArray) => {
