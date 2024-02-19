@@ -97,6 +97,13 @@ html(lang="en-GB")
         overflow-x: auto;
       }
 
+      .code-wrapper {
+        overflow-x: auto;
+        margin: 1rem 0;
+        width: fit-content;
+        max-width: 100%;
+      }
+
       .logo-heading {
         color: #{themeColors.text};
         letter-spacing: 0.5em;
@@ -159,7 +166,7 @@ html(lang="en-GB")
                         | #{report.browserSummaries[browser].unknown}
 
            
-            h4 Unknown features:
+            h4 Unknown Features:
             ul
               each feature in report.unknownFeatures
                 li(class=`${rules['unknown-feature']}-cell`) #{feature}
@@ -182,3 +189,11 @@ html(lang="en-GB")
                           each browserSlug in Object.keys(report.knownFeatures[featureId])
                             td(class=`${rules[report.knownFeatures[featureId][browserSlug].compatibility]}-cell`)
                               | #{report.knownFeatures[featureId][browserSlug].compatibility}
+
+            if report.cssParsingErrors.length > 0
+              h4 Parsing Errors
+              div
+                i Note, Kompat will leniently treat unparsable CSS as raw text unless explicitly configured in the kompatrc file to parse strictly.
+                each parsingError in report.cssParsingErrors
+                  div(class="warn code-wrapper")
+                    pre #{parsingError}

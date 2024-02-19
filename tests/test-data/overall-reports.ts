@@ -1,3 +1,4 @@
+import { produce } from 'immer';
 import { DEFAULT_RULES } from '../../src/run-commands/default-rules';
 import { OverallReport } from '../../src/types/compatibility';
 import {
@@ -58,3 +59,16 @@ export const multipleReportsOverallReport: OverallReport = {
   includePerFeatureSummary: true,
   rules: DEFAULT_RULES,
 };
+
+export const cssParsingErrorsOverallReport: OverallReport = produce(
+  compatibleOverallReport,
+  (draft) => {
+    draft.reports[0].cssParsingErrors = [
+      `
+Parse error: Identifier is expected
+  1 |.a { ::: invalid css ::: }
+------------^
+  `.trim(),
+    ];
+  },
+);

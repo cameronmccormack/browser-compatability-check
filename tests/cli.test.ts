@@ -27,6 +27,7 @@ type TestData = {
   mockKompatRc?: UnvalidatedKompatRc | null;
   expectedRules?: Rules;
   expectedErrorMessage?: string;
+  expectedCssParsingErrors?: string[];
   path?: string;
   cssFinderOverride?: CssFile[] | { errorMessage: string };
 };
@@ -45,6 +46,8 @@ const dummyFormattedCss = {
   atRules: [],
   functions: [],
 };
+
+afterEach(() => jest.restoreAllMocks());
 
 const testCases: [string, TestData][] = [
   [
@@ -168,11 +171,17 @@ Error: Malformed browser config: [
     },
   ],
   [
-    'malformed css found',
+    'malformed css found in strict mode',
     {
       report: compatibleReport,
       expectedExitCode: 1,
       path: 'this/contains/bad/css',
+      mockKompatRc: {
+        browsers: MODERN_CHROME_CONFIG,
+        parserOptions: {
+          strict: true,
+        },
+      },
       cssFinderOverride: [
         {
           path: 'this/contains/bad/css/malformed.css',
@@ -187,6 +196,31 @@ Parse error: Identifier is expected
     1 |.a { ::: invalid css ::: }
 ------------^
       `.trim(),
+    },
+  ],
+  [
+    'malformed css found in lenient mode',
+    {
+      report: compatibleReport,
+      expectedExitCode: 0,
+      path: 'this/contains/bad/css',
+      mockKompatRc: {
+        browsers: MODERN_CHROME_CONFIG,
+      },
+      cssFinderOverride: [
+        {
+          path: 'this/contains/bad/css/malformed.css',
+          type: 'css',
+          contents: '.a { ::: invalid css ::: }',
+        },
+      ],
+      expectedCssParsingErrors: [
+        `
+Parse error: Identifier is expected
+    1 |.a { ::: invalid css ::: }
+------------^
+        `.trim(),
+      ],
     },
   ],
   [
@@ -332,6 +366,17 @@ Error: Malformed file extension ignores config: [
       expectedErrorMessage: 'Error: Bad SASS syntax',
     },
   ],
+  [
+    'ignored feature',
+    {
+      report: compatibleReport,
+      expectedExitCode: 0,
+      mockKompatRc: {
+        browsers: MODERN_CHROME_CONFIG,
+        featureIgnores: ['property:margin'],
+      },
+    },
+  ],
 ];
 
 beforeEach(() => {
@@ -340,9 +385,7 @@ beforeEach(() => {
     .mockReturnValueOnce(dummyFormattedCss);
 });
 
-afterEach(() => jest.restoreAllMocks());
-
-test.each<[string, TestData]>(testCases)(
+test.each(testCases)(
   'exits with expected status code and message for case: %s',
   async (
     _,
@@ -354,6 +397,7 @@ test.each<[string, TestData]>(testCases)(
       mockKompatRc,
       cssFinderOverride,
       expectedRules,
+      expectedCssParsingErrors,
     },
   ) => {
     const getCompatibilityReportSpy = jest
@@ -404,15 +448,20 @@ test.each<[string, TestData]>(testCases)(
 
     await runCli(exitWith, path);
 
-    if (expectedRules) {
+    if (expectedErrorMessage) {
+      expect(getCompatibilityReportSpy).not.toHaveBeenCalled();
+    } else {
       expect(getCompatibilityReportSpy).toHaveBeenCalledWith(
         dummyFormattedCss,
         mockKompatRc?.browsers ?? MODERN_CHROME_CONFIG,
-        dummyCssFile.path,
-        expectedRules,
-        [],
+        (Array.isArray(cssFinderOverride) && cssFinderOverride[0].path) ||
+          dummyCssFile.path,
+        expectedRules ?? DEFAULT_RULES,
+        mockKompatRc?.featureIgnores ?? [],
+        expectedCssParsingErrors ?? [],
       );
     }
+
     expect(exitCode).toEqual(expectedExitCode);
     expect(errorMessage).toEqual(expectedErrorMessage);
   },

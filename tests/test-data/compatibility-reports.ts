@@ -9,6 +9,7 @@ export const emptyReport: CompatibilityReport = {
   knownFeatures: {},
   unknownFeatures: [],
   browserSummaries: {},
+  cssParsingErrors: [],
 };
 
 export const compatibleReport: CompatibilityReport = {
@@ -30,6 +31,7 @@ export const compatibleReport: CompatibilityReport = {
       unknown: 0,
     },
   },
+  cssParsingErrors: [],
 };
 
 export const partiallyCompatibleReport = produce(compatibleReport, (draft) => {
@@ -110,3 +112,16 @@ export const unknownFeatureReport = produce(compatibleReport, (draft) => {
   draft.overallStatus = 'fail';
   draft.unknownFeatures = ['property:not-a-real-feature:20px'];
 });
+
+export const compatibleReportWithParsingErrors = produce(
+  compatibleReport,
+  (draft) => {
+    draft.cssParsingErrors = [
+      `
+Parse error: Identifier is expected
+    1 |.a { ::: invalid css ::: }
+------------^
+    `.trim(),
+    ];
+  },
+);

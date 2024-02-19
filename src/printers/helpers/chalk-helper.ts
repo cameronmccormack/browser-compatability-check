@@ -1,7 +1,7 @@
 import chalk, { Chalk } from 'chalk';
 import { OverallResult } from '../../types/overall-result';
 
-const CHALK_STYLES = {
+export const CHALK_STYLES = {
   pass: {
     high: chalk.bgGreen.bold,
     low: chalk.green,

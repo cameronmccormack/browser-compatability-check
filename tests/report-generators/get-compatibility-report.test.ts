@@ -28,6 +28,7 @@ test('creates expected compatibility report for empty formatted css', () => {
     },
     knownFeatures: {},
     unknownFeatures: [],
+    cssParsingErrors: [],
   };
 
   expect(
@@ -36,6 +37,7 @@ test('creates expected compatibility report for empty formatted css', () => {
       MODERN_CHROME_CONFIG,
       EXAMPLE_FILEPATH,
       DEFAULT_RULES,
+      [],
       [],
     ),
   ).toEqual(emptyChromeReport);
@@ -98,6 +100,7 @@ test('creates expected compatibility report for unsupported, partially supported
       },
     },
     unknownFeatures: [],
+    cssParsingErrors: [],
   };
 
   expect(
@@ -106,6 +109,7 @@ test('creates expected compatibility report for unsupported, partially supported
       PRE_FLEX_GAP_CHROME_CONFIG,
       EXAMPLE_FILEPATH,
       DEFAULT_RULES,
+      [],
       [],
     ),
   ).toEqual(expectedReport);
@@ -157,6 +161,7 @@ test('creates expected compatibility report with warning for partially supported
       },
     },
     unknownFeatures: [],
+    cssParsingErrors: [],
   };
 
   expect(
@@ -165,6 +170,7 @@ test('creates expected compatibility report with warning for partially supported
       PRE_FLEX_GAP_CHROME_CONFIG,
       EXAMPLE_FILEPATH,
       DEFAULT_RULES,
+      [],
       [],
     ),
   ).toEqual(expectedReport);
@@ -197,6 +203,7 @@ test('creates expected compatibility report for unknown feature', () => {
     },
     knownFeatures: {},
     unknownFeatures: ['property:not-a-real-feature:20px'],
+    cssParsingErrors: [],
   };
 
   expect(
@@ -205,6 +212,7 @@ test('creates expected compatibility report for unknown feature', () => {
       MODERN_CHROME_CONFIG,
       EXAMPLE_FILEPATH,
       DEFAULT_RULES,
+      [],
       [],
     ),
   ).toEqual(expectedReport);
@@ -257,6 +265,7 @@ test('adds all types of css feature to compatibility report', () => {
         unknown: 0,
       },
     },
+    cssParsingErrors: [],
   };
 
   expect(
@@ -265,6 +274,7 @@ test('adds all types of css feature to compatibility report', () => {
       MODERN_CHROME_CONFIG,
       EXAMPLE_FILEPATH,
       DEFAULT_RULES,
+      [],
       [],
     ),
   ).toEqual(expectedReport);
@@ -327,6 +337,7 @@ test('creates expected compatibility report with feature ignore, including overa
       },
     },
     unknownFeatures: [],
+    cssParsingErrors: [],
   };
 
   expect(
@@ -336,6 +347,28 @@ test('creates expected compatibility report with feature ignore, including overa
       EXAMPLE_FILEPATH,
       DEFAULT_RULES,
       ['property:gap:20px:flex_context', 'at-rule'],
+      [],
     ),
   ).toEqual(expectedReport);
+});
+
+test('retains css parsing errors when creating report', () => {
+  const cssParsingError = 'ERROR: CSS PARSING ERROR 123';
+  const formattedCss = {
+    properties: [],
+    selectors: [],
+    atRules: [],
+    functions: [],
+  };
+
+  expect(
+    getCompatibilityReport(
+      formattedCss,
+      MODERN_CHROME_CONFIG,
+      EXAMPLE_FILEPATH,
+      DEFAULT_RULES,
+      [],
+      [cssParsingError],
+    ).cssParsingErrors,
+  ).toEqual([cssParsingError]);
 });

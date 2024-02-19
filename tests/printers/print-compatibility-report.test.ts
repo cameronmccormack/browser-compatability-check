@@ -3,6 +3,7 @@ import { printCompatibilityReports } from '../../src/printers';
 import { CompatibilityReport } from '../../src/types/compatibility';
 import {
   compatibleReport,
+  compatibleReportWithParsingErrors,
   emptyReport,
   flaggedCompatibilityReport,
   flaggedCompatibilityReportWithLongFeatureId,
@@ -13,20 +14,9 @@ import {
 } from '../test-data/compatibility-reports';
 import { DEFAULT_RULES } from '../../src/run-commands/default-rules';
 import { Rules } from '../../src/types/rules';
-import {
-  emptyPrintedReport,
-  excludedPerFeatureSummariesPrintedReport,
-  longFeatureIdPrintedReport,
-  manyBrowsersPrintedReport,
-  multipleFilesPrintedReport,
-  nonDefaultRulesPrintedReport,
-  oneCompatibleFilePrintedReport,
-  oneFileWithUnknownFeaturePrintedReport,
-} from './expected-printed-reports';
 
 type TestData = {
   compatibilityReports: CompatibilityReport[];
-  expectedPrintedReport: string;
   overrideRules?: Rules;
   includePerFeatureSummary?: boolean;
 };
@@ -36,14 +26,12 @@ const testCases: [string, TestData][] = [
     'one compatible report',
     {
       compatibilityReports: [compatibleReport],
-      expectedPrintedReport: oneCompatibleFilePrintedReport,
     },
   ],
   [
     'one report with unknown feature',
     {
       compatibilityReports: [unknownFeatureReport],
-      expectedPrintedReport: oneFileWithUnknownFeaturePrintedReport,
     },
   ],
   [
@@ -54,28 +42,24 @@ const testCases: [string, TestData][] = [
         compatibleReport,
         partiallyCompatibleReport,
       ],
-      expectedPrintedReport: multipleFilesPrintedReport,
     },
   ],
   [
     '>3 browsers report',
     {
       compatibilityReports: [flaggedCompatibilityReportWithManyBrowsers],
-      expectedPrintedReport: manyBrowsersPrintedReport,
     },
   ],
   [
     'very long CSS identifier report',
     {
       compatibilityReports: [flaggedCompatibilityReportWithLongFeatureId],
-      expectedPrintedReport: longFeatureIdPrintedReport,
     },
   ],
   [
     'empty report',
     {
       compatibilityReports: [emptyReport],
-      expectedPrintedReport: emptyPrintedReport,
     },
   ],
   [
@@ -86,7 +70,6 @@ const testCases: [string, TestData][] = [
         incompatibleReport,
         unknownFeatureReport,
       ],
-      expectedPrintedReport: nonDefaultRulesPrintedReport,
       overrideRules: {
         compatible: 'fail',
         'partial-support': 'fail',
@@ -101,7 +84,13 @@ const testCases: [string, TestData][] = [
     'explicitly excluded per-feature summaries',
     {
       compatibilityReports: [unknownFeatureReport],
-      expectedPrintedReport: excludedPerFeatureSummariesPrintedReport,
+      includePerFeatureSummary: false,
+    },
+  ],
+  [
+    'css parsing errors',
+    {
+      compatibilityReports: [compatibleReportWithParsingErrors],
       includePerFeatureSummary: false,
     },
   ],
@@ -109,15 +98,7 @@ const testCases: [string, TestData][] = [
 
 test.each<[string, TestData]>(testCases)(
   'prints expected report for case: %s',
-  (
-    _,
-    {
-      compatibilityReports,
-      expectedPrintedReport,
-      overrideRules,
-      includePerFeatureSummary,
-    },
-  ) => {
+  (_, { compatibilityReports, overrideRules, includePerFeatureSummary }) => {
     const loggedLines: string[] = [];
     jest
       .spyOn(global.console, 'log')
@@ -131,6 +112,6 @@ test.each<[string, TestData]>(testCases)(
       includePerFeatureSummary: includePerFeatureSummary ?? true,
     });
 
-    expect(loggedLines.join('\n')).toEqual(expectedPrintedReport);
+    expect(loggedLines.join('\n')).toMatchSnapshot();
   },
 );

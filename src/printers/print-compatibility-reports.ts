@@ -15,6 +15,8 @@ import {
   getTabulatedFeatures,
 } from './helpers/feature-summary-helper';
 import {
+  CHALK_STYLES,
+  applyChalkStyles,
   getChalkStylesForStatus,
   getStyledOverallStatus,
 } from './helpers/chalk-helper';
@@ -67,6 +69,9 @@ const printReportSummaries = (
       Object.keys(report.knownFeatures).length > 0
     ) {
       printFeatureSummaries(report, rules);
+    }
+    if (report.cssParsingErrors.length > 0) {
+      printCssParsingErrors(report.cssParsingErrors);
     }
   });
 };
@@ -160,6 +165,19 @@ const printFeatureSummaries = (
       characterWidth: MAX_WIDTH,
       headingText: `Per-feature Summary (${slugs.join(', ')})`,
     });
+    printSpacer();
+  });
+};
+
+const printCssParsingErrors = (parsingErrors: string[]): void => {
+  console.log(
+    applyChalkStyles(
+      'CSS Parsing Errors (bad content wrapped in Raw by default):',
+      CHALK_STYLES.warn.high,
+    ),
+  );
+  parsingErrors.forEach((error) => {
+    console.log(applyChalkStyles(error, CHALK_STYLES.warn.low));
     printSpacer();
   });
 };

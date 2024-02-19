@@ -29,3 +29,6 @@ jobs:
 
       - name: Test (with coverage)
         run: npm run test:coverage
+        env:
+          # Needed for report printing snapshot tests to include chalk colours
+          FORCE_COLOR: 1

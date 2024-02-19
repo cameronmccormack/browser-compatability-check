@@ -18,6 +18,7 @@ import { getValidatedFileExtensionIgnores } from './run-commands/schema-validati
 import { BaseKompatError } from './errors/base-kompat-error';
 import { ClientError } from './errors/client-error';
 import { InternalError } from './errors/internal-error';
+import { getValidatedParserOptions } from './run-commands/schema-validation/parser-options';
 
 export enum ExitCode {
   Compatible = 0,
@@ -31,6 +32,7 @@ const getValidatedKompatRc = (
   browserConfig: getValidatedBrowserConfig(unvalidatedFile.browsers),
   ruleOverrides: getValidatedRuleOverrides(unvalidatedFile.ruleOverrides),
   featureIgnores: getValidatedFeatureIgnores(unvalidatedFile.featureIgnores),
+  parserOptions: getValidatedParserOptions(unvalidatedFile.parserOptions),
   reportOptions: getValidatedReportOptions(unvalidatedFile.reportOptions),
   fileExtensionIgnores: getValidatedFileExtensionIgnores(
     unvalidatedFile.fileExtensionIgnores,
@@ -68,6 +70,7 @@ const runCliWithoutErrorWrapper = async (
     browserConfig,
     ruleOverrides,
     featureIgnores,
+    parserOptions,
     reportOptions,
     fileExtensionIgnores,
   } = getValidatedKompatRc(kompatRcFile);
@@ -93,12 +96,17 @@ const runCliWithoutErrorWrapper = async (
 
   const reports: CompatibilityReport[] = [];
   cssFiles.forEach((file) => {
+    const cssParsingErrors: string[] = [];
+
     const formattedCss = getFormattedCss(
       csstree.parse(file.contents, {
-        onParseError: (error) => {
-          throw new InternalError(
-            `Error in ${file.path}:\n\n${error.formattedMessage}`,
-          );
+        onParseError: ({ formattedMessage }) => {
+          if (parserOptions.strict) {
+            throw new InternalError(
+              `Error in ${file.path}:\n\n${formattedMessage}`,
+            );
+          }
+          cssParsingErrors.push(formattedMessage);
         },
       }),
     );
@@ -109,6 +117,7 @@ const runCliWithoutErrorWrapper = async (
         file.path.replace(currentWorkingDirectory, '.'),
         rules,
         featureIgnores,
+        cssParsingErrors,
       ),
     );
   });
