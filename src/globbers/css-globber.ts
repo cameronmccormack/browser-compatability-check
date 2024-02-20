@@ -4,6 +4,7 @@ import * as sass from 'sass';
 import less from 'less';
 import { CssPath, CssFile } from '../types/css-file';
 import { FILE_EXTENSIONS, FileExtension } from '../helpers/filetype-helper';
+import { InternalError } from '../errors/internal-error';
 
 const getAllCssFilePaths = (
   absolutePath: string,
@@ -31,27 +32,48 @@ const getAllCssFilePaths = (
   return filePathArray;
 };
 
-const getFileContentsAsCss = async (cssPath: CssPath): Promise<string> => {
-  switch (cssPath.type) {
-    case 'css':
-      return fs.readFileSync(cssPath.path, 'utf-8');
-    case 'sass':
-    case 'scss':
-      return sass.compile(cssPath.path).css;
-    case 'less':
-      return (await less.render(fs.readFileSync(cssPath.path, 'utf-8'))).css;
+const getFileContentsAsCss = async (
+  cssPath: CssPath,
+  lessSourceDirectories: string[],
+): Promise<string> => {
+  try {
+    switch (cssPath.type) {
+      case 'css':
+        return fs.readFileSync(cssPath.path, 'utf-8');
+      case 'sass':
+      case 'scss':
+        return sass.compile(cssPath.path).css;
+      case 'less':
+        return (
+          await less.render(fs.readFileSync(cssPath.path, 'utf-8'), {
+            paths: lessSourceDirectories,
+          })
+        ).css;
+    }
+  } catch (e) {
+    if (e instanceof Error) {
+      throw new InternalError(`Error in file ${cssPath.path}:\n\n${e.message}`);
+    }
+    throw e;
   }
 };
 
 export const getAllCssFiles = async (
   absolutePath: string,
   fileExtensionIgnores: FileExtension[],
-): Promise<CssFile[]> =>
-  await Promise.all(
-    getAllCssFilePaths(absolutePath, fileExtensionIgnores).map(
-      async (cssPath) => ({
-        ...cssPath,
-        contents: await getFileContentsAsCss(cssPath),
-      }),
-    ),
+): Promise<CssFile[]> => {
+  const cssFilePaths = getAllCssFilePaths(absolutePath, fileExtensionIgnores);
+  const lessPaths = cssFilePaths
+    .filter((cssFilePath) => cssFilePath.type === 'less')
+    .map((lessFilePath) => lessFilePath.path);
+  const lessSourceDirectories = [
+    ...new Set(lessPaths.map((lessPath) => path.dirname(lessPath))),
+  ];
+
+  return await Promise.all(
+    cssFilePaths.map(async (cssFilePath) => ({
+      ...cssFilePath,
+      contents: await getFileContentsAsCss(cssFilePath, lessSourceDirectories),
+    })),
   );
+};
