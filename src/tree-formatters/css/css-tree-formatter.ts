@@ -8,6 +8,7 @@ import {
   FormattedCss,
 } from '../../types/css-feature';
 import { getUniqueObjectArray } from '../../helpers/array-helper';
+import { hasVendorPrefix } from '../../helpers/vendor-prefix-helper';
 import {
   popContextFromStackIfRequired,
   pushContextToStackIfRequired,
@@ -84,9 +85,18 @@ export const getFormattedCss = (parsedCss: csstree.CssNode): FormattedCss => {
   });
 
   return {
-    properties: getUniqueObjectArray(properties),
-    selectors: getUniqueObjectArray(selectors),
-    atRules: getUniqueObjectArray(atRules),
-    functions: getUniqueObjectArray(functions),
+    // TODO: don't remove the vendor-prefixed items here and instead include them in compatibility analysis
+    properties: getUniqueObjectArray(properties).filter(
+      (item) => !hasVendorPrefix(item.identifier),
+    ),
+    selectors: getUniqueObjectArray(selectors).filter(
+      (item) => !hasVendorPrefix(item.identifier),
+    ),
+    atRules: getUniqueObjectArray(atRules).filter(
+      (item) => !hasVendorPrefix(item.identifier),
+    ),
+    functions: getUniqueObjectArray(functions).filter(
+      (item) => !hasVendorPrefix(item.identifier),
+    ),
   };
 };
