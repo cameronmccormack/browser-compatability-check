@@ -70,7 +70,8 @@ Improving existing functionality:
   - Support for CSS-in-JS (e.g. Emotion/Styled Components) [note: perhaps will instead be solved with a chainable Kompat API for Puppeteer]
 - Detailing the compatibility of HTML and/or JavaScript features as well as CSS features
 - Improved contextual understanding of CSS usage (e.g. whether an attribute is being applied to the child of a flex/grid/other layout element)
-- Support for legacy names for features to prevent these showing as "unknown" (e.g. `-webkit-box-sizing:border-box` as well as `box-sizing:border-box`)
+- Support for legacy, vendor-prefixed names for features (e.g. `-webkit-box-sizing:border-box` as well as `box-sizing:border-box`).
+  - **Note: Features with vendor-prefixed identifiers are currently ignored in Kompat**
 - Exposing the "notes" field from the MDN data to the user when present
 
 Entirely new functionality:

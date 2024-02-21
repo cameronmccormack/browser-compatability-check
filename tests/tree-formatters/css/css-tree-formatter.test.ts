@@ -322,4 +322,59 @@ describe('getFormattedCss works as expected', () => {
     };
     expect(getFormattedCss(parsedCss)).toEqual(expectedResponse);
   });
+
+  test('does not include vendor prefixed items', () => {
+    const css = `
+      @-moz-document url("https://www.example.com/")
+      @document url("https://www.example.com/")
+
+      :-moz-broken {
+        include: this;
+      }
+
+      a {
+        gap: 20px;
+        -moz-gap: 20px;
+        -o-gap: 20px;
+        -webkit-gap: 20px;
+        -ms-gap: 20px;
+        padding: -webkit-calc(20px + 10px) calc(20px + 10px);
+        another: thing;
+      }
+    `;
+    const parsedCss = csstree.parse(css);
+    const expectedResponse = {
+      ...EMPTY_FORMATTED_CSS,
+      properties: [
+        {
+          identifier: 'include',
+          value: 'this',
+          type: 'property',
+        },
+        {
+          identifier: 'gap',
+          value: '20px',
+          type: 'property',
+        },
+        {
+          identifier: 'padding',
+          // fine to include prefix here, as this is a value not an identifier
+          value: '-webkit-calc(20px + 10px) calc(20px + 10px)',
+          type: 'property',
+        },
+        {
+          identifier: 'another',
+          value: 'thing',
+          type: 'property',
+        },
+      ],
+      functions: [
+        {
+          identifier: 'calc',
+          type: 'function',
+        },
+      ],
+    };
+    expect(getFormattedCss(parsedCss)).toEqual(expectedResponse);
+  });
 });
