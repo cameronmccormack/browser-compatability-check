@@ -138,7 +138,6 @@ Kompat is configured with a `.kompatrc.yml` file at the root of your repository.
 
 A minimal config file to get started is:
 
-
 ```yaml
 # .kompatrc.yml
 browsers:
@@ -146,7 +145,9 @@ browsers:
     version: 100
 ```
 
-This file must contain:
+A more complex example `.kompatrc.yml` file (named `.kompatrc.example.yml`) is given [here](.kompatrc.example.yml) for reference.
+
+The `.kompatrc.yml` file must contain:
 
 - `browsers`: an array of browser identifiers and versions
   - The acceptable browser slugs are defined [here](src/run-commands/schema-validation/browsers.ts#L6)
@@ -169,8 +170,6 @@ And may contain:
   - The per-browser summary can be suppressed in the console logs, and HTML and/or JSON file output reports may be configured.
 - `fileExtensionIgnores`: to ignore a specific extension of CSS or unprocessed CSS file
   - This array may only contain "css", "sass", "scss" or "less"
-
-An example `.kompatrc.yml` file (named `.kompatrc.example.yml`) is given [here](.kompatrc.example.yml) for reference.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
