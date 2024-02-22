@@ -35,6 +35,8 @@
     <li>
       <a href="#about-the-project">About The Project</a>
       <ul>
+        <li><a href="#purpose">Purpose</a></li>
+        <li><a href="#philosophy">Philosophy</a></li>
         <li><a href="#whats-included">What's Included?</a></li>
         <li><a href="#future-development">Future Development</a></li>
       </ul>
@@ -58,21 +60,23 @@
 
 :warning: **Note: this project is currently in its pre-Alpha phase, so should be used with care - particularly in CI pipelines.**
 
+### Purpose
+
 Kompat is a static analysis tool to validate the compatibility of a web project's CSS styles against a configurable list of supported browsers and version numbers.
 
-It offers out-of-the-box compatibility with vanilla CSS, SASS/SCSS and LESS, and can run against your repository's unprocessed code.
+Kompat offers out-of-the-box compatibility with vanilla CSS, SASS/SCSS and LESS, and can run against your repository's unprocessed code.
 
 Support for other methods of CSS generation will be supported natively in future - for now, Kompat can be used in these cases by running it on the transpiled/preprocessed output CSS directory rather than the unprocessed source code.
 
-Kompat is configured using a `.kompatrc.yml` file, which requires a list of required browsers and earliest version numbers for the codebase to be checked against. Optionally, this config file can be used to override Kompat's default pass/warn/fail logic, ignore certain CSS features, generate output report files, [and much more](#configuration)!
+### Philosophy
 
-:warning: Kompat isn't perfect (see [future development](#future-development)). In general, to maximise robustness in a CI environment, Kompat is "over-lenient". That's to say:
+Kompat isn't perfect (see [future development](#future-development)). In general, to maximise robustness in a CI environment, Kompat is "over-lenient" - preferring false negatives over false positives. That's to say:
 
-> **_If Kompat indicates that your code isn't compatible, it's probably not. If Kompat indicates that your code is compatible, it doesn't guarantee that it is._**
+> **_If Kompat reports a reason that your code is not compatible, it's probably right. If Kompat indicates that your code is fully compatible, it may still have undetected issues._**
 
-The point being: Kompat doesn't (yet) serve to replace manual browser compatibility testing processes, but it should help catch some compatibility issues earlier and provide an extra layer of protection against issues.
+Therefore Kompat cannot (yet) be used to entirely replace manual browser compatibility testing, but it can help catch many compatibility issues immediately during development and provides an extra layer of automated protection.
 
-The aim - by providing extra context and logic to the validation processes - is for Kompat's lenience to decrease over time.
+By providing extra context and logic to the validation processes in future versions, the aim is for Kompat's lenience to decrease over time.
 
 ### What's Included?
 
@@ -123,7 +127,7 @@ npm install --save-dev kompat
 
 ## Usage
 
-First, a `.kompatrc.yml` file must be created within the package root directory (see below for details). Then:
+Kompat is configured using a `.kompatrc.yml` file in the package root directory (see [configuration](#configuration) below). Then:
 
 ```bash
 # To only check files in a specific directory (and its children)
@@ -166,11 +170,11 @@ And may contain:
   - Any features with an ID that is matched by the ignore (regardless of higher level of detail) will be excluded from the compatibility report
     - e.g. if the ignore is "property:color" the features "property:color:red" and "property:color:orange:flex_context" will be ignored, and if the ignore is "at-rule", all at-rules will be ignored.
 - `parserOptions`: to configure the settings for parsing codebase content
-  - The correct format for these options is defined[here](src/run-commands/schema-validation/parser-options.ts#L7)
+  - The correct format for these options is defined [here](src/run-commands/schema-validation/parser-options.ts#L7)
 - `reportOptions`: to configure the logged report and create output log files
   - The correct format for these options is defined [here](src/run-commands/schema-validation/report-options.ts#L6)
   - The per-browser summary can be suppressed in the console logs, and HTML and/or JSON file output reports may be configured.
-- `fileExtensionOverrides`: to ignore a specific extension of CSS or unprocessed CSS file
+- `fileExtensionIgnores`: to ignore a specific extension of CSS or unprocessed CSS file
   - This array may only contain "css", "sass", "scss" or "less"
 
 An example `.kompatrc.yml` file (named `.kompatrc.example.yml`) is given [here](.kompatrc.example.yml) for reference.
