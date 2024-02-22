@@ -95,6 +95,7 @@ Improving existing functionality:
 - Support for legacy, vendor-prefixed names for features (e.g. `-webkit-box-sizing:border-box` as well as `box-sizing:border-box`)
   - **Note: Features with vendor-prefixed identifiers are currently ignored in Kompat**
 - Exposing the "notes" field from the MDN data to the user when present
+- Making the output HTML report prettier and more user-friendly
 
 Entirely new functionality:
 - Inspecting a codebase and returning the oldest version of each browser with which it is fully compatible
