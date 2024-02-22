@@ -6,6 +6,7 @@ import {
   FILE_EXTENSIONS,
   FileExtension,
 } from '../../src/helpers/filetype-helper';
+import { sassTildeCustomImporter } from '../../src/globbers/custom-importers';
 
 afterEach(() => jest.restoreAllMocks());
 
@@ -110,7 +111,9 @@ describe('calls expected transpilation and file reading methods for each type of
       },
     ]);
 
-    expect(sassCompileSpy).toHaveBeenCalledWith(expectedFilepath);
+    expect(sassCompileSpy).toHaveBeenCalledWith(expectedFilepath, {
+      importers: [sassTildeCustomImporter],
+    });
   });
 
   test('reads and transpiles SASS file', async () => {
@@ -131,7 +134,9 @@ describe('calls expected transpilation and file reading methods for each type of
       },
     ]);
 
-    expect(sassCompileSpy).toHaveBeenCalledWith(expectedFilepath);
+    expect(sassCompileSpy).toHaveBeenCalledWith(expectedFilepath, {
+      importers: [sassTildeCustomImporter],
+    });
   });
 
   test('reads and transpiles LESS files', async () => {
