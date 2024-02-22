@@ -56,9 +56,31 @@
 
 ## About The Project
 
-qq
+:warning: **Note: this project is currently in its pre-Alpha phase, so should be used with care - particularly in CI pipelines.**
+
+Kompat is a static analysis tool to validate the compatibility of a web project's CSS styles against a configurable list of supported browsers and version numbers.
+
+It offers out-of-the-box compatibility with vanilla CSS, SASS/SCSS and LESS, and can run against your repository's unprocessed code.
+
+Support for other methods of CSS generation will be supported natively in future - for now, Kompat can be used in these cases by running it on the transpiled/preprocessed output CSS directory rather than the unprocessed source code.
+
+Kompat is configured using a `.kompatrc.yml` file, which requires a list of required browsers and earliest version numbers for the codebase to be checked against. Optionally, this config file can be used to override Kompat's default pass/warn/fail logic, ignore certain CSS features, generate output report files, [and much more](#configuration)!
+
+:warning: Kompat isn't perfect (see [future development](#future-development)). In general, to maximise robustness in a CI environment, Kompat is "over-lenient". That's to say:
+
+> **_If Kompat indicates that your code isn't compatible, it's probably not. If Kompat indicates that your code is compatible, it doesn't guarantee that it is._**
+
+The point being: Kompat doesn't (yet) serve to replace manual browser compatibility testing processes, but it should help catch some compatibility issues earlier and provide an extra layer of protection against issues.
+
+The aim - by providing extra context and logic to the validation processes - is for Kompat's lenience to decrease over time.
 
 ### What's Included?
+
+- Parsing of CSS, SASS, SCSS and LESS.
+- Analysis against compatibility data for all versions of all major browsers.
+- Limited contextual understanding of CSS usage (e.g. whether a property is being used on a flexbox or grid).
+- Command line output tables and semantic exit codes to allow use in the command line or as a CI pipeline step.
+- Output report files in HTML and JSON formats.
 
 ### Future Development
 
@@ -92,22 +114,49 @@ Entirely new functionality:
 
 ### Installation
 
-qq
+```bash
+npm install --save-dev kompat
+```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Usage
 
-qq
+First, a `.kompatrc.yml` file must be created within the package root directory (see below for details). Then:
+
+```bash
+# To only check files in a specific directory (and its children)
+kompat -- path/to/directory
+
+# To search for CSS/SASS/SCSS/LESS files in the entire package
+kompat
+```
+
+For cases where SASS/LESS files are importing from an installed package, it's important that `kompat` is executed from the root level of the package (i.e. from within parent directory of `node_modules`).
 
 ### Configuration
 
-Kompat is configured with a `.kompatrc.yml` file at the root of your repository. This file must contain:
+Kompat is configured with a `.kompatrc.yml` file at the root of your repository.
+
+A minimal config file to get started is:
+
+
+```yaml
+# .kompatrc.yml
+browsers:
+  - identifier: chrome
+    version: 100
+```
+
+This file must contain:
 
 - `browsers`: an array of browser identifiers and versions
   - The acceptable browser slugs are defined [here](src/run-commands/schema-validation/browsers.ts#L6)
   - The browser version must be a number
   - Duplicate browser slugs are not allowed
+
+And may contain:
+
 - `ruleOverrides`: to change the default overall pass/warn/fail thresholds
   - Acceptable rules config is defined [here](src/run-commands/schema-validation/rule-overrides.ts#L6)
   - e.g. for failing a pipeline if a partially compatible feature is identified
@@ -153,14 +202,6 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 [Cameron McCormack](https://github.com/cameronmccormack)
 
 Project Link: [https://github.com/cameronmccormack/kompat](https://github.com/cameronmccormack/kompat)
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-## Acknowledgments
-
-* []()
-* []()
-* []()
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
