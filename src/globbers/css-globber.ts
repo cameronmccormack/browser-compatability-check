@@ -5,6 +5,7 @@ import less from 'less';
 import { CssPath, CssFile } from '../types/css-file';
 import { FILE_EXTENSIONS, FileExtension } from '../helpers/filetype-helper';
 import { InternalError } from '../errors/internal-error';
+import { sassTildeCustomImporter } from './custom-importers';
 
 const getAllCssFilePaths = (
   absolutePath: string,
@@ -42,8 +43,11 @@ const getFileContentsAsCss = async (
         return fs.readFileSync(cssPath.path, 'utf-8');
       case 'sass':
       case 'scss':
-        return sass.compile(cssPath.path).css;
+        return sass.compile(cssPath.path, {
+          importers: [sassTildeCustomImporter],
+        }).css;
       case 'less':
+        // TODO: think about applicability/functionality of LESS tilde imports
         return (
           await less.render(fs.readFileSync(cssPath.path, 'utf-8'), {
             paths: lessSourceDirectories,
