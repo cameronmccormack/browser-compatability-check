@@ -42,13 +42,14 @@
       </ul>
     </li>
     <li>
-      <a href="#getting-started">Getting Started</a>
+      <a href="#installation">Installation</a>
+    </li>
+    <li>
+      <a href="#usage">Usage</a>
       <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
+        <li><a href="#configuration">Configuration</a></li>
       </ul>
     </li>
-    <li><a href="#usage">Usage</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
@@ -58,13 +59,13 @@
 
 ## About The Project
 
-:warning: **Note: this project is currently in its pre-Alpha phase, so should be used with care - particularly in CI pipelines.**
+:warning: **Note: this project is currently in its pre-Alpha phase, so should be used with care - particularly in CI pipelines, where it may risk blocking builds and releases.**
 
 ### Purpose
 
 Kompat is a static analysis tool to validate the compatibility of a web project's CSS styles against a configurable list of supported browsers and version numbers.
 
-Kompat offers out-of-the-box compatibility with vanilla CSS, SASS/SCSS and LESS, and can run against your repository's unprocessed code.
+Kompat offers out-of-the-box compatibility with vanilla CSS, SASS/SCSS and LESS, and can run against a repository's static, unprocessed code.
 
 Support for other methods of CSS generation will be supported natively in future - for now, Kompat can be used in these cases by running it on the transpiled/preprocessed output CSS directory rather than the unprocessed source code.
 
@@ -81,9 +82,9 @@ By providing extra context and logic to the validation processes in future versi
 ### What's Included?
 
 - Parsing of CSS, SASS, SCSS and LESS.
-- Analysis against compatibility data for all versions of all major browsers.
-- Limited contextual understanding of CSS usage (e.g. whether a property is being used on a flexbox or grid).
-- Command line output tables and semantic exit codes to allow use in the command line or as a CI pipeline step.
+- Analysis against browser compatibility data for all versions of all major browsers.
+- Some contextual understanding of CSS usage (e.g. whether a property is being used on a flexbox or grid).
+- Command line output data and semantic exit codes to allow use in the command line during development or as a CI pipeline step.
 - Output report files in HTML and JSON formats.
 
 ### Future Development
@@ -92,12 +93,13 @@ Kompat is still in its MVP phase, but there are many more planned features for f
 
 Improving existing functionality:
 - Support for more CSS techniques, including:
+  - Runtime CSS-in-JS (e.g. Emotion/Styled Components) [note: perhaps will instead be solved with a chainable Kompat API for Puppeteer]
+  - Zero-runtime CSS-in-JS (e.g. Linaria)
   - Tailwind CSS
-  - Support for CSS-in-JS (e.g. Emotion/Styled Components) [note: perhaps will instead be solved with a chainable Kompat API for Puppeteer]
 - Detailing the compatibility of HTML and/or JavaScript features as well as CSS features
 - Improved contextual understanding of CSS usage (e.g. whether an attribute is being applied to the child of a flex/grid/other layout element)
 - Support for legacy, vendor-prefixed names for features (e.g. `-webkit-box-sizing:border-box` as well as `box-sizing:border-box`)
-  - **Note: Features with vendor-prefixed identifiers are currently ignored in Kompat**
+  - **:warning: Note: Features with vendor-prefixed identifiers are currently ignored by Kompat**
 - Exposing the "notes" field from the MDN data to the user when present
 - Making the output HTML report prettier and more user-friendly
 
@@ -108,16 +110,7 @@ Entirely new functionality:
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-## Getting Started
-
-### Prerequisites
-
-* npm
-  ```sh
-  npm install npm@latest -g
-  ```
-
-### Installation
+## Installation
 
 ```bash
 npm install --save-dev kompat
