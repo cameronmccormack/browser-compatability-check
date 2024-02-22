@@ -47,14 +47,12 @@ const getFileContentsAsCss = async (
           importers: [sassTildeCustomImporter],
         }).css;
       case 'less':
+        // TODO: think about applicability/functionality of LESS tilde imports
         return (
-          // TODO: think about applicability/functionality of LESS tilde imports
-          (
-            await less.render(fs.readFileSync(cssPath.path, 'utf-8'), {
-              paths: lessSourceDirectories,
-            })
-          ).css
-        );
+          await less.render(fs.readFileSync(cssPath.path, 'utf-8'), {
+            paths: lessSourceDirectories,
+          })
+        ).css;
     }
   } catch (e) {
     if (e instanceof Error) {
