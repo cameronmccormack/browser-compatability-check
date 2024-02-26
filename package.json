@@ -1,7 +1,7 @@
 {
   "name": "kompat",
-  "version": "1.0.0",
-  "description": "",
+  "version": "0.0.0",
+  "description": "A utility for checking CSS browser compatibility.",
   "scripts": {
     "build": "tsc && npm run copy-templates",
     "copy-templates": "mkdir -p dist/report-writers/templates && cp src/report-writers/templates/* dist/report-writers/templates/",
